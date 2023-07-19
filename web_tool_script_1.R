@@ -1,0 +1,134 @@
+suppressPackageStartupMessages({
+  library(pacta.portfolio.utils)
+  library(pacta.portfolio.import)
+  library(pacta.portfolio.audit)
+  library(cli)
+  library(dplyr)
+  library(here)
+  library(glue)
+})
+
+cli::cli_h1("web_tool_script_1.R{get_build_version_msg()}")
+
+
+if (!exists("portfolio_name_ref_all")) {
+  portfolio_name_ref_all <- "1234"
+}
+
+portfolio_root_dir <- "working_dir"
+
+setup_project()
+
+working_location <- file.path(working_location)
+
+set_webtool_paths(portfolio_root_dir)
+
+set_portfolio_parameters(file_path = file.path(par_file_path, paste0(portfolio_name_ref_all, "_PortfolioParameters.yml")))
+
+set_project_parameters(file.path(working_location, "parameter_files", paste0("ProjectParameters_", project_code, ".yml")))
+
+# need to define an alternative location for data files
+analysis_inputs_path <- set_analysis_inputs_path(data_location_ext, dataprep_timestamp)
+
+# To save, files need to go in the portfolio specific folder, created here
+create_portfolio_subfolders(portfolio_name_ref_all = portfolio_name_ref_all, project_location = project_location)
+
+
+# load necessary input data ----------------------------------------------------
+
+file_location <- file.path(analysis_inputs_path)
+
+currencies <- readRDS(file.path(file_location, "currencies.rds"))
+
+fund_data <- readRDS(file.path(file_location, "fund_data.rds"))
+total_fund_list <- readRDS(file.path(file_location, "total_fund_list.rds"))
+isin_to_fund_table <- readRDS(file.path(file_location, "isin_to_fund_table.rds"))
+
+fin_data <- readRDS(file.path(file_location, "financial_data.rds"))
+
+entity_info <- get_entity_info()
+
+abcd_flags_equity <- readRDS(file.path(file_location, "abcd_flags_equity.rds"))
+abcd_flags_bonds <- readRDS(file.path(file_location, "abcd_flags_bonds.rds"))
+
+if (inc_emission_factors) {
+  entity_emission_intensities <- readRDS(
+    file.path(file_location, "iss_entity_emission_intensities.rds")
+  )
+
+  average_sector_emission_intensities <- readRDS(
+    file.path(file_location, "iss_average_sector_emission_intensities.rds")
+  )
+}
+
+
+# Portfolios -------------------------------------------------------------------
+
+abort_if_file_doesnt_exist(
+  here::here(
+    "working_dir", "20_Raw_Inputs", glue::glue("{portfolio_name_ref_all}.csv")
+  )
+)
+portfolio_raw <- get_input_files(portfolio_name_ref_all)
+
+portfolio <- process_raw_portfolio(
+  portfolio_raw = portfolio_raw,
+  fin_data = fin_data,
+  fund_data = fund_data,
+  entity_info = entity_info,
+  currencies = currencies,
+  total_fund_list = total_fund_list,
+  isin_to_fund_table = isin_to_fund_table
+)
+
+# FIXME: this is necessary because pacta.portfolio.allocate::add_revenue_split()
+#  was removed in #142, but later we realized that it had a sort of hidden
+#  behavior where if there is no revenue data it maps the security_mapped_sector
+#  column of the portfolio data to financial_sector, which is necessary later
+portfolio <-
+  portfolio %>%
+  mutate(
+    has_revenue_data = FALSE,
+    financial_sector = .data$security_mapped_sector
+  )
+
+portfolio <- create_ald_flag(portfolio, comp_fin_data = abcd_flags_equity, debt_fin_data = abcd_flags_bonds)
+
+portfolio_total <- add_portfolio_flags(portfolio)
+
+portfolio_overview <- portfolio_summary(portfolio_total)
+
+audit_file <- create_audit_file(portfolio_total, has_revenue)
+
+if (inc_emission_factors) {
+  emissions_totals <- calculate_portfolio_financed_emissions(
+    portfolio_total,
+    entity_info,
+    entity_emission_intensities,
+    average_sector_emission_intensities
+  )
+}
+
+
+# Saving -----------------------------------------------------------------------
+
+proc_input_path_ <- file.path(proc_input_path, portfolio_name_ref_all)
+
+export_audit_information_data(
+  audit_file_ = audit_file %>% filter(portfolio_name == portfolio_name),
+  portfolio_total_ = portfolio_total %>% filter(portfolio_name == portfolio_name),
+  folder_path = proc_input_path_
+)
+
+save_if_exists(portfolio_total, portfolio_name, file.path(proc_input_path_, "total_portfolio.rds"))
+save_if_exists(portfolio_overview, portfolio_name, file.path(proc_input_path_, "overview_portfolio.rds"))
+save_if_exists(audit_file, portfolio_name, file.path(proc_input_path_, "audit_file.rds"))
+save_if_exists(audit_file, portfolio_name, file.path(proc_input_path_, "audit_file.csv"), csv_or_rds = "csv")
+
+if (inc_emission_factors) {
+  save_if_exists(emissions_totals, portfolio_name, file.path(proc_input_path_, "emissions.rds"))
+}
+
+remove_if_exists(portfolio_total)
+remove_if_exists(portfolio)
+remove_if_exists(audit_file)
