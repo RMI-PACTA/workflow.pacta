@@ -95,6 +95,7 @@ RUN Rscript -e "pak::pkg_install(c('renv', 'yaml'))"
 # copy in scripts from this repo
 ARG WORKFLOW_DIR="/workflow.pacta"
 COPY . $WORKFLOW_DIR
+WORKDIR $WORKFLOW_DIR
 
 # PACTA R package tags
 ARG summary_tag="/tree/main"
