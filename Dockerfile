@@ -137,4 +137,5 @@ ENV build_version=$image_tag
 ARG head_hashes
 ENV head_hashes=$head_hashes
 
-CMD ["/bin/sh"]
+ENTRYPOINT ["/workflow.pacta/bin/run-r-scripts-results-only"]
+CMD ["1234"]
