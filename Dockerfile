@@ -6,10 +6,6 @@
 # those available on 2023-06-30
 # https://packagemanager.posit.co/client/#/repos/2/overview
 # https://packagemanager.posit.co/cran/__linux__/jammy/2023-06-30
-#
-# sets CTAN repo to freeze TeX package dependencies to those available on
-# 2021-12-31
-# https://www.texlive.info/tlnet-archive/2021/12/31/tlnet/
 
 ARG PLATFORM="linux/amd64"
 ARG R_VERS="4.3.1"
@@ -60,33 +56,6 @@ ARG R_PKG_SYS_DEPS="\
 RUN apt-get update \
     && apt-get install -y --no-install-recommends $R_PKG_SYS_DEPS \
     && rm -rf /var/lib/apt/lists/*
-
-# install TeX system and fonts
-ARG TEX_APT="\
-    texlive-xetex \
-    texlive-fonts-recommended \
-    texlive-fonts-extra \
-    lmodern \
-    xz-utils \
-    "
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends $TEX_APT \
-    && tlmgr init-usertree \
-    && rm -rf /var/lib/apt/lists/*
-
-# install tex package dependencies
-ARG CTAN_REPO="https://www.texlive.info/tlnet-archive/2021/12/31/tlnet/"
-ARG TEX_DEPS="\
-    geometry \
-    hyperref \
-    l3packages \
-    mdframed \
-    needspace \
-    tools \
-    xcolor \
-    zref \
-    "
-RUN tlmgr --repository $CTAN_REPO install $TEX_DEPS
 
 # install packages for dependency resolution and installation
 RUN Rscript -e "install.packages('pak')"
