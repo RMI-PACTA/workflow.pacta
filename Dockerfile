@@ -57,9 +57,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends $R_PKG_SYS_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
-# install packages for dependency resolution and installation
+# install pak for R package installation
 RUN Rscript -e "install.packages('pak')"
-RUN Rscript -e "pak::pkg_install(c('renv', 'yaml'))"
 
 # copy in scripts from this repo
 ARG WORKFLOW_DIR="/workflow.pacta"
@@ -92,9 +91,8 @@ RUN Rscript -e "\
       paste0('$report_url', '$report_tag'), \
       paste0('$utils_url', '$utils_tag') \
     ); \
-  workflow_pkgs <- renv::dependencies('$WORKFLOW_DIR')[['Package']]; \
-  workflow_pkgs <- grep('^pacta[.]', workflow_pkgs, value = TRUE, invert = TRUE); \
-  pak::pak(c(gh_pkgs, workflow_pkgs)); \
+  source('pkg_deps.R'); \
+  pak::pak(c(gh_pkgs, pkg_deps)); \
   "
 
 # set permissions for PACTA repos that need local content
