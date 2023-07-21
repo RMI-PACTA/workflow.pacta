@@ -1,25 +1,25 @@
-# using rocker r-vers as a base with R 4.2.3
+# using rocker r-vers as a base with R 4.3.1
 # https://hub.docker.com/r/rocker/r-ver
 # https://rocker-project.org/images/versioned/r-ver.html
 #
 # sets CRAN repo to use Posit Package Manager to freeze R package versions to
-# those available on 2023-03-31
+# those available on 2023-06-30
 # https://packagemanager.posit.co/client/#/repos/2/overview
-# https://packagemanager.posit.co/cran/__linux__/jammy/2023-03-31+MbiAEzHt
+# https://packagemanager.posit.co/cran/__linux__/jammy/2023-06-30
 #
 # sets CTAN repo to freeze TeX package dependencies to those available on
 # 2021-12-31
 # https://www.texlive.info/tlnet-archive/2021/12/31/tlnet/
 
 ARG PLATFORM="linux/amd64"
-ARG R_VERS="4.2.3"
+ARG R_VERS="4.3.1"
 FROM --platform=$PLATFORM rocker/r-ver:$R_VERS
 
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
 LABEL org.opencontainers.image.description="Docker image to run PACTA"
 LABEL org.opencontainers.image.licenses=MIT
 
-ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-03-31+MbiAEzHt"
+ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-06-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'))" >> "${R_HOME}/etc/Rprofile.site"
 
 # set apt-get to noninteractive mode
