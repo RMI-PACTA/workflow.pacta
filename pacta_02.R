@@ -1,45 +1,21 @@
 suppressPackageStartupMessages({
   library(pacta.portfolio.utils)
   library(pacta.portfolio.allocate)
-  library(cli)
   library(dplyr)
+  library(jsonlite)
 })
 
-cli::cli_h1("web_tool_script_2.R{get_build_version_msg()}")
 
+# ------------------------------------------------------------------------------
 
-# Start run analysis -----------------------------------------------------------
-
-if (!exists("portfolio_name_ref_all")) {
-  portfolio_name_ref_all <- "1234"
-}
-if (!exists("portfolio_root_dir")) {
-  portfolio_root_dir <- "working_dir"
-}
-
-setup_project()
-
-working_location <- file.path(working_location)
-
-set_webtool_paths(portfolio_root_dir)
-
-set_portfolio_parameters(file_path = file.path(par_file_path, paste0(portfolio_name_ref_all, "_PortfolioParameters.yml")))
-
-set_project_parameters(file.path(working_location, "parameter_files", paste0("ProjectParameters_", project_code, ".yml")))
-
-# need to define an alternative location for data files
-analysis_inputs_path <- set_analysis_inputs_path(data_location_ext, dataprep_timestamp)
-
-# delete all results files within the current portfolio folder
-unlink(file.path(results_path, portfolio_name_ref_all, "*"), force = TRUE, recursive = TRUE)
-
-# run again so output folders are available after deleting past results
-create_portfolio_subfolders(portfolio_name_ref_all)
+cfg_path <- commandArgs(trailingOnly = TRUE)
+if (length(cfg_path) == 0 || cfg_path == "") { cfg_path <- "input_dir/default_config.json" }
+cfg <- fromJSON(cfg_path)
 
 
 # quit if there's no relevant PACTA assets -------------------------------------
 
-total_portfolio_path <- file.path(proc_input_path, portfolio_name_ref_all, "total_portfolio.rds")
+total_portfolio_path <- file.path(cfg$output_dir, "total_portfolio.rds")
 if (file.exists(total_portfolio_path)) {
   total_portfolio <- readRDS(total_portfolio_path)
   quit_if_no_pacta_relevant_data(total_portfolio)
@@ -50,23 +26,23 @@ if (file.exists(total_portfolio_path)) {
 
 # Equity -----------------------------------------------------------------------
 
-port_raw_all_eq <- create_portfolio_subset(total_portfolio, "Equity", grouping_variables)
+port_raw_all_eq <- create_portfolio_subset(total_portfolio, "Equity")
 
 if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
   map_eq <- NA
   company_all_eq <- NA
   port_all_eq <- NA
 
-  port_eq <- calculate_weights(port_raw_all_eq, "Equity", grouping_variables)
+  port_eq <- calculate_weights(port_raw_all_eq, "Equity")
 
   port_eq <- merge_abcd_from_db(
     portfolio = port_eq,
     portfolio_type= "Equity",
-    db_dir = analysis_inputs_path,
-    equity_market_list = equity_market_list,
-    scenario_sources_list = scenario_sources_list,
-    scenario_geographies_list = scenario_geographies_list,
-    sector_list = sector_list,
+    db_dir = cfg$data_dir,
+    equity_market_list = cfg$equity_market_list,
+    scenario_sources_list = cfg$scenario_sources_list,
+    scenario_geographies_list = cfg$scenario_geographies_list,
+    sector_list = cfg$sector_list,
     id_col = "id"
   )
 
@@ -89,7 +65,7 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
 
   port_all_eq <- bind_rows(port_pw_eq, port_own_eq)
 
-  if (has_map) {
+  if (cfg$has_map) {
     abcd_raw_eq <- get_abcd_raw("Equity")
     map_eq <- merge_in_geography(company_all_eq, abcd_raw_eq)
     rm(abcd_raw_eq)
@@ -107,20 +83,16 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
 
   company_all_eq <- calculate_scenario_alignment(company_all_eq)
 
-  pf_file_results_path <- file.path(results_path, portfolio_name_ref_all)
-  if (!dir.exists(pf_file_results_path)) {
-    dir.create(pf_file_results_path)
+  if (data_check(company_all_eq)) {
+    saveRDS(company_all_eq, file.path(cfg$output_dir, "Equity_results_company.rds"))
   }
 
-  if (data_check(company_all_eq)) {
-    saveRDS(company_all_eq, file.path(pf_file_results_path, "Equity_results_company.rds"))
-  }
   if (data_check(port_all_eq)) {
     port_all_eq_tdm <- port_all_eq %>%
       filter(scenario_geography == "Global", equity_market == "GlobalMarket")
-  
+
     tdm_vars <- list(
-      t0 = start_year,
+      t0 = cfg$start_year,
       delta_t1 = 5,
       delta_t2 = 9,
       additional_groups = c(
@@ -141,7 +113,7 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
         delta_t2 = tdm_vars$delta_t2,
         additional_groups = tdm_vars$additional_groups,
         scenarios = tdm_vars$scenarios,
-        project_code = project_code
+        project_code = cfg$project_code
       )
     ) {
 
@@ -155,16 +127,16 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
           scenarios = tdm_vars$scenarios
         )
 
-      saveRDS(equity_tdm, file.path(pf_file_results_path, "Equity_tdm.rds"))
+      saveRDS(equity_tdm, file.path(cfg$output_dir, "Equity_tdm.rds"))
 
       port_all_eq <- filter(port_all_eq, !scenario %in% tdm_vars$scenarios)
     }
 
-    saveRDS(port_all_eq, file.path(pf_file_results_path, "Equity_results_portfolio.rds"))
+    saveRDS(port_all_eq, file.path(cfg$output_dir, "Equity_results_portfolio.rds"))
   }
-  if (has_map) {
+  if (cfg$has_map) {
     if (data_check(map_eq)) {
-      saveRDS(map_eq, file.path(pf_file_results_path, "Equity_results_map.rds"))
+      saveRDS(map_eq, file.path(cfg$output_dir, "Equity_results_map.rds"))
     }
   }
 
@@ -181,23 +153,23 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
 
 # Bonds ------------------------------------------------------------------------
 
-port_raw_all_cb <- create_portfolio_subset(total_portfolio, "Bonds", grouping_variables)
+port_raw_all_cb <- create_portfolio_subset(total_portfolio, "Bonds")
 
 if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
   map_cb <- NA
   company_all_cb <- NA
   port_all_cb <- NA
 
-  port_cb <- calculate_weights(port_raw_all_cb, "Bonds", grouping_variables)
+  port_cb <- calculate_weights(port_raw_all_cb, "Bonds")
 
   port_cb <- merge_abcd_from_db(
     portfolio = port_cb,
-    portfolio_type= "Bonds",
-    db_dir = analysis_inputs_path,
-    equity_market_list = equity_market_list,
-    scenario_sources_list = scenario_sources_list,
-    scenario_geographies_list = scenario_geographies_list,
-    sector_list = sector_list,
+    portfolio_type = "Bonds",
+    db_dir = cfg$data_dir,
+    equity_market_list = cfg$equity_market_list,
+    scenario_sources_list = cfg$scenario_sources_list,
+    scenario_geographies_list = cfg$scenario_geographies_list,
+    sector_list = cfg$sector_list,
     id_col = "credit_parent_ar_company_id"
   )
 
@@ -213,7 +185,7 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
 
   port_all_cb <- port_pw_cb
 
-  if (has_map) {
+  if (cfg$has_map) {
     if (data_check(company_all_cb)) {
       abcd_raw_cb <- get_abcd_raw("Bonds")
       map_cb <- merge_in_geography(company_all_cb, abcd_raw_cb)
@@ -237,20 +209,15 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
 
   company_all_cb <- calculate_scenario_alignment(company_all_cb)
 
-  pf_file_results_path <- file.path(results_path, portfolio_name_ref_all)
-  if (!dir.exists(pf_file_results_path)) {
-    dir.create(pf_file_results_path)
-  }
-
   if (data_check(company_all_cb)) {
-    saveRDS(company_all_cb, file.path(pf_file_results_path, "Bonds_results_company.rds"))
+    saveRDS(company_all_cb, file.path(cfg$output_dir, "Bonds_results_company.rds"))
   }
   if (data_check(port_all_cb)) {
     port_all_cb_tdm <- port_all_cb %>%
       filter(scenario_geography == "Global", equity_market == "GlobalMarket")
-    
+
     tdm_vars <- list(
-      t0 = start_year,
+      t0 = cfg$start_year,
       delta_t1 = 5,
       delta_t2 = 9,
       additional_groups = c(
@@ -271,7 +238,7 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
         delta_t2 = tdm_vars$delta_t2,
         additional_groups = tdm_vars$additional_groups,
         scenarios = tdm_vars$scenarios,
-        project_code = project_code
+        project_code = cfg$project_code
       )
     ) {
 
@@ -285,16 +252,16 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
           scenarios = tdm_vars$scenarios
         )
 
-      saveRDS(bonds_tdm, file.path(pf_file_results_path, "Bonds_tdm.rds"))
+      saveRDS(bonds_tdm, file.path(cfg$output_dir, "Bonds_tdm.rds"))
 
       port_all_cb <- filter(port_all_cb, !scenario %in% tdm_vars$scenarios)
     }
 
-    saveRDS(port_all_cb, file.path(pf_file_results_path, "Bonds_results_portfolio.rds"))
+    saveRDS(port_all_cb, file.path(cfg$output_dir, "Bonds_results_portfolio.rds"))
   }
-  if (has_map) {
+  if (cfg$has_map) {
     if (data_check(map_cb)) {
-      saveRDS(map_cb, file.path(pf_file_results_path, "Bonds_results_map.rds"))
+      saveRDS(map_cb, file.path(cfg$output_dir, "Bonds_results_map.rds"))
     }
   }
 
@@ -305,14 +272,3 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
   rm(company_pw_cb)
   rm(company_all_cb)
 }
-
-
-remove_if_exists(port_raw_all_eq)
-remove_if_exists(port_raw_all_cb)
-remove_if_exists(ald_scen_eq)
-remove_if_exists(ald_scen_cb)
-remove_if_exists(company_all_eq)
-remove_if_exists(company_all_cb)
-remove_if_exists(port_eq)
-remove_if_exists(port_cb)
-remove_if_exists(company_own_eq)
