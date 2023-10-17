@@ -1,0 +1,10 @@
+Type: PACTA
+Description: Run PACTA.
+Depends:
+  dplyr,
+  jsonlite,
+  pacta.portfolio.allocate,
+  pacta.portfolio.audit,
+  pacta.portfolio.import,
+  pacta.portfolio.utils,
+  readr
