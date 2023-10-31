@@ -3,9 +3,9 @@
 # https://rocker-project.org/images/versioned/r-ver.html
 #
 # sets CRAN repo to use Posit Package Manager to freeze R package versions to
-# those available on 2023-09-29
+# those available on 2023-10-30
 # https://packagemanager.posit.co/client/#/repos/2/overview
-# https://packagemanager.posit.co/cran/__linux__/jammy/2023-09-29
+# https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30
 
 # set proper base image
 ARG PLATFORM="linux/amd64"
@@ -42,7 +42,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # set frozen CRAN repo
-ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-09-29"
+ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'))" >> "${R_HOME}/etc/Rprofile.site"
 
 # install packages for dependency resolution and installation
