@@ -32,8 +32,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
       git=1:2.34.* \
       libcurl4-openssl-dev=7.81.* \
+      libicu-dev=70.* \
       libssl-dev=3.0.* \
       openssh-client=1:8.* \
+      pandoc=2.9.2.* \
       wget=1.21.* \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
