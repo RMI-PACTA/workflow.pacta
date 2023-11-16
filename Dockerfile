@@ -28,15 +28,13 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG DEBCONF_NOWARNINGS="yes"
 
 # install system dependencies
-ARG SYS_DEPS="\
-    git \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    openssh-client \
-    wget \
-    "
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends $SYS_DEPS \
+    && apt-get install -y --no-install-recommends \
+      git \
+      libcurl4-openssl-dev \
+      libssl-dev \
+      openssh-client \
+      wget \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
 
