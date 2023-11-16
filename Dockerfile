@@ -8,9 +8,8 @@
 # https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30
 
 # set proper base image
-ARG PLATFORM="linux/amd64"
 ARG R_VERS="4.3.1"
-FROM --platform=$PLATFORM rocker/r-ver:$R_VERS
+FROM rocker/r-ver:$R_VERS
 
 # set Docker image labels
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
