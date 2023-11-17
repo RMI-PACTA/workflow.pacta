@@ -63,4 +63,4 @@ jobs:
     needs: docker
     uses: ./.github/workflows/check-R-sysdeps.yml
     with:
-      image: ${{ needs.build_docker_image.outputs.full-image-name }}
+      image: ${{ needs.docker.outputs.full-image-name }}
