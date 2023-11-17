@@ -50,3 +50,4 @@ jobs:
           tags: ${{ steps.image-name.outputs.full-image-name }}
           cache-from: type=gha
           cache-to: type=gha,mode=min
+          no-cache-filters: install-pacta
