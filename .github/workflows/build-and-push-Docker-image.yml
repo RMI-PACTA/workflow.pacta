@@ -60,7 +60,7 @@ jobs:
 
   check-system-dependencies:
     name: "Check System Dependencies"
-    needs: build_docker_image
+    needs: docker
     uses: ./.github/workflows/check-R-sysdeps.yml
     with:
       image: ${{ needs.build_docker_image.outputs.full-image-name }}
