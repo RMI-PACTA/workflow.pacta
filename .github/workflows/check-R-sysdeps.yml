@@ -1,44 +1,30 @@
 ---
 name: Check R system dependencies
+
 on:
-  workflow_run:
-    workflows: [Build and push docker image]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
 
 jobs:
 
-  container-not-built:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: echo 'The triggering workflow failed' && exit 1
-
   check-system-dependencies:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - run: echo 'The triggering workflow passed'
-      - name: 'Download artifact'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "full-image-name"
-            })[0];
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
-            let fs = require('fs');
-            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/full-image-name.zip`, Buffer.from(download.data));
+      - name: 'Pull image'
+        run: docker pull ${{ inputs.image }}
+      - name: 'Run pak::sysreqs_check_installed()'
+        run: |
 
-      - name: 'Unzip artifact'
-        run: unzip full-image-name.zip
+          docker run \
+          --rm \
+          --entrypoint "/bin/sh" \
+          ${{ inputs.image }} \
+          -c "Rscript -e '
+            x <- pak::sysreqs_check_installed()
+            print(x)
+            is_installed <- as.data.frame(x)[[\"installed\"]]
+            stopifnot(all(is_installed))
+          '"

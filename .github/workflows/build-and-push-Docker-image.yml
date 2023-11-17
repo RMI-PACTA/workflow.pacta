@@ -57,3 +57,10 @@ jobs:
           tags: ${{ steps.image-name.outputs.full-image-name }}
           cache-from: type=gha
           cache-to: type=gha,mode=min
+
+  check-system-dependencies:
+    name: "Check System Dependencies"
+    needs: build_docker_image
+    uses: ./.github/workflows/check-R-sysdeps.yml
+    with:
+      image: ${{ needs.build_docker_image.outputs.full-image-name }}
