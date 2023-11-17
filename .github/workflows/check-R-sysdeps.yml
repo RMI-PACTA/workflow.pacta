@@ -14,7 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Pull image'
-        run: docker pull ${{ inputs.image }}
+        run: |
+          echo ${{ inputs.image }}
+          docker pull ${{ inputs.image }}
       - name: 'Run pak::sysreqs_check_installed()'
         run: |
 
