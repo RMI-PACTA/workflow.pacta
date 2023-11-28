@@ -8,9 +8,8 @@
 # https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30
 
 # set proper base image
-ARG PLATFORM="linux/amd64"
 ARG R_VERS="4.3.1"
-FROM --platform=$PLATFORM rocker/r-ver:$R_VERS
+FROM rocker/r-ver:$R_VERS
 
 # set Docker image labels
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
@@ -29,25 +28,23 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG DEBCONF_NOWARNINGS="yes"
 
 # install system dependencies
-ARG SYS_DEPS="\
-    git \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    openssh-client \
-    wget \
-    "
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends $SYS_DEPS \
+    && apt-get install -y --no-install-recommends \
+      git=1:2.34.* \
+      libcurl4-openssl-dev=7.81.* \
+      libicu-dev=70.* \
+      libssl-dev=3.0.* \
+      openssh-client=1:8.* \
+      pandoc=2.9.2.* \
+      wget=1.21.* \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
 
 # set frozen CRAN repo
 ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
-RUN echo "options(repos = c(CRAN = '$CRAN_REPO'))" >> "${R_HOME}/etc/Rprofile.site"
-
-# install packages for dependency resolution and installation
-RUN Rscript -e "install.packages('pak')"
-RUN Rscript -e "pak::pkg_install('renv')"
+RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" \
+      # install packages for dependency resolution and installation
+      && Rscript -e "install.packages('pak'); pak::pkg_install('renv')"
 
 # copy in everything from this repo
 COPY . /
