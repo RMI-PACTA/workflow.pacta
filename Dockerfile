@@ -9,7 +9,7 @@
 
 # set proper base image
 ARG R_VERS="4.3.1"
-FROM rocker/r-ver:$R_VERS
+FROM rocker/r-ver:$R_VERS AS base
 
 # set Docker image labels
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
@@ -45,6 +45,8 @@ ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" \
       # install packages for dependency resolution and installation
       && Rscript -e "install.packages('pak'); pak::pkg_install('renv')"
+
+FROM base AS install-pacta
 
 # copy in everything from this repo
 COPY . /
