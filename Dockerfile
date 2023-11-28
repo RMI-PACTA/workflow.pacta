@@ -35,7 +35,6 @@ RUN apt-get update \
       libicu-dev=70.* \
       libssl-dev=3.0.* \
       openssh-client=1:8.* \
-      pandoc=2.9.2.* \
       wget=1.21.* \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
