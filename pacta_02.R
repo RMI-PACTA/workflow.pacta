@@ -87,53 +87,6 @@ if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
     saveRDS(company_all_eq, file.path(cfg$output_dir, "Equity_results_company.rds"))
   }
 
-  if (data_check(port_all_eq)) {
-    port_all_eq_tdm <- port_all_eq %>%
-      filter(scenario_geography == "Global", equity_market == "GlobalMarket")
-
-    tdm_vars <- list(
-      t0 = cfg$start_year,
-      delta_t1 = 5,
-      delta_t2 = 9,
-      additional_groups = c(
-        "scenario_source",
-        "scenario",
-        "allocation",
-        "equity_market",
-        "scenario_geography"
-      ),
-      scenarios = "IPR FPS 2021"
-    )
-
-    if (
-      tdm_conditions_met(
-        port_all_eq_tdm,
-        t0 = tdm_vars$t0,
-        delta_t1 = tdm_vars$delta_t1,
-        delta_t2 = tdm_vars$delta_t2,
-        additional_groups = tdm_vars$additional_groups,
-        scenarios = tdm_vars$scenarios,
-        project_code = cfg$project_code
-      )
-    ) {
-
-      equity_tdm <-
-        calculate_tdm(
-          port_all_eq_tdm,
-          t0 = tdm_vars$t0,
-          delta_t1 = tdm_vars$delta_t1,
-          delta_t2 = tdm_vars$delta_t2,
-          additional_groups = tdm_vars$additional_groups,
-          scenarios = tdm_vars$scenarios
-        )
-
-      saveRDS(equity_tdm, file.path(cfg$output_dir, "Equity_tdm.rds"))
-
-      port_all_eq <- filter(port_all_eq, !scenario %in% tdm_vars$scenarios)
-    }
-
-    saveRDS(port_all_eq, file.path(cfg$output_dir, "Equity_results_portfolio.rds"))
-  }
   if (cfg$has_map) {
     if (data_check(map_eq)) {
       saveRDS(map_eq, file.path(cfg$output_dir, "Equity_results_map.rds"))
@@ -212,53 +165,7 @@ if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
   if (data_check(company_all_cb)) {
     saveRDS(company_all_cb, file.path(cfg$output_dir, "Bonds_results_company.rds"))
   }
-  if (data_check(port_all_cb)) {
-    port_all_cb_tdm <- port_all_cb %>%
-      filter(scenario_geography == "Global", equity_market == "GlobalMarket")
 
-    tdm_vars <- list(
-      t0 = cfg$start_year,
-      delta_t1 = 5,
-      delta_t2 = 9,
-      additional_groups = c(
-        "scenario_source",
-        "scenario",
-        "allocation",
-        "equity_market",
-        "scenario_geography"
-      ),
-      scenarios = "IPR FPS 2021"
-    )
-
-    if (
-      tdm_conditions_met(
-        port_all_cb_tdm,
-        t0 = tdm_vars$t0,
-        delta_t1 = tdm_vars$delta_t1,
-        delta_t2 = tdm_vars$delta_t2,
-        additional_groups = tdm_vars$additional_groups,
-        scenarios = tdm_vars$scenarios,
-        project_code = cfg$project_code
-      )
-    ) {
-
-      bonds_tdm <-
-        calculate_tdm(
-          port_all_cb_tdm,
-          t0 = tdm_vars$t0,
-          delta_t1 = tdm_vars$delta_t1,
-          delta_t2 = tdm_vars$delta_t2,
-          additional_groups = tdm_vars$additional_groups,
-          scenarios = tdm_vars$scenarios
-        )
-
-      saveRDS(bonds_tdm, file.path(cfg$output_dir, "Bonds_tdm.rds"))
-
-      port_all_cb <- filter(port_all_cb, !scenario %in% tdm_vars$scenarios)
-    }
-
-    saveRDS(port_all_cb, file.path(cfg$output_dir, "Bonds_results_portfolio.rds"))
-  }
   if (cfg$has_map) {
     if (data_check(map_cb)) {
       saveRDS(map_cb, file.path(cfg$output_dir, "Bonds_results_map.rds"))
