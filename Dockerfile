@@ -43,7 +43,7 @@ RUN apt-get update \
 ARG CRAN_REPO="https://packagemanager.posit.co/cran/2023-10-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" \
       # install packages for dependency resolution and installation
-      && Rscript -e "utils::install.packages('pak', repos = sprintf('https://r-lib.github.io/p/pak/stable/%s/%s/%s', .Platform['pkgType'], R.Version()['os'], R.Version()['arch'])); pak::pkg_install('renv')"
+      && Rscript -e "install.packages('pak'); pak::pkg_install('renv')"
 
 FROM base AS install-pacta
 
