@@ -60,6 +60,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=min
           no-cache-filters: install-pacta
+          platforms: linux/amd64,linux/arm64
 
   check-system-dependencies:
     name: "Check System Dependencies"
