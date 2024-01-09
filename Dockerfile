@@ -40,7 +40,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # set frozen CRAN repo
-ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
+ARG CRAN_REPO="https://packagemanager.posit.co/cran/2023-10-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" \
       # install packages for dependency resolution and installation
       && Rscript -e "install.packages('pak'); pak::pkg_install('renv')"
