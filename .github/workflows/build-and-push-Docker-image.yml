@@ -21,7 +21,7 @@ jobs:
     permissions:
       packages: write
       contents: read
-    timeout-minutes: 25
+    timeout-minutes: 45
     outputs:
       full-image-name: ${{ steps.image-name.outputs.full-image-name }}
 
