@@ -14,14 +14,16 @@ container at run-time.
 ``` {.bash}
 tag_name=main
 image_name=ghcr.io/rmi-pacta/workflow.pacta:$tag_name
-data_folder=~/github/rmi-pacta/pacta-data
-portfolio_name="1234"
-user_folder=~/github/rmi-pacta/workflow.pacta/working_dir
+data_dir=~/github/pactaverse/pacta-data
+input_dir=./input_dir
+output_dir=./output_dir
 
-docker run -ti --rm --network none \
+docker run -it --rm \
+  --network none \
   --pull=always \
-  --mount type=bind,source=${user_folder},target=/workflow.pacta/working_dir \
-  --mount type=bind,readonly,source=${data_folder},target=/pacta-data \
-  $image_name \
-  /bound/bin/run-r-scripts-results-only "$portfolio_name"
+  --platform linux/amd64 \
+  --mount type=bind,readonly,source=${data_dir},target=/pacta-data \
+  --mount type=bind,source=${output_dir},target=/output_dir \
+  --mount type=bind,source=${input_dir},target=/input_dir \
+  $image_name
 ```
