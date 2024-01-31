@@ -22,8 +22,10 @@ docker run -it --rm \
   --network none \
   --pull=always \
   --platform linux/amd64 \
+  --env LOG_LEVEL=DEBUG \
   --mount type=bind,readonly,source=${data_dir},target=/pacta-data \
   --mount type=bind,source=${output_dir},target=/output_dir \
   --mount type=bind,source=${input_dir},target=/input_dir \
   $image_name
+
 ```
