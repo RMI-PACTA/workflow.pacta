@@ -23,8 +23,6 @@ if (length(cfg_path) == 0 || cfg_path == "") {
 }
 logger::log_debug("Loading configuration from file: \"{cfg_path}\".")
 cfg <- fromJSON(cfg_path)
-logger::log_trace("Configuration loaded.")
-
 
 # load necessary input data ----------------------------------------------------
 
@@ -32,48 +30,37 @@ logger::log_info("Loading input data.")
 
 logger::log_debug("Loading currencies.")
 currencies <- readRDS(file.path(cfg$data_dir, "currencies.rds"))
-logger::log_trace("Currencies loaded.")
 
 logger::log_debug("Loading fund data.")
 fund_data <- readRDS(file.path(cfg$data_dir, "fund_data.rds"))
-logger::log_trace("Fund data loaded.")
 logger::log_debug("Loading fund list data.")
 total_fund_list <- readRDS(file.path(cfg$data_dir, "total_fund_list.rds"))
-logger::log_trace("Fund list data loaded.")
 logger::log_debug("Loading ISIN to fund table.")
 isin_to_fund_table <- readRDS(file.path(cfg$data_dir, "isin_to_fund_table.rds"))
-logger::log_trace("ISIN to fund table loaded.")
 
 logger::log_debug("Loading financial data.")
 fin_data <- readRDS(file.path(cfg$data_dir, "financial_data.rds"))
-logger::log_trace("Financial data loaded.")
 
 logger::log_debug("Loading entity info.")
 entity_info <- get_entity_info(dir = cfg$data_dir)
-logger::log_trace("Entity info loaded.")
 
 logger::log_debug("Loading Equity ABCD flags.")
 abcd_flags_equity <- readRDS(file.path(cfg$data_dir, "abcd_flags_equity.rds"))
-logger::log_trace("Equity ABCD flags loaded.")
 logger::log_debug("Loading Bonds ABCD flags.")
 abcd_flags_bonds <- readRDS(file.path(cfg$data_dir, "abcd_flags_bonds.rds"))
-logger::log_trace("Bonds ABCD flags loaded.")
 
 logger::log_debug("Loading entity emission intensities.")
 entity_emission_intensities <- readRDS(file.path(cfg$data_dir, "iss_entity_emission_intensities.rds"))
-logger::log_trace("Entity emission intensities loaded.")
 logger::log_debug("Loading average sector emission intensities.")
 average_sector_emission_intensities <- readRDS(
   file.path(cfg$data_dir, "iss_average_sector_emission_intensities.rds")
 )
-logger::log_trace("Average sector emission intensities loaded.")
 
 
 # Portfolios -------------------------------------------------------------------
 
 logger::log_info("Reading portfolio from file: \"{cfg$portfolio_path}\".")
 portfolio_raw <- read_portfolio_csv(cfg$portfolio_path)
-logger::log_trace("Portfolio read.")
 
 logger::log_info("Processing raw portfolio.")
 portfolio <- process_raw_portfolio(
@@ -96,23 +83,18 @@ portfolio <-
     has_revenue_data = FALSE,
     financial_sector = .data$security_mapped_sector
   )
-logger::log_trace("Raw portfolio processed.")
 
 logger::log_debug("Adding ABCD flags to portfolio.")
 portfolio <- create_ald_flag(portfolio, comp_fin_data = abcd_flags_equity, debt_fin_data = abcd_flags_bonds)
-logger::log_trace("ABCD flags added.")
 
 logger::log_debug("Adding portfolio flags to portfolio.")
 portfolio_total <- add_portfolio_flags(portfolio)
-logger::log_trace("Portfolio flags added.")
 
 logger::log_debug("Summarizing portfolio.")
 portfolio_overview <- portfolio_summary(portfolio_total)
-logger::log_trace("Portfolio summarized.")
 
 logger::log_debug("Creating audit file.")
 audit_file <- create_audit_file(portfolio_total, has_revenue = FALSE)
-logger::log_trace("Audit file created.")
 
 logger::log_debug("Calculating financed emissions.")
 emissions_totals <- calculate_portfolio_financed_emissions(
@@ -121,7 +103,6 @@ emissions_totals <- calculate_portfolio_financed_emissions(
   entity_emission_intensities,
   average_sector_emission_intensities
 )
-logger::log_trace("Financed emissions calculated.")
 
 # Saving -----------------------------------------------------------------------
 
@@ -134,22 +115,16 @@ export_audit_information_data(
   portfolio_total_ = portfolio_total,
   folder_path = cfg$output_dir
 )
-logger::log_trace("Audit information exported.")
 
 logger::log_debug("Exporting portfolio total.")
 saveRDS(portfolio_total, file.path(cfg$output_dir, "total_portfolio.rds"))
-logger::log_trace("Portfolio total exported.")
 logger::log_debug("Exporting portfolio overview.")
 saveRDS(portfolio_overview, file.path(cfg$output_dir, "overview_portfolio.rds"))
-logger::log_trace("Portfolio overview exported.")
 logger::log_debug("Exporting audit file RDS.")
 saveRDS(audit_file, file.path(cfg$output_dir, "audit_file.rds"))
-logger::log_trace("Audit file RDS exported.")
 logger::log_debug("Exporting audit file CSV.")
 write_csv(audit_file, file.path(cfg$output_dir, "audit_file.csv"))
-logger::log_trace("Audit file CSV exported.")
 logger::log_debug("Exporting emissions.")
 saveRDS(emissions_totals, file.path(cfg$output_dir, "emissions.rds"))
-logger::log_trace("Emissions exported.")
 
 logger::log_info("Portfolio audit finished.")
