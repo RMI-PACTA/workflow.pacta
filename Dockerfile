@@ -48,7 +48,7 @@ RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_
 FROM base AS install-pacta
 
 # copy in everything from this repo
-COPY . /
+COPY DESCRIPTION /DESCRIPTION
 
 # PACTA R package tags
 ARG allocate_tag="/tree/main"
@@ -74,6 +74,8 @@ RUN Rscript -e "\
   workflow_pkgs <- grep('^pacta[.]', workflow_pkgs, value = TRUE, invert = TRUE); \
   pak::pak(c(gh_pkgs, workflow_pkgs)); \
   "
+
+COPY . /
 
 # set default run behavior
 ENTRYPOINT ["/run-pacta.sh"]
