@@ -27,7 +27,7 @@ cfg <- fromJSON(cfg_path)
 total_portfolio_path <- file.path(cfg$output_dir, "total_portfolio.rds")
 if (file.exists(total_portfolio_path)) {
   total_portfolio <- readRDS(total_portfolio_path)
-  log_trace("Checking for PACTA relevant data in file: \"{total_portfolio_path}\".")
+  logger::log_trace("Checking for PACTA relevant data in file: \"{total_portfolio_path}\".")
   quit_if_no_pacta_relevant_data(total_portfolio)
 } else {
   logger::log_warn("file \"{total_portfolio_path}\" does not exist.")
