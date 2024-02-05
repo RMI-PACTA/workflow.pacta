@@ -15,6 +15,9 @@ on:
         description: "Full pushed image name including host/registry, name, and tag"
         value: ${{ jobs.docker.outputs.full-image-name }}
 
+env:
+  REGISTRY_IMAGE: RMI_PACTA/workflow.pacta.actions
+
 # https://docs.docker.com/build/ci/github-actions/multi-platform/#distribute-build-across-multiple-runners
 jobs:
   build:
@@ -40,11 +43,15 @@ jobs:
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV      
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY_IMAGE }}
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
