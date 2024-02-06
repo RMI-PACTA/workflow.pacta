@@ -1,3 +1,5 @@
+Package: workflow.pacta
+Version: 0.0.0.9000
 Type: PACTA
 Description: Run PACTA.
 Depends:
@@ -9,3 +11,8 @@ Depends:
   pacta.portfolio.import,
   pacta.portfolio.utils,
   readr
+Remotes:
+  RMI-PACTA/pacta.portfolio.allocate,
+  RMI-PACTA/pacta.portfolio.audit,
+  RMI-PACTA/pacta.portfolio.import,
+  RMI-PACTA/pacta.portfolio.utils
