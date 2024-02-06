@@ -41,14 +41,21 @@ RUN apt-get update \
 
 # set frozen CRAN repo
 ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
-RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" \
-      # install packages for dependency resolution and installation
-      && Rscript -e "install.packages('pak'); pak::pkg_install('renv')"
-
-FROM base AS install-pacta
+RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" 
 
 # copy in everything from this repo
 COPY DESCRIPTION /DESCRIPTION
+
+# install pak, find dependencises from DESCRIPTION, and install them.
+RUN Rscript -e "\
+    install.packages('pak'); \
+    deps <- pak::local_deps(root = '.'); \
+    pkg_deps <- deps[!deps[['direct']], 'ref']; \
+    print(pkg_deps); \
+    pak::pak(pkg_deps); \
+    "
+
+FROM base AS install-pacta
 
 # PACTA R package tags
 ARG allocate_tag="/tree/main"
@@ -70,9 +77,8 @@ RUN Rscript -e "\
       paste0('$import_url', '$import_tag'), \
       paste0('$utils_url', '$utils_tag') \
     ); \
-  workflow_pkgs <- renv::dependencies('DESCRIPTION')[['Package']]; \
-  workflow_pkgs <- grep('^pacta[.]', workflow_pkgs, value = TRUE, invert = TRUE); \
-  pak::pak(c(gh_pkgs, workflow_pkgs)); \
+  print(gh_pkgs); \
+  pak::pak(c(gh_pkgs)); \
   "
 
 COPY . /
