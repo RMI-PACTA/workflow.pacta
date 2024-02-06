@@ -13,32 +13,49 @@ on:
     outputs:
       full-image-name:
         description: "Full pushed image name including host/registry, name, and tag"
-        value: ${{ jobs.docker.outputs.full-image-name }}
+        value: ${{ jobs.merge.outputs.full-image-name }}
 
 jobs:
-  docker:
+
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
     permissions:
       packages: write
       contents: read
-    timeout-minutes: 25
+    timeout-minutes: 90
     outputs:
       full-image-name: ${{ steps.image-name.outputs.full-image-name }}
-
     steps:
 
-      - name: Define image name
-        id: image-name
+      - name: Prepare
         run: |
-          full_image_name="ghcr.io/${{ github.repository_owner }}/${{ inputs.image-name }}:${{ inputs.image-tag }}"
-          full_image_name=$(echo $full_image_name | tr '[A-Z]' '[a-z]')
-          echo "full-image-name=$full_image_name" >> "$GITHUB_OUTPUT"
-          echo "$full_image_name" > full-image-name
+          platform=${{ matrix.platform }}
+          registry_image=$(
+            echo "ghcr.io/${{ inputs.image-name }}" | \
+            tr '[:upper:]' '[:lower:]' \
+          )
+          echo "PLATFORM_PAIR=${platform//\//-}"
+          echo "REGISTRY_IMAGE=${registry_image}"
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV      
+          echo "REGISTRY_IMAGE=${registry_image}" >> $GITHUB_ENV      
 
-      - uses: actions/upload-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          name: full-image-name
-          path: .
+          images: ${{ env.REGISTRY_IMAGE }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -50,18 +67,88 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push by digest
+        id: build
         uses: docker/build-push-action@v5
         with:
-          push: true
-          tags: ${{ steps.image-name.outputs.full-image-name }}
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha
           cache-to: type=gha,mode=min
           no-cache-filters: install-pacta
 
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"          
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+
+      - name: Prepare
+        run: |
+          registry_image=$(
+            echo "ghcr.io/${{ inputs.image-name }}" | \
+            tr '[:upper:]' '[:lower:]' \
+          )
+          echo "REGISTRY_IMAGE=${registry_image}"
+          echo "REGISTRY_IMAGE=${registry_image}" >> $GITHUB_ENV      
+
+
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)          
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}          
+
+      - name: Export Outputs
+        run: |
+          echo "full-image-name=${{ env.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+
   check-system-dependencies:
     name: "Check System Dependencies"
-    needs: docker
+    needs: merge
     uses: ./.github/workflows/check-R-sysdeps.yml
     with:
-      image: ${{ needs.docker.outputs.full-image-name }}
+      image: ${{ needs.merge.outputs.full-image-name }}
