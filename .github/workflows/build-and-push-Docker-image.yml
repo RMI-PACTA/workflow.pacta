@@ -144,11 +144,11 @@ jobs:
 
       - name: Export Outputs
         run: |
-          echo "full-image-name=${{ env.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+          echo "full-image-name=${{ env.REGISTRY_IMAGE }}" >> $GITHUB_OUTPUT
 
   check-system-dependencies:
     name: "Check System Dependencies"
     needs: merge
     uses: ./.github/workflows/check-R-sysdeps.yml
     with:
-      image: ${{needs.merge.outputs.full-image-name}}
+      image: ${{ needs.merge.outputs.full-image-name }}
