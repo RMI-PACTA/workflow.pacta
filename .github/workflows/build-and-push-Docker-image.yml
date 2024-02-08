@@ -151,4 +151,4 @@ jobs:
     needs: merge
     uses: ./.github/workflows/check-R-sysdeps.yml
     with:
-      image: ${{ needs.merge.outputs.full-image-name }}
+      image: ${{needs.merge.outputs.full-image-name}}
