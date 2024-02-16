@@ -43,7 +43,7 @@ RUN apt-get update \
 ARG CRAN_REPO="https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30"
 RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" 
 
-# copy in everything from this repo
+# copy in DESCRIPTION from this repo
 COPY DESCRIPTION /DESCRIPTION
 
 # install pak, find dependencises from DESCRIPTION, and install them.
