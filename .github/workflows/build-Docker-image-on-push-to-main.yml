@@ -8,5 +8,5 @@ jobs:
     uses: ./.github/workflows/build-and-push-Docker-image.yml
     secrets: inherit
     with:
-      image-name: workflow.pacta
+      image-name: ${{ github.repository }}
       image-tag: main
