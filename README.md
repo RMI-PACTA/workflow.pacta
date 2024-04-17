@@ -1,5 +1,7 @@
 # Description
 
+[![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
 The Dockerfile in this repository creates an image containing a freshly
 cloned copy of workflow.pacta. It also installs the relevant PACTA R packages 
 that it depends on.
