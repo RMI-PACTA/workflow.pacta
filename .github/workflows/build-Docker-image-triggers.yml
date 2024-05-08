@@ -1,0 +1,28 @@
+name: Docker build & test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 1,2,3,4,5'
+  workflow_dispatch:
+
+jobs:
+  build_docker_image:
+    name: "Call build and push action"
+    uses: ./.github/workflows/build-and-push-Docker-image.yml
+    secrets: inherit
+    permissions:
+      packages: write
+      contents: read
+    with:
+      image-name: ${{ github.event.repository.name }}
+      image-tag: |
+        ${{
+          github.event_name == 'pull_request' && format('{0}{1}','pr', github.event.pull_request.number) ||
+          github.event_name == 'schedule' && 'nightly' ||
+          github.event_name == 'push' && github.ref_name ||
+          github.event_name == 'workflow_dispatch' && github.ref_name ||
+          github.sha
+        }}
