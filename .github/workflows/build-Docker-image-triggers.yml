@@ -12,3 +12,10 @@ jobs:
   docker:
     name: Docker actions
     uses: RMI-PACTA/actions/.github/workflows/docker.yml@main
+
+  test:
+    name: Test
+    uses: ./github/workflows/test.yml
+    needs: [docker]
+    with:
+      full-image-name: ${{ needs.docker.outputs.full-image-name }}

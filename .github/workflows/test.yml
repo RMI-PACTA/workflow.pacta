@@ -1,0 +1,76 @@
+---
+name: Test docker image
+
+on:
+  workflow_call:
+    inputs:
+      full-image-name:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout workflow.pacta
+        uses: actions/checkout@v4
+
+      - name: Prepare environment
+        id: prepare
+        run: |
+          config_file="tests/config01.json"
+          echo "config_file: $config_file"
+
+          HOLDINGS_DATE="$(jq -rc '.holdingsDate' $config_file)"
+          echo "holdings-date=$HOLDINGS_DATE"
+          echo "holdings-date=$HOLDINGS_DATE" >> "$GITHUB_OUTPUT"
+
+          PACTA_DATA_URL="$(jq -rc '.pactaDataURL' $config_file)"
+          echo "pacta-data-url=$PACTA_DATA_URL"
+          echo "pacta-data-url=$PACTA_DATA_URL" >> "$GITHUB_OUTPUT"
+
+
+      # https://github.com/Azure/login?tab=readme-ov-file#login-with-openid-connect-oidc-recommended
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # https://github.com/marketplace/actions/azure-cli-action#workflow-to-execute-an-azure-cli-script-of-a-specific-cli-version
+      - name: Download pacta-data
+        uses: azure/CLI@v2
+        env:
+          HOLDINGS_DATE: ${{ steps.prepare.outputs.holdings-date }}
+          PACTA_DATA_URL: ${{ steps.prepare.outputs.pacta-data-url }}
+        with:
+          # azcliversion: 2.30.0
+          inlineScript: |
+            PACTA_DATA_DATE_DIR="pacta-data/$HOLDINGS_DATE"
+            echo "pacta_data_dir: $PACTA_DATA_DATE_DIR"
+            az storage copy \
+              --source "$PACTA_DATA_URL/*" \
+              --destination "$PACTA_DATA_DATE_DIR" \
+              --recursive \
+              --exclude-pattern "*.sqlite"
+
+      - name: Run Docker Image
+        env:
+          INPUT_DIR: input_dir
+          OUTPUT_DIR: output_dir
+          PACTA_DATA_DIR: pacta-data
+          FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
+        run: |
+          docker run -it --rm \
+          --network none \
+          --pull=always \
+          --platform linux/amd64 \
+          --env LOG_LEVEL=DEBUG \
+          --mount type=bind,readonly,source=${PACTA_DATA_DIR},target=/pacta-data \
+          --mount type=bind,source=${OUTPUT_DIR},target=/output_dir \
+          --mount type=bind,source=${INPUT_DIR},target=/input_dir \
+          $FULL_IMAGE_NAME
+
+          ls -lR output_dir
