@@ -1,11 +1,6 @@
 # using rocker r-vers as a base with R 4.3.1
 # https://hub.docker.com/r/rocker/r-ver
 # https://rocker-project.org/images/versioned/r-ver.html
-#
-# sets CRAN repo to use Posit Package Manager to freeze R package versions to
-# those available on 2023-10-30
-# https://packagemanager.posit.co/client/#/repos/2/overview
-# https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-30
 
 # set proper base image
 ARG R_VERS="4.3.1"
