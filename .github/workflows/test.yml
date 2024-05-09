@@ -65,13 +65,14 @@ jobs:
           OUTPUT_DIR: output_dir
           PACTA_DATA_DIR: pacta-data
           FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
+          WORKSPACE: ${{ github.workspace }}
         run: |
           docker run \
           --network none \
           --env LOG_LEVEL=DEBUG \
-          --mount type=bind,readonly,source=${PACTA_DATA_DIR},target=/pacta-data \
-          --mount type=bind,source=${OUTPUT_DIR},target=/output_dir \
-          --mount type=bind,source=${INPUT_DIR},target=/input_dir \
+          --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/pacta-data \
+          --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/output_dir \
+          --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/input_dir \
           $FULL_IMAGE_NAME
 
           ls -lR output_dir
