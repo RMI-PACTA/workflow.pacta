@@ -17,5 +17,6 @@ jobs:
     name: Test
     uses: ./.github/workflows/test.yml
     needs: [docker]
+    secrets: inherit
     with:
       full-image-name: ${{ needs.docker.outputs.full-image-name }}
