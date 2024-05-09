@@ -66,10 +66,8 @@ jobs:
           PACTA_DATA_DIR: pacta-data
           FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
         run: |
-          docker run -it --rm \
+          docker run \
           --network none \
-          --pull=always \
-          --platform linux/amd64 \
           --env LOG_LEVEL=DEBUG \
           --mount type=bind,readonly,source=${PACTA_DATA_DIR},target=/pacta-data \
           --mount type=bind,source=${OUTPUT_DIR},target=/output_dir \
