@@ -15,7 +15,7 @@ jobs:
 
   test:
     name: Test
-    uses: ./github/workflows/test.yml
+    uses: ./.github/workflows/test.yml
     needs: [docker]
     with:
       full-image-name: ${{ needs.docker.outputs.full-image-name }}
