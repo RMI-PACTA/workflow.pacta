@@ -7,6 +7,9 @@ on:
       full-image-name:
         required: true
         type: string
+      config-name:
+        required: true
+        type: string
       results-url:
         description: azure blob store path for results
         required: false
@@ -26,8 +29,10 @@ jobs:
 
       - name: Prepare environment
         id: prepare
+        env:
+          CONFIG_NAME: ${{ inputs.config-name }}
         run: |
-          config_file="tests/config/default_2023Q4.json"
+          config_file="tests/config/$CONFIG_NAME.json"
           echo "config_file: $config_file"
 
           HOLDINGS_DATE="$(jq -rc '.holdingsDate' $config_file)"
@@ -88,14 +93,15 @@ jobs:
       - name: Upload results to blob store
         uses: azure/CLI@v2
         env:
-          github_ref_name: ${{ github.ref_name}}
-          github_run_attempt: ${{ github.run_attempt }}
-          github_run_number: ${{ github.run_number }}
-          outputs_dir: "output_dir"
-          results_url: ${{ inputs.results-url }}
+          CONFIG_NAME: ${{ inputs.config-name }}
+          GITHUB_REF_NAME: ${{ github.ref_name}}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          OUTPUTS_DIR: "output_dir"
+          RESULTS_URL: ${{ inputs.results-url }}
         with:
           inlineScript: |
-            unique_directory="$results_url/$github_ref_name/$github_run_number/$github_run_attempt"
+            unique_directory="$RESULTS_URL/$GITHUB_REF_NAME/$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT/$CONFIG_NAME"
             az storage copy \
               --source "$outputs_dir" \
               --destination "$unique_directory" \
