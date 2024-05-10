@@ -7,6 +7,11 @@ on:
       full-image-name:
         required: true
         type: string
+      results-url:
+        description: azure blob store path for results
+        required: false
+        default: "https://pactadatadev.blob.core.windows.net/ghactions-workflow-pacta-results"
+        type: string
 
 jobs:
   test:
@@ -61,10 +66,10 @@ jobs:
 
       - name: Run Docker Image
         env:
+          FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
           INPUT_DIR: input_dir
           OUTPUT_DIR: output_dir
           PACTA_DATA_DIR: pacta-data
-          FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
           WORKSPACE: ${{ github.workspace }}
         run: |
           docker run \
@@ -75,4 +80,24 @@ jobs:
           --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/input_dir \
           $FULL_IMAGE_NAME
 
+      - name: List outputs
+        run: |
           ls -lR output_dir
+
+      # https://github.com/marketplace/actions/azure-cli-action#workflow-to-execute-an-azure-cli-script-of-a-specific-cli-version
+      - name: Upload results to blob store
+        uses: azure/CLI@v2
+        env:
+          github_ref_name: ${{ github.ref_name}}
+          github_run_id: ${{ github.run_id }}
+          github_run_number: ${{ github.run_number }}
+          outputs_dir: "output_dir"
+          results_url: ${{ inputs.results-url }}
+          run_attempt: ${{ github.run_attempt }}
+        with:
+          inlineScript: |
+            unique_directory="$results_url/$github_ref_name/$github_run_id/$github_run_number"
+            az storage copy \
+              --source "$outputs_dir" \
+              --destination "$unique_directory" \
+              --recursive
