@@ -89,14 +89,13 @@ jobs:
         uses: azure/CLI@v2
         env:
           github_ref_name: ${{ github.ref_name}}
-          github_run_id: ${{ github.run_id }}
+          github_run_attempt: ${{ github.run_attempt }}
           github_run_number: ${{ github.run_number }}
           outputs_dir: "output_dir"
           results_url: ${{ inputs.results-url }}
-          run_attempt: ${{ github.run_attempt }}
         with:
           inlineScript: |
-            unique_directory="$results_url/$github_ref_name/$github_run_id/$github_run_number"
+            unique_directory="$results_url/$github_ref_name/$github_run_number/$github_run_attempt"
             az storage copy \
               --source "$outputs_dir" \
               --destination "$unique_directory" \
