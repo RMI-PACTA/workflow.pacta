@@ -20,6 +20,7 @@ jobs:
     needs: [docker]
     secrets: inherit
     strategy:
+      fail-fast: false
       matrix:
         config-name:
           - default_2022Q4
