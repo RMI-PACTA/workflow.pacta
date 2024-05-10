@@ -43,6 +43,10 @@ jobs:
           echo "pacta-data-url=$PACTA_DATA_URL"
           echo "pacta-data-url=$PACTA_DATA_URL" >> "$GITHUB_OUTPUT"
 
+          # includes handling for null/missing keys
+          PARAMETERS="$(jq -rc '.parameters | select( . != null )' $config_file)"
+          echo "parameters=$PARAMETERS"
+          echo "parameters=$PARAMETERS" >> "$GITHUB_OUTPUT"
 
       # https://github.com/Azure/login?tab=readme-ov-file#login-with-openid-connect-oidc-recommended
       - name: Azure Login
@@ -76,6 +80,7 @@ jobs:
           OUTPUT_DIR: output_dir
           PACTA_DATA_DIR: pacta-data
           WORKSPACE: ${{ github.workspace }}
+          PARAMETERS: ${{ steps.prepare.outputs.parameters }}
         run: |
           docker run \
           --network none \
@@ -83,7 +88,8 @@ jobs:
           --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/pacta-data \
           --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/output_dir \
           --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/input_dir \
-          $FULL_IMAGE_NAME
+          $FULL_IMAGE_NAME \
+          $PARAMETERS
 
       - name: List outputs
         run: |
