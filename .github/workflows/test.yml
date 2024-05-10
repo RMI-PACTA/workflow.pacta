@@ -27,7 +27,7 @@ jobs:
       - name: Prepare environment
         id: prepare
         run: |
-          config_file="tests/config01.json"
+          config_file="tests/config/default_2023Q4.json"
           echo "config_file: $config_file"
 
           HOLDINGS_DATE="$(jq -rc '.holdingsDate' $config_file)"
