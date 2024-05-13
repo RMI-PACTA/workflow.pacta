@@ -1,4 +1,4 @@
-run_analysis <- function(
+run_audit <- function(
   cfg_path = commandArgs(trailingOnly = TRUE)
 ) {
   suppressPackageStartupMessages({

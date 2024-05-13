@@ -1,0 +1,36 @@
+---
+services:
+  workflow.pacta:
+    build: .
+    stdin_open: true
+    tty: true
+    entrypoint: ["R", "--args"]
+    command: >
+      '{
+        "mode": "TESTING"
+        "data_dir": "../pacta-data/2023Q4",
+        "portfolio_path": "input_dir/default_portfolio.csv",
+        "output_dir": "output_dir",
+        "start_year": 2023,
+        "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
+        "scenario_sources_list": ["GECO2023", "ISF2023", "WEO2023"],
+        "scenario_geographies_list": ["Global", "GlobalAggregate", "NonOECD", "OECD"],
+        "sector_list": ["Power", "Automotive", "Oil&Gas", "Coal", "Steel", "Aviation", "Cement"],
+        "has_map": false,
+        "project_code": "GENERAL"
+      }'
+    environment:
+      LOG_LEVEL: TRACE
+    volumes:
+      - type: bind
+        source: ${data_dir:-./pacta-data}
+        target: /pacta-data
+        read_only: true
+      - type: bind
+        source: ${output_dir:-./output_dir}
+        target: /output_dir
+        read_only: false
+      - type: bind
+        source: ${input_dir:-./input_dir}
+        target: /input_dir
+        read_only: true
