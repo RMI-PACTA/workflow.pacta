@@ -29,7 +29,7 @@ run_analysis <- function(
     pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
   } else {
     log_warn("file \"{total_portfolio_path}\" does not exist.")
-    warning("This is weird... the `total_portfolio.rds` file does not exist in the `30_Processed_inputs` directory.")
+    warning("File \"total_portfolio.rds\" file does not exist.")
   }
 
 
@@ -149,14 +149,12 @@ run_analysis <- function(
       )
     }
 
-    if (cfg[["has_map"]]) {
-      if (pacta.portfolio.utils::data_check(map_eq)) {
-        log_debug("Saving equity map results.")
-        saveRDS(
-          map_eq,
-          file.path(cfg[["output_dir"]], "Equity_results_map.rds")
-        )
-      }
+    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(map_eq)) {
+      log_debug("Saving equity map results.")
+      saveRDS(
+        map_eq,
+        file.path(cfg[["output_dir"]], "Equity_results_map.rds")
+      )
     }
 
     log_trace("Removing equity portfolio objects from memory.")
@@ -228,21 +226,18 @@ run_analysis <- function(
     log_debug("Creating combined bonds portfolio outputs.")
     port_all_cb <- port_pw_cb
 
-    if (cfg[["has_map"]]) {
-      if (pacta.portfolio.utils::data_check(company_all_cb)) {
-        log_debug("Creating bonds map outputs.")
-        abcd_raw_cb <- pacta.portfolio.allocate::get_abcd_raw("Bonds")
-        log_debug("Merging geography data into bonds map outputs.")
-        map_cb <- pacta.portfolio.allocate::merge_in_geography(
-          portfolio = company_all_cb,
-          ald_raw = abcd_raw_cb
-        )
-        log_trace("Removing abcd_raw_cb object from memory.")
-        rm(abcd_raw_cb)
-
-        log_debug("Aggregating bonds map data.")
-        map_cb <- pacta.portfolio.allocate::aggregate_map_data(map_cb)
-      }
+    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(company_all_cb)) {
+      log_debug("Creating bonds map outputs.")
+      abcd_raw_cb <- pacta.portfolio.allocate::get_abcd_raw("Bonds")
+      log_debug("Merging geography data into bonds map outputs.")
+      map_cb <- pacta.portfolio.allocate::merge_in_geography(
+        portfolio = company_all_cb,
+        ald_raw = abcd_raw_cb
+      )
+      log_trace("Removing abcd_raw_cb object from memory.")
+      rm(abcd_raw_cb)
+      log_debug("Aggregating bonds map data.")
+      map_cb <- pacta.portfolio.allocate::aggregate_map_data(map_cb)
     }
 
     # Technology Share Calculation
@@ -287,11 +282,9 @@ run_analysis <- function(
       )
     }
 
-    if (cfg[["has_map"]]) {
-      if (pacta.portfolio.utils::data_check(map_cb)) {
-        log_debug("Saving bonds map results.")
-        saveRDS(map_cb, file.path(cfg[["output_dir"]], "Bonds_results_map.rds"))
-      }
+    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(map_cb)) {
+      log_debug("Saving bonds map results.")
+      saveRDS(map_cb, file.path(cfg[["output_dir"]], "Bonds_results_map.rds"))
     }
 
     log_trace("Removing bonds portfolio objects from memory.")
