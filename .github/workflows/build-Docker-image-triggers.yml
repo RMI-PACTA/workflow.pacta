@@ -1,3 +1,4 @@
+---
 on:
   pull_request:
   push:
@@ -12,3 +13,18 @@ jobs:
   docker:
     name: Docker actions
     uses: RMI-PACTA/actions/.github/workflows/docker.yml@main
+
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yml
+    needs: [docker]
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        config-name:
+          - default_2022Q4
+          - default_2023Q4
+    with:
+      full-image-name: ${{ needs.docker.outputs.full-image-name }}
+      config-name: ${{ matrix.config-name }}
