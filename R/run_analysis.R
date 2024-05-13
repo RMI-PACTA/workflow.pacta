@@ -12,21 +12,21 @@ run_analysis <- function(
   logger::log_threshold(Sys.getenv("LOG_LEVEL", "WARN"))
   logger::log_formatter(logger::formatter_glue)
 
-  # ------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------
 
   log_info("Starting PACTA calculations.")
 
   log_trace("Determining configuration file path")
-  if (length(cfg_path) == 0 || cfg_path == "") {
+  if (length(cfg_path) == 0L || cfg_path == "") {
     log_warn("No configuration file specified, using default")
-    cfg_path <- "input_dir/default_config.json"
+    cfg_path <- file.path("input_dir", "default_config.json")
   }
   log_debug("Loading configuration from file: \"{cfg_path}\".")
-  cfg <- fromJSON(cfg_path)
+  cfg <- jsonlite::fromJSON(cfg_path)
 
-  # quit if there's no relevant PACTA assets -------------------------------------
+  # quit if there's no relevant PACTA assets --------------------------------
 
-  total_portfolio_path <- file.path(cfg$output_dir, "total_portfolio.rds")
+  total_portfolio_path <- file.path(cfg[["output_dir"]], "total_portfolio.rds")
   if (file.exists(total_portfolio_path)) {
     total_portfolio <- readRDS(total_portfolio_path)
     log_trace("Checking for PACTA relevant data in file: \"{total_portfolio_path}\".")
@@ -37,14 +37,14 @@ run_analysis <- function(
   }
 
 
-  # Equity -----------------------------------------------------------------------
+  # Equity ------------------------------------------------------------------
 
   log_info("Starting equity calculations.")
 
   log_debug("Subsetting equity portfolio.")
   port_raw_all_eq <- create_portfolio_subset(total_portfolio, "Equity")
 
-  if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0) {
+  if (inherits(port_raw_all_eq, "data.frame") && nrow(port_raw_all_eq) > 0L) {
     log_info("Equity portfolio has data. Beginning equity calculations.")
     map_eq <- NA
     company_all_eq <- NA
@@ -57,11 +57,11 @@ run_analysis <- function(
     port_eq <- merge_abcd_from_db(
       portfolio = port_eq,
       portfolio_type = "Equity",
-      db_dir = cfg$data_dir,
-      equity_market_list = cfg$equity_market_list,
-      scenario_sources_list = cfg$scenario_sources_list,
-      scenario_geographies_list = cfg$scenario_geographies_list,
-      sector_list = cfg$sector_list,
+      db_dir = cfg[["data_dir"]],
+      equity_market_list = cfg[["equity_market_list"]],
+      scenario_sources_list = cfg[["scenario_sources_list"]],
+      scenario_geographies_list = cfg[["scenario_geographies_list"]],
+      sector_list = cfg[["sector_list"]],
       id_col = "id"
     )
 
@@ -94,7 +94,7 @@ run_analysis <- function(
     log_debug("Creating combined equity portfolio outputs.")
     port_all_eq <- bind_rows(port_pw_eq, port_own_eq)
 
-    if (cfg$has_map) {
+    if (cfg[["has_map"]]) {
       log_debug("Creating equity map outputs.")
       abcd_raw_eq <- get_abcd_raw("Equity")
       log_debug("Merging geography data into equity map outputs.")
@@ -122,18 +122,27 @@ run_analysis <- function(
 
     if (data_check(company_all_eq)) {
       log_debug("Saving equity company results.")
-      saveRDS(company_all_eq, file.path(cfg$output_dir, "Equity_results_company.rds"))
+      saveRDS(
+        company_all_eq,
+        file.path(cfg[["output_dir"]], "Equity_results_company.rds")
+      )
     }
 
     if (data_check(port_all_eq)) {
       log_debug("Saving equity portfolio results.")
-      saveRDS(port_all_eq, file.path(cfg$output_dir, "Equity_results_portfolio.rds"))
+      saveRDS(
+        port_all_eq,
+        file.path(cfg[["output_dir"]], "Equity_results_portfolio.rds")
+      )
     }
 
-    if (cfg$has_map) {
+    if (cfg[["has_map"]]) {
       if (data_check(map_eq)) {
         log_debug("Saving equity map results.")
-        saveRDS(map_eq, file.path(cfg$output_dir, "Equity_results_map.rds"))
+        saveRDS(
+          map_eq,
+          file.path(cfg[["output_dir"]], "Equity_results_map.rds")
+        )
       }
     }
 
@@ -152,12 +161,12 @@ run_analysis <- function(
     )
   }
 
-  # Bonds ------------------------------------------------------------------------
+  # Bonds -------------------------------------------------------------------
 
   log_info("Starting bonds calculations.")
   port_raw_all_cb <- create_portfolio_subset(total_portfolio, "Bonds")
 
-  if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0) {
+  if (inherits(port_raw_all_cb, "data.frame") && nrow(port_raw_all_cb) > 0L) {
     log_info("Bonds portfolio has data. Beginning bonds calculations.")
     map_cb <- NA
     company_all_cb <- NA
@@ -170,11 +179,11 @@ run_analysis <- function(
     port_cb <- merge_abcd_from_db(
       portfolio = port_cb,
       portfolio_type = "Bonds",
-      db_dir = cfg$data_dir,
-      equity_market_list = cfg$equity_market_list,
-      scenario_sources_list = cfg$scenario_sources_list,
-      scenario_geographies_list = cfg$scenario_geographies_list,
-      sector_list = cfg$sector_list,
+      db_dir = cfg[["data_dir"]],
+      equity_market_list = cfg[["equity_market_list"]],
+      scenario_sources_list = cfg[["scenario_sources_list"]],
+      scenario_geographies_list = cfg[["scenario_geographies_list"]],
+      sector_list = cfg[["sector_list"]],
       id_col = "credit_parent_ar_company_id"
     )
 
@@ -200,7 +209,7 @@ run_analysis <- function(
     log_debug("Creating combined bonds portfolio outputs.")
     port_all_cb <- port_pw_cb
 
-    if (cfg$has_map) {
+    if (cfg[["has_map"]]) {
       if (data_check(company_all_cb)) {
         log_debug("Creating bonds map outputs.")
         abcd_raw_cb <- get_abcd_raw("Bonds")
@@ -215,12 +224,12 @@ run_analysis <- function(
     }
 
     # Technology Share Calculation
-    if (nrow(port_all_cb) > 0) {
+    if (nrow(port_all_cb) > 0L) {
       log_debug("Calculating bonds portfolio technology share.")
       port_all_cb <- calculate_technology_share(port_all_cb)
     }
 
-    if (nrow(company_all_cb) > 0) {
+    if (nrow(company_all_cb) > 0L) {
       log_debug("Calculating bonds company technology share.")
       company_all_cb <- calculate_technology_share(company_all_cb)
     }
@@ -234,18 +243,24 @@ run_analysis <- function(
 
     if (data_check(company_all_cb)) {
       log_debug("Saving bonds company results.")
-      saveRDS(company_all_cb, file.path(cfg$output_dir, "Bonds_results_company.rds"))
+      saveRDS(
+        company_all_cb,
+        file.path(cfg[["output_dir"]], "Bonds_results_company.rds")
+      )
     }
 
     if (data_check(port_all_cb)) {
       log_debug("Saving bonds portfolio results.")
-      saveRDS(port_all_cb, file.path(cfg$output_dir, "Bonds_results_portfolio.rds"))
+      saveRDS(
+        port_all_cb,
+        file.path(cfg[["output_dir"]], "Bonds_results_portfolio.rds")
+      )
     }
 
-    if (cfg$has_map) {
+    if (cfg[["has_map"]]) {
       if (data_check(map_cb)) {
         log_debug("Saving bonds map results.")
-        saveRDS(map_cb, file.path(cfg$output_dir, "Bonds_results_map.rds"))
+        saveRDS(map_cb, file.path(cfg[["output_dir"]], "Bonds_results_map.rds"))
       }
     }
 
