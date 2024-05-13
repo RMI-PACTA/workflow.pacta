@@ -35,7 +35,7 @@ Imports:
     pacta.portfolio.utils,
     readr
 Remotes:
-  RMI-PACTA/pacta.portfolio.allocate,
-  RMI-PACTA/pacta.portfolio.audit,
-  RMI-PACTA/pacta.portfolio.import,
-  RMI-PACTA/pacta.portfolio.utils
+    RMI-PACTA/pacta.portfolio.allocate,
+    RMI-PACTA/pacta.portfolio.audit,
+    RMI-PACTA/pacta.portfolio.import,
+    RMI-PACTA/pacta.portfolio.utils
