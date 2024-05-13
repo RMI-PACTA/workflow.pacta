@@ -78,6 +78,8 @@ RUN Rscript -e "\
 
 COPY . /
 
+RUN Rscript -e "pak::local_install(root = '/')"
+
 # set default run behavior
 ENTRYPOINT ["/run-pacta.sh"]
 CMD ["input_dir/default_config.json"]
