@@ -2,12 +2,12 @@
 services:
   workflow.pacta:
     build: .
-    stdin_open: true
-    tty: true
-    entrypoint: ["R", "--args"]
+    # stdin_open: true
+    # tty: true
+    # entrypoint: ["R", "--args"]
     command: >
       '{
-        "mode": "TESTING"
+        "mode": "TESTING",
         "data_dir": "../pacta-data/2023Q4",
         "portfolio_path": "input_dir/default_portfolio.csv",
         "output_dir": "output_dir",
