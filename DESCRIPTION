@@ -1,16 +1,23 @@
 Package: workflow.pacta
+Title: Run PACTA
 Version: 0.0.0.9000
-Type: PACTA
-Description: Run PACTA.
-Depends:
-  dplyr,
-  jsonlite,
-  logger,
-  pacta.portfolio.allocate,
-  pacta.portfolio.audit,
-  pacta.portfolio.import,
-  pacta.portfolio.utils,
-  readr
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Run the PACTA Analysis.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    dplyr,
+    jsonlite,
+    logger,
+    pacta.portfolio.allocate,
+    pacta.portfolio.audit,
+    pacta.portfolio.import,
+    pacta.portfolio.utils,
+    readr
 Remotes:
   RMI-PACTA/pacta.portfolio.allocate,
   RMI-PACTA/pacta.portfolio.audit,
