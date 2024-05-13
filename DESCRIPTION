@@ -30,7 +30,7 @@ Imports:
     jsonlite,
     logger,
     pacta.portfolio.allocate,
-    pacta.portfolio.audit,
+    pacta.portfolio.audit@fix/45-pass-currencies-explicitly, 
     pacta.portfolio.import,
     pacta.portfolio.utils,
     readr

@@ -98,7 +98,10 @@ run_audit <- function(
   )
 
   log_debug("Adding portfolio flags to portfolio.")
-  portfolio_total <- pacta.portfolio.audit::add_portfolio_flags(portfolio)
+  portfolio_total <- pacta.portfolio.audit::add_portfolio_flags(
+    portfolio = portfolio,
+    currencies = currencies
+  )
 
   log_debug("Summarizing portfolio.")
   portfolio_overview <- pacta.portfolio.audit::portfolio_summary(
