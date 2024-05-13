@@ -2,15 +2,6 @@ run_audit <- function(
   cfg_path = commandArgs(trailingOnly = TRUE)
 ) {
 
-  suppressPackageStartupMessages({
-    library(pacta.portfolio.utils)
-    library(pacta.portfolio.import)
-    library(pacta.portfolio.audit)
-    library(dplyr)
-    library(readr)
-    library(jsonlite)
-  })
-
   # defaulting to WARN to maintain current (silent behavior.
   logger::log_threshold(Sys.getenv("LOG_LEVEL", "WARN"))
   logger::log_formatter(logger::formatter_glue)
@@ -25,7 +16,7 @@ run_audit <- function(
     cfg_path <- file.path("input_dir", "default_config.json")
   }
   log_debug("Loading configuration from file: \"{cfg_path}\".")
-  cfg <- fromJSON(cfg_path)
+  cfg <- jsonlite::fromJSON(cfg_path)
 
   # load necessary input data -------------------------------------------------
 
@@ -49,7 +40,7 @@ run_audit <- function(
   fin_data <- readRDS(file.path(cfg[["data_dir"]], "financial_data.rds"))
 
   log_debug("Loading entity info.")
-  entity_info <- get_entity_info(dir = cfg[["data_dir"]])
+  entity_info <- pacta.portfolio.audit::get_entity_info(dir = cfg[["data_dir"]])
 
   log_debug("Loading Equity ABCD flags.")
   abcd_flags_equity <- readRDS(
@@ -73,10 +64,12 @@ run_audit <- function(
   # Portfolios --------------------------------------------------------------
 
   log_info("Reading portfolio from file: \"{cfg$portfolio_path}\".")
-  portfolio_raw <- read_portfolio_csv(cfg[["portfolio_path"]])
+  portfolio_raw <- pacta.portfolio.import::read_portfolio_csv(
+    filepaths = cfg[["portfolio_path"]]
+  )
 
   log_info("Processing raw portfolio.")
-  portfolio <- process_raw_portfolio(
+  portfolio <- pacta.portfolio.audit::process_raw_portfolio(
     portfolio_raw = portfolio_raw,
     fin_data = fin_data,
     fund_data = fund_data,
@@ -91,31 +84,35 @@ run_audit <- function(
   # later we realized that it had a sort of hidden behavior where if there is
   # no revenue data it maps the security_mapped_sector column of the portfolio
   # data to financial_sector, which is necessary later
-  portfolio <-
-    portfolio %>%
-    mutate(
-      has_revenue_data = FALSE,
-      financial_sector = .data[["security_mapped_sector"]]
-    )
+  portfolio <- dplyr::mutate(
+    .data = portfolio,
+    has_revenue_data = FALSE,
+    financial_sector = .data[["security_mapped_sector"]]
+  )
 
   log_debug("Adding ABCD flags to portfolio.")
-  portfolio <- create_ald_flag(
+  portfolio <- pacta.portfolio.audit::create_ald_flag(
     portfolio,
     comp_fin_data = abcd_flags_equity,
     debt_fin_data = abcd_flags_bonds
   )
 
   log_debug("Adding portfolio flags to portfolio.")
-  portfolio_total <- add_portfolio_flags(portfolio)
+  portfolio_total <- pacta.portfolio.audit::add_portfolio_flags(portfolio)
 
   log_debug("Summarizing portfolio.")
-  portfolio_overview <- portfolio_summary(portfolio_total)
+  portfolio_overview <- pacta.portfolio.audit::portfolio_summary(
+    portfolio_total = portfolio_total
+  )
 
   log_debug("Creating audit file.")
-  audit_file <- create_audit_file(portfolio_total, has_revenue = FALSE)
+  audit_file <- pacta.portfolio.audit::create_audit_file(
+    portfolio_total = portfolio_total,
+    has_revenue = FALSE
+  )
 
   log_debug("Calculating financed emissions.")
-  emissions_totals <- calculate_portfolio_financed_emissions(
+  emissions_totals <- pacta.portfolio.audit::calculate_portfolio_financed_emissions(
     portfolio_total,
     entity_info,
     entity_emission_intensities,
@@ -128,7 +125,7 @@ run_audit <- function(
   log_debug("output directory: \"{cfg$output_dir}\".")
 
   log_debug("Exporting audit information.")
-  export_audit_information_data(
+  pacta.portfolio.audit::export_audit_information_data(
     audit_file_ = audit_file,
     portfolio_total_ = portfolio_total,
     folder_path = cfg[["output_dir"]]
@@ -147,7 +144,7 @@ run_audit <- function(
   log_debug("Exporting audit file RDS.")
   saveRDS(audit_file, file.path(cfg[["output_dir"]], "audit_file.rds"))
   log_debug("Exporting audit file CSV.")
-  write_csv(audit_file, file.path(cfg[["output_dir"]], "audit_file.csv"))
+  readr::write_csv(audit_file, file.path(cfg[["output_dir"]], "audit_file.csv"))
   log_debug("Exporting emissions.")
   saveRDS(emissions_totals, file.path(cfg[["output_dir"]], "emissions.rds"))
 
