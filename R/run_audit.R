@@ -115,12 +115,13 @@ run_audit <- function(
   )
 
   log_debug("Calculating financed emissions.")
-  emissions_totals <- pacta.portfolio.audit::calculate_portfolio_financed_emissions(
-    portfolio_total,
-    entity_info,
-    entity_emission_intensities,
-    average_sector_emission_intensities
-  )
+  emissions_totals <-
+    pacta.portfolio.audit::calculate_portfolio_financed_emissions(
+      portfolio_total,
+      entity_info,
+      entity_emission_intensities,
+      average_sector_emission_intensities
+    )
 
   # Saving -------------------------------------------------------------------
 
