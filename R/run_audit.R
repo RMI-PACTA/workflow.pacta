@@ -79,11 +79,11 @@ run_audit <- function(
     isin_to_fund_table = isin_to_fund_table
   )
 
-  # FIXME: this is necessary because
-  # pacta.portfolio.allocate::add_revenue_split() was removed in #142, but
-  # later we realized that it had a sort of hidden behavior where if there is
-  # no revenue data it maps the security_mapped_sector column of the portfolio
-  # data to financial_sector, which is necessary later
+  # this is necessary because pacta.portfolio.allocate::add_revenue_split() was
+  # removed in #142, but later we realized that it had a sort of hidden
+  # behavior where if there is no revenue data it maps the
+  # security_mapped_sector column of the portfolio data to financial_sector,
+  # which is necessary later
   portfolio <- dplyr::mutate(
     .data = portfolio,
     has_revenue_data = FALSE,
