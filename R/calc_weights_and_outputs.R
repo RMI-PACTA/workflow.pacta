@@ -87,15 +87,19 @@ calc_weights_and_outputs <- function(
     }
 
     # Technology Share Calculation
-    log_debug("Calculating {portfolio_type} portfolio technology share.")
-    port_all <- pacta.portfolio.allocate::calculate_technology_share(
-      df = port_all
-    )
+    if (nrow(port_all) > 0L) {
+      log_debug("Calculating {portfolio_type} portfolio technology share.")
+      port_all <- pacta.portfolio.allocate::calculate_technology_share(
+        df = port_all
+      )
+    }
 
-    log_debug("Calculating {portfolio_type} company technology share.")
-    company_all <- pacta.portfolio.allocate::calculate_technology_share(
-      df = company_all
-    )
+    if (nrow(company_all) > 0L) {
+      log_debug("Calculating {portfolio_type} company technology share.")
+      company_all <- pacta.portfolio.allocate::calculate_technology_share(
+        df = company_all
+      )
+    }
 
     # Scenario alignment calculations
     log_debug("Calculating {portfolio_type} portfolio scenario alignment.")
