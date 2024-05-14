@@ -84,11 +84,8 @@ run_audit <- function(
   # behavior where if there is no revenue data it maps the
   # security_mapped_sector column of the portfolio data to financial_sector,
   # which is necessary later
-  portfolio <- dplyr::mutate(
-    .data = portfolio,
-    has_revenue_data = FALSE,
-    financial_sector = .data[["security_mapped_sector"]]
-  )
+  portfolio[["has_revenue_data"]] <- FALSE
+  portfolio[["financial_sector"]] <- portfolio[["security_mapped_sector"]]
 
   log_debug("Adding ABCD flags to portfolio.")
   portfolio <- pacta.portfolio.audit::create_ald_flag(
