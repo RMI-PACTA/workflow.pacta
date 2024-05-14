@@ -25,15 +25,21 @@ calc_weights_and_outputs <- function(
     )
 
     log_debug("Merging ABCD data from database into {portfolio_type} portfolio.")
+    if (portfolio_type == "Bonds") {
+      id_col <- "credit_parent_ar_company_id"
+    } else {
+      id_col <- "id"
+    }
+    id_col <- "credit_parent_ar_company_id"
     port <- pacta.portfolio.allocate::merge_abcd_from_db(
       portfolio = port,
-      portfolio_type = portfolio_type
+      portfolio_type = portfolio_type,
       db_dir = cfg[["data_dir"]],
       equity_market_list = cfg[["equity_market_list"]],
       scenario_sources_list = cfg[["scenario_sources_list"]],
       scenario_geographies_list = cfg[["scenario_geographies_list"]],
       sector_list = cfg[["sector_list"]],
-      id_col = "id"
+      id_col = id_col
     )
 
     # Portfolio weight methodology
@@ -102,27 +108,39 @@ calc_weights_and_outputs <- function(
       df = company_all
     )
 
+    results_company_filename <- file.path(
+      cfg[["output_dir"]],
+      paste0(portfolio_type, "_results_company.rds")
+    )
     if (pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Saving {portfolio_type} company results.")
       saveRDS(
         company_all,
-        file.path(cfg[["output_dir"]], "Equity_results_company.rds")
+        results_company_filename
       )
     }
 
+    results_portfolio_filename <- file.path(
+      cfg[["output_dir"]],
+      paste0(portfolio_type, "_results_portfolio.rds")
+    )
     if (pacta.portfolio.utils::data_check(port_all)) {
       log_debug("Saving {portfolio_type} portfolio results.")
       saveRDS(
         port_all,
-        file.path(cfg[["output_dir"]], "Equity_results_portfolio.rds")
+        results_portfolio_filename
       )
     }
 
     if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(map)) {
       log_debug("Saving {portfolio_type} map results.")
+      results_map_filename <- file.path(
+        cfg[["output_dir"]],
+        paste0(portfolio_type, "_results_map.rds")
+      )
       saveRDS(
         map,
-        file.path(cfg[["output_dir"]], "Equity_results_map.rds")
+        results_map_filename
       )
     }
 
