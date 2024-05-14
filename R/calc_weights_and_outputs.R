@@ -12,11 +12,11 @@ calc_weights_and_outputs <- function(
     portfolio_type = portfolio_type
   )
 
-  if (inherits(port_raw_all, "data.frame") && nrow(port_raw_all) > 0L) {
-    log_info("{portfolio_type} portfolio has data. Beginning {portfolio_type} calculations.")
-    map <- NA
-    company_all <- NA
-    port_all <- NA
+  if (pacta.portfolio.utils::data_check(port_raw_all)) {
+    log_info(
+      "{portfolio_type} portfolio has data. ",
+      "Beginning {portfolio_type} calculations."
+    )
 
     log_debug("Calculating {portfolio_type} portfolio weights.")
     port <- pacta.portfolio.allocate::calculate_weights(
@@ -24,7 +24,9 @@ calc_weights_and_outputs <- function(
       portfolio_type = portfolio_type
     )
 
-    log_debug("Merging ABCD data from database into {portfolio_type} portfolio.")
+    log_debug(
+      "Merging ABCD data from database into {portfolio_type} portfolio."
+    )
     if (portfolio_type == "Bonds") {
       id_col <- "credit_parent_ar_company_id"
     } else {
@@ -156,7 +158,8 @@ calc_weights_and_outputs <- function(
 
   } else {
     log_trace(
-      "{portfolio_type} portfolio has no rows. Skipping {portfolio_type} calculations."
+      "{portfolio_type} portfolio has no rows. ",
+      "Skipping {portfolio_type} calculations."
     )
   }
 
