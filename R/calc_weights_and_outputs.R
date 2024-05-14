@@ -53,16 +53,22 @@ calc_weights_and_outputs <- function(
     log_debug("Aggregating portfolio for portfolio weight calculation.")
     port_pw <- pacta.portfolio.allocate::aggregate_portfolio(company_pw)
 
-    # Ownership weight methodology
-    log_info("Calculating ownership methodology.")
-    log_debug("Calculating ownership allocation.")
-    port_own <- pacta.portfolio.allocate::ownership_allocation(port)
+    if (portfolio_type == "Bonds") {
+      log_info("Ownership weight calculation not defined for Bonds. Skipping.")
+      port_own <- NULL
+      company_own <- NULL
+    } else {
+      # Ownership weight methodology
+      log_info("Calculating ownership methodology.")
+      log_debug("Calculating ownership allocation.")
+      port_own <- pacta.portfolio.allocate::ownership_allocation(port)
 
-    log_debug("Aggregating companies for ownership calculation.")
-    company_own <- pacta.portfolio.allocate::aggregate_company(port_own)
+      log_debug("Aggregating companies for ownership calculation.")
+      company_own <- pacta.portfolio.allocate::aggregate_company(port_own)
 
-    log_debug("Aggregating portfolio for ownership calculation.")
-    port_own <- pacta.portfolio.allocate::aggregate_portfolio(company_own)
+      log_debug("Aggregating portfolio for ownership calculation.")
+      port_own <- pacta.portfolio.allocate::aggregate_portfolio(company_own)
+    }
 
     # Create combined outputs
     log_debug("Creating combined {portfolio_type} company outputs.")
