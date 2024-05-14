@@ -56,7 +56,7 @@ run_audit <- function(
     file.path(cfg[["data_dir"]], "iss_entity_emission_intensities.rds")
   )
   log_debug("Loading average sector emission intensities.")
-  average_sector_emission_intensities <- readRDS(
+  avg_sector_eis <- readRDS(
     file.path(cfg[["data_dir"]], "iss_average_sector_emission_intensities.rds")
   )
 
@@ -117,7 +117,7 @@ run_audit <- function(
       portfolio_total,
       entity_info,
       entity_emission_intensities,
-      average_sector_emission_intensities
+      avg_sector_eis
     )
 
   # Saving -------------------------------------------------------------------
