@@ -71,7 +71,7 @@ calc_weights_and_outputs <- function(
     log_debug("Creating combined {portfolio_type} portfolio outputs.")
     port_all <- dplyr::bind_rows(port_pw, port_own)
 
-    if (cfg[["has_map"]]) {
+    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Creating {portfolio_type} map outputs.")
       abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(portfolio_type)
       log_debug("Merging geography data into {portfolio_type} map outputs.")
