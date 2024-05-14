@@ -1,7 +1,13 @@
 calc_weights_and_outputs <- function(
   total_portfolio,
   portfolio_type,
-  cfg
+  output_dir,
+  data_dir,
+  equity_market_list,
+  scenario_sources_list,
+  scenario_geographies_list,
+  sector_list,
+  has_map
 ) {
 
   log_info("Starting {portfolio_type} calculations.")
@@ -36,11 +42,11 @@ calc_weights_and_outputs <- function(
     port <- pacta.portfolio.allocate::merge_abcd_from_db(
       portfolio = port,
       portfolio_type = portfolio_type,
-      db_dir = cfg[["data_dir"]],
-      equity_market_list = cfg[["equity_market_list"]],
-      scenario_sources_list = cfg[["scenario_sources_list"]],
-      scenario_geographies_list = cfg[["scenario_geographies_list"]],
-      sector_list = cfg[["sector_list"]],
+      db_dir = data_dir,
+      equity_market_list = equity_market_list,
+      scenario_sources_list = scenario_sources_list,
+      scenario_geographies_list = scenario_geographies_list,
+      sector_list = sector_list,
       id_col = id_col
     )
 
@@ -79,7 +85,7 @@ calc_weights_and_outputs <- function(
     log_debug("Creating combined {portfolio_type} portfolio outputs.")
     port_all <- dplyr::bind_rows(port_pw, port_own)
 
-    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(company_all)) {
+    if (has_map && pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Creating {portfolio_type} map outputs.")
       abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(portfolio_type)
       log_debug("Merging geography data into {portfolio_type} map outputs.")
@@ -121,7 +127,7 @@ calc_weights_and_outputs <- function(
     )
 
     results_company_filename <- file.path(
-      cfg[["output_dir"]],
+      output_dir,
       paste0(portfolio_type, "_results_company.rds")
     )
     if (pacta.portfolio.utils::data_check(company_all)) {
@@ -133,7 +139,7 @@ calc_weights_and_outputs <- function(
     }
 
     results_portfolio_filename <- file.path(
-      cfg[["output_dir"]],
+      output_dir,
       paste0(portfolio_type, "_results_portfolio.rds")
     )
     if (pacta.portfolio.utils::data_check(port_all)) {
@@ -144,10 +150,10 @@ calc_weights_and_outputs <- function(
       )
     }
 
-    if (cfg[["has_map"]] && pacta.portfolio.utils::data_check(map)) {
+    if (has_map && pacta.portfolio.utils::data_check(map)) {
       log_debug("Saving {portfolio_type} map results.")
       results_map_filename <- file.path(
-        cfg[["output_dir"]],
+        output_dir,
         paste0(portfolio_type, "_results_map.rds")
       )
       saveRDS(

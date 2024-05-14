@@ -33,18 +33,28 @@ run_analysis <- function(
   }
 
 
-  # Equity ------------------------------------------------------------------
-
   calc_weights_and_outputs(
     total_portfolio = total_portfolio,
     portfolio_type = "Equity",
-    cfg = cfg
+    output_dir = cfg[["output_dir"]],
+    data_dir = cfg[["data_dir"]],
+    equity_market_list = cfg[["equity_market_list"]],
+    scenario_sources_list = cfg[["scenario_sources_list"]],
+    scenario_geographies_list = cfg[["scenario_geographies_list"]],
+    sector_list = cfg[["sector_list"]],
+    has_map = cfg[["has_map"]]
   )
 
   calc_weights_and_outputs(
     total_portfolio = total_portfolio,
     portfolio_type = "Bonds",
-    cfg = cfg
+    output_dir = cfg[["output_dir"]],
+    data_dir = cfg[["data_dir"]],
+    equity_market_list = cfg[["equity_market_list"]],
+    scenario_sources_list = cfg[["scenario_sources_list"]],
+    scenario_geographies_list = cfg[["scenario_geographies_list"]],
+    sector_list = cfg[["sector_list"]],
+    has_map = cfg[["has_map"]]
   )
 
   log_info("Finished PACTA calculations.")
