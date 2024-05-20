@@ -17,6 +17,14 @@ run_pacta <- function(
     portfolio_path = cfg[["portfolio_path"]],
     output_dir = cfg[["output_dir"]]
   )
-  run_analysis(cfg_path)
+  run_analysis(
+    data_dir = cfg[["data_dir"]],
+    output_dir = cfg[["output_dir"]],
+    equity_market_list = cfg[["equity_market_list"]],
+    scenario_sources_list = cfg[["scenario_sources_list"]],
+    scenario_geographies_list = cfg[["scenario_geographies_list"]],
+    sector_list = cfg[["sector_list"]],
+    has_map = cfg[["has_map"]]
+  )
   log_info("PACTA run complete.")
 }
