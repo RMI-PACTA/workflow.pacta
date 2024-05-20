@@ -1,71 +1,58 @@
 run_audit <- function(
-  cfg_path = commandArgs(trailingOnly = TRUE)
+  data_dir,
+  portfolio_path,
+  output_dir
 ) {
-
-  # defaulting to WARN to maintain current (silent behavior.
-  logger::log_threshold(Sys.getenv("LOG_LEVEL", "WARN"))
-  logger::log_formatter(logger::formatter_glue)
-
-  # -------------------------------------------------------------------------
 
   log_info("Starting portfolio audit")
 
-  log_trace("Determining configuration file path")
-  if (length(cfg_path) == 0L || cfg_path == "") {
-    log_warn("No configuration file specified, using default")
-    cfg_path <- file.path("input_dir", "default_config.json")
-  }
-  log_debug("Loading configuration from file: \"{cfg_path}\".")
-  cfg <- jsonlite::fromJSON(cfg_path)
-
   # load necessary input data -------------------------------------------------
-
   log_info("Loading input data.")
 
   log_debug("Loading currencies.")
-  currencies <- readRDS(file.path(cfg[["data_dir"]], "currencies.rds"))
+  currencies <- readRDS(file.path(data_dir, "currencies.rds"))
 
   log_debug("Loading fund data.")
-  fund_data <- readRDS(file.path(cfg[["data_dir"]], "fund_data.rds"))
+  fund_data <- readRDS(file.path(data_dir, "fund_data.rds"))
   log_debug("Loading fund list data.")
   total_fund_list <- readRDS(
-    file.path(cfg[["data_dir"]], "total_fund_list.rds")
+    file.path(data_dir, "total_fund_list.rds")
   )
   log_debug("Loading ISIN to fund table.")
   isin_to_fund_table <- readRDS(
-    file.path(cfg[["data_dir"]], "isin_to_fund_table.rds")
+    file.path(data_dir, "isin_to_fund_table.rds")
   )
 
   log_debug("Loading financial data.")
-  fin_data <- readRDS(file.path(cfg[["data_dir"]], "financial_data.rds"))
+  fin_data <- readRDS(file.path(data_dir, "financial_data.rds"))
 
   log_debug("Loading entity info.")
-  entity_info <- pacta.portfolio.audit::get_entity_info(dir = cfg[["data_dir"]])
+  entity_info <- pacta.portfolio.audit::get_entity_info(dir = data_dir)
 
   log_debug("Loading Equity ABCD flags.")
   abcd_flags_equity <- readRDS(
-    file.path(cfg[["data_dir"]], "abcd_flags_equity.rds")
+    file.path(data_dir, "abcd_flags_equity.rds")
   )
   log_debug("Loading Bonds ABCD flags.")
   abcd_flags_bonds <- readRDS(
-    file.path(cfg[["data_dir"]], "abcd_flags_bonds.rds")
+    file.path(data_dir, "abcd_flags_bonds.rds")
   )
 
   log_debug("Loading entity emission intensities.")
   entity_emission_intensities <- readRDS(
-    file.path(cfg[["data_dir"]], "iss_entity_emission_intensities.rds")
+    file.path(data_dir, "iss_entity_emission_intensities.rds")
   )
   log_debug("Loading average sector emission intensities.")
   avg_sector_eis <- readRDS(
-    file.path(cfg[["data_dir"]], "iss_average_sector_emission_intensities.rds")
+    file.path(data_dir, "iss_average_sector_emission_intensities.rds")
   )
 
 
   # Portfolios --------------------------------------------------------------
 
-  log_info("Reading portfolio from file: \"{cfg$portfolio_path}\".")
+  log_info("Reading portfolio from file: \"{portfolio_path}\".")
   portfolio_raw <- pacta.portfolio.import::read_portfolio_csv(
-    filepaths = cfg[["portfolio_path"]]
+    filepaths = portfolio_path
   )
 
   log_info("Processing raw portfolio.")
@@ -123,31 +110,31 @@ run_audit <- function(
   # Saving -------------------------------------------------------------------
 
   log_info("Saving output.")
-  log_debug("output directory: \"{cfg$output_dir}\".")
+  log_debug("output directory: \"{output_dir}\".")
 
   log_debug("Exporting audit information.")
   pacta.portfolio.audit::export_audit_information_data(
     audit_file_ = audit_file,
     portfolio_total_ = portfolio_total,
-    folder_path = cfg[["output_dir"]]
+    folder_path = output_dir
   )
 
   log_debug("Exporting portfolio total.")
   saveRDS(
     portfolio_total,
-    file.path(cfg[["output_dir"]], "total_portfolio.rds")
+    file.path(output_dir, "total_portfolio.rds")
   )
   log_debug("Exporting portfolio overview.")
   saveRDS(
     portfolio_overview,
-    file.path(cfg[["output_dir"]], "overview_portfolio.rds")
+    file.path(output_dir, "overview_portfolio.rds")
   )
   log_debug("Exporting audit file RDS.")
-  saveRDS(audit_file, file.path(cfg[["output_dir"]], "audit_file.rds"))
+  saveRDS(audit_file, file.path(output_dir, "audit_file.rds"))
   log_debug("Exporting audit file CSV.")
-  readr::write_csv(audit_file, file.path(cfg[["output_dir"]], "audit_file.csv"))
+  readr::write_csv(audit_file, file.path(output_dir, "audit_file.csv"))
   log_debug("Exporting emissions.")
-  saveRDS(emissions_totals, file.path(cfg[["output_dir"]], "emissions.rds"))
+  saveRDS(emissions_totals, file.path(output_dir, "emissions.rds"))
 
   log_info("Portfolio audit finished.")
 }
