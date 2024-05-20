@@ -9,7 +9,6 @@ run_pacta <- function(
     log_warn("No configuration file specified, using default")
     raw_params <- file.path("input_dir", "default_config.json")
   }
-  log_debug("Loading configuration from file: \"{params_path}\".")
   params <- jsonlite::fromJSON(raw_params)
 
   run_audit(
