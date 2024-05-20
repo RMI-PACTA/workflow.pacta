@@ -4,12 +4,14 @@ run_pacta <- function(
   log_info("Running PACTA")
 
   # Read Params
-  log_trace("Determining configuration file path")
+  log_trace("Processing input parameters.")
   if (length(raw_params) == 0L || raw_params == "") {
     log_warn("No configuration file specified, using default")
     raw_params <- file.path("input_dir", "default_config.json")
   }
-  params <- jsonlite::fromJSON(raw_params)
+  params <- pacta.workflow.utils:::parse_params(
+    json = raw_params
+  )
 
   run_audit(
     data_dir = params[["data_dir"]],
