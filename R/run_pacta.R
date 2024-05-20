@@ -26,5 +26,28 @@ run_pacta <- function(
     sector_list = params[["sector_list"]],
     has_map = params[["has_map"]]
   )
+
+  log_info("Exporting Manifest")
+  pacta.workflow.utils::export_manifest(
+    manifest_path = file.path(params[["output_dir"]], "manifest.json"),
+    input_files = list(
+      params[["portfolio_path"]],
+      list.files(
+        params[["data_dir"]],
+        full.names = TRUE,
+        recursive = TRUE
+      )
+    ),
+    output_files = list.files(
+      params[["output_dir"]],
+      full.names = TRUE,
+      recursive = TRUE
+    ),
+    params = params,
+    raw_params = raw_params
+  )
+
+
+
   log_info("PACTA run complete.")
 }
