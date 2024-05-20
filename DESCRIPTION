@@ -30,12 +30,14 @@ Imports:
     jsonlite,
     logger,
     pacta.portfolio.allocate,
-    pacta.portfolio.audit, 
+    pacta.portfolio.audit,
     pacta.portfolio.import,
     pacta.portfolio.utils,
+    pacta.workflow.utils,
     readr
 Remotes:
     RMI-PACTA/pacta.portfolio.allocate,
     RMI-PACTA/pacta.portfolio.audit,
     RMI-PACTA/pacta.portfolio.import,
-    RMI-PACTA/pacta.portfolio.utils
+    RMI-PACTA/pacta.portfolio.utils,
+    RMI-PACTA/pacta.workflow.utils
