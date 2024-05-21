@@ -48,7 +48,5 @@ run_pacta <- function(
     raw_params = raw_params
   )
 
-
-
   log_info("PACTA run complete.")
 }
