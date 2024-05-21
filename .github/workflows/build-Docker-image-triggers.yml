@@ -14,6 +14,7 @@ jobs:
     name: Docker actions
     uses: RMI-PACTA/actions/.github/workflows/docker.yml@ci/83-only-build-amd64-for-prs
 
+
   test:
     name: Test
     uses: ./.github/workflows/test.yml
