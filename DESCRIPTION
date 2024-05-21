@@ -39,4 +39,4 @@ Remotes:
     RMI-PACTA/pacta.portfolio.audit,
     RMI-PACTA/pacta.portfolio.import,
     RMI-PACTA/pacta.portfolio.utils,
-    RMI-PACTA/pacta.workflow.utils@feat/2-config
+    RMI-PACTA/pacta.workflow.utils
