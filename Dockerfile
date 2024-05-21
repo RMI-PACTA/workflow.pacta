@@ -27,6 +27,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
       git=1:2.34.* \
       libcurl4-openssl-dev=7.81.* \
+      libgit2-dev=1:1.* \
       libicu-dev=70.* \
       libssl-dev=3.0.* \
       openssh-client=1:8.* \
