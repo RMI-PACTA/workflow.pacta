@@ -1,18 +1,41 @@
 Package: workflow.pacta
-Version: 0.0.0.9000
-Type: PACTA
-Description: Run PACTA.
-Depends:
-  dplyr,
-  jsonlite,
-  logger,
-  pacta.portfolio.allocate,
-  pacta.portfolio.audit,
-  pacta.portfolio.import,
-  pacta.portfolio.utils,
-  readr
+Title: Run PACTA
+Version: 0.0.0.9001
+Authors@R: 
+    c(person(given = "CJ",
+             family = "Yetman",
+             role = c("aut", "ctr"),
+             email = "cj@cjyetman.com",
+             comment = c(ORCID = "0000-0001-5099-9500")),
+      person(given = "Jackson", 
+             family = "Hoffart",
+             email = "jackson.hoffart@gmail.com", 
+             role = c("aut", "ctr"),
+             comment = c(ORCID = "0000-0002-8600-5042")),
+      person(given = "Alex",
+             family = "Axthelm",
+             role = c("aut", "cre", "ctr"),
+             email = "aaxthelm@rmi.org",
+             comment = c(ORCID = "0000-0001-8579-8565")),
+      person(given = "RMI",
+             role = c("cph", "fnd"),
+             email = "PACTA4investors@rmi.org"))
+Description: Run the PACTA Analysis.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    dplyr,
+    jsonlite,
+    logger,
+    pacta.portfolio.allocate,
+    pacta.portfolio.audit, 
+    pacta.portfolio.import,
+    pacta.portfolio.utils,
+    readr
 Remotes:
-  RMI-PACTA/pacta.portfolio.allocate,
-  RMI-PACTA/pacta.portfolio.audit,
-  RMI-PACTA/pacta.portfolio.import,
-  RMI-PACTA/pacta.portfolio.utils
+    RMI-PACTA/pacta.portfolio.allocate,
+    RMI-PACTA/pacta.portfolio.audit,
+    RMI-PACTA/pacta.portfolio.import,
+    RMI-PACTA/pacta.portfolio.utils

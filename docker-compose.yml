@@ -1,0 +1,23 @@
+---
+services:
+  workflow.pacta:
+    build: .
+    # stdin_open: true
+    # tty: true
+    # entrypoint: ["R", "--args"]
+    command: '/input_dir/default_config.json'
+    environment:
+      LOG_LEVEL: TRACE
+    volumes:
+      - type: bind
+        source: ${data_dir:-./pacta-data}
+        target: /pacta-data
+        read_only: true
+      - type: bind
+        source: ${output_dir:-./output_dir}
+        target: /output_dir
+        read_only: false
+      - type: bind
+        source: ${input_dir:-./input_dir}
+        target: /input_dir
+        read_only: true

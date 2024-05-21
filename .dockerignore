@@ -4,3 +4,8 @@
 **/Dockerfile
 **/*.md
 **/*.Rproj
+output_dir/**/*
+output_dir
+pacta-data/**/*
+pacta-data
+docker-compose.yml
