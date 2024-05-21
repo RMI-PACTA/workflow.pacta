@@ -31,7 +31,7 @@ run_pacta <- function(
   log_info("Exporting Manifest")
   pacta.workflow.utils::export_manifest(
     manifest_path = file.path(params[["output_dir"]], "manifest.json"),
-    input_files = list(
+    input_files = c(
       params[["portfolio_path"]],
       list.files(
         params[["data_dir"]],
