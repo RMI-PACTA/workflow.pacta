@@ -16,9 +16,8 @@ LABEL org.opencontainers.image.authors=""
 
 # install system dependencies
 RUN apt-get update \
-    DEBIAN_FRONTEND="noninteractive" \
-    DEBCONF_NOWARNINGS="yes" \
-    && apt-get install -y --no-install-recommends \
+    && DEBIAN_FRONTEND="noninteractive" \
+    apt-get install -y --no-install-recommends \
       git=1:2.34.* \
       libcurl4-openssl-dev=7.81.* \
       libicu-dev=70.* \
