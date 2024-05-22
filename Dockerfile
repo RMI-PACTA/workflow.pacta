@@ -2,15 +2,15 @@ FROM rocker/r-ver:4.3.1 AS base
 
 # set Docker image labels
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
-LABEL org.opencontainers.image.description="Docker image to run PACTA"
+LABEL org.opencontainers.image.description="Docker image to run PACTA analysis"
 LABEL org.opencontainers.image.licenses=MIT
-LABEL org.opencontainers.image.title=""
+LABEL org.opencontainers.image.title="workflow.pacta"
 LABEL org.opencontainers.image.revision=""
 LABEL org.opencontainers.image.version=""
-LABEL org.opencontainers.image.vendor=""
+LABEL org.opencontainers.image.vendor="RMI"
 LABEL org.opencontainers.image.base.name=""
 LABEL org.opencontainers.image.ref.name=""
-LABEL org.opencontainers.image.authors=""
+LABEL org.opencontainers.image.authors="Alex Axthelm, CJ Yetman, Jackson Hoffart"
 
 # set apt-get to noninteractive mode
 
