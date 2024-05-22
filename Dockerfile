@@ -26,6 +26,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # set frozen CRAN repo and RProfile.site
+# This block makes use of the builtin ARG $TARGETPLATFORM (See:
+# https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/
+# ) to pick the correct CRAN-like repo, which will let us target binaries fo
+# supported platforms
 ARG TARGETPLATFORM
 RUN PACKAGE_PIN_DATE="2023-10-30" && \
   echo "TARGETPLATFORM: $TARGETPLATFORM" && \
@@ -36,11 +40,11 @@ RUN PACKAGE_PIN_DATE="2023-10-30" && \
   fi && \
   echo "CRAN_LIKE_URL: $CRAN_LIKE_URL" && \
   printf "options(\n \
-    repos = c(CRAN = \"%s\"),\n \
+    repos = c(CRAN = '%s'),\n \
     pkg.sysreqs = FALSE,\n \
     pkg.sysreqs_db_update = FALSE,\n \
     pkg.sysreqs_update = FALSE\n \
-  )" \
+  )\n" \
   "$CRAN_LIKE_URL" \
   > "${R_HOME}/etc/Rprofile.site"
 
