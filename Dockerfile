@@ -67,11 +67,12 @@ COPY . /workflow.pacta/
 
 RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 
+# set default run behavior
+ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
+CMD ["/workflow.pacta/input_dir/default_config.json"]
+
 # Create and use non-root user
 RUN useradd -m -s /bin/bash workflow-pacta
 USER workflow-pacta
 WORKDIR /home/workflow-pacta
 
-# set default run behavior
-ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
-CMD ["/workflow.pacta/input_dir/default_config.json"]
