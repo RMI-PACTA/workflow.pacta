@@ -35,15 +35,14 @@ RUN PACKAGE_PIN_DATE="2023-10-30" && \
     CRAN_LIKE_URL="https://packagemanager.posit.co/cran/$PACKAGE_PIN_DATE"; \
   fi && \
   echo "CRAN_LIKE_URL: $CRAN_LIKE_URL" && \
-  printf "options( \
-    repos = c(CRAN = \"$CRAN_LIKE_URL\"), \
-    pkg.sysreqs = FALSE, \
-    pkg.sysreqs_db_update = FALSE, \
-    pkg.sysreqs_update = FALSE \
+  printf "options(\n \
+    repos = c(CRAN = \"%s\"),\n \
+    pkg.sysreqs = FALSE,\n \
+    pkg.sysreqs_db_update = FALSE,\n \
+    pkg.sysreqs_update = FALSE\n \
   )" \
+  "$CRAN_LIKE_URL" \
   > "${R_HOME}/etc/Rprofile.site"
-
-RUN cat "${R_HOME}/etc/Rprofile.site"
 
 # copy in DESCRIPTION from this repo
 COPY DESCRIPTION /workflow.pacta/DESCRIPTION
