@@ -27,6 +27,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
       git=1:2.34.* \
       libcurl4-openssl-dev=7.81.* \
+      libgit2-dev=1.1.* \
       libicu-dev=70.* \
       libssl-dev=3.0.* \
       openssh-client=1:8.* \
@@ -81,5 +82,5 @@ COPY . /workflow.pacta/
 RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 
 # set default run behavior
-ENTRYPOINT ["/workflow.pacta/run-pacta.sh"]
+ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
 CMD ["/workflow.pacta/input_dir/default_config.json"]
