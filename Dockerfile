@@ -41,6 +41,7 @@ RUN PACKAGE_PIN_DATE="2023-10-30" && \
   echo "CRAN_LIKE_URL: $CRAN_LIKE_URL" && \
   printf "options(\n \
     repos = c(CRAN = '%s'),\n \
+    pak.no_extra_messages = TRUE\n \
     pkg.sysreqs = FALSE,\n \
     pkg.sysreqs_db_update = FALSE,\n \
     pkg.sysreqs_update = FALSE\n \
