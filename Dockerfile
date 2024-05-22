@@ -25,9 +25,25 @@ RUN apt-get update \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
 
-# set frozen CRAN repo
-ARG CRAN_REPO="https://packagemanager.posit.co/cran/2023-10-30"
-RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" 
+# set frozen CRAN repo and RProfile.site
+ARG TARGETPLATFORM
+RUN PACKAGE_PIN_DATE="2023-10-30" && \
+  echo "TARGETPLATFORM: $TARGETPLATFORM" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ] && grep -q -e "Jammy Jellyfish" "/etc/os-release" ; then \
+    CRAN_LIKE_URL="https://packagemanager.posit.co/cran/__linux__/jammy/$PACKAGE_PIN_DATE"; \
+  else \
+    CRAN_LIKE_URL="https://packagemanager.posit.co/cran/$PACKAGE_PIN_DATE"; \
+  fi && \
+  echo "CRAN_LIKE_URL: $CRAN_LIKE_URL" && \
+  printf "options( \
+    repos = c(CRAN = \"$CRAN_LIKE_URL\"), \
+    pkg.sysreqs = FALSE, \
+    pkg.sysreqs_db_update = FALSE, \
+    pkg.sysreqs_update = FALSE \
+  )" \
+  > "${R_HOME}/etc/Rprofile.site"
+
+RUN cat "${R_HOME}/etc/Rprofile.site"
 
 # copy in DESCRIPTION from this repo
 COPY DESCRIPTION /workflow.pacta/DESCRIPTION
