@@ -1,7 +1,7 @@
 {
-  "data_dir": "../pacta-data/2023Q4",
-  "portfolio_path": "input_dir/default_portfolio.csv",
-  "output_dir": "output_dir",
+  "data_dir": "/pacta-data/2023Q4",
+  "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
+  "output_dir": "/home/workflow-pacta/output_dir",
   "start_year": 2023,
   "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
   "scenario_sources_list": ["GECO2023", "ISF2023", "WEO2023"],
