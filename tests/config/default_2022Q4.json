@@ -3,7 +3,7 @@
   "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2022Q4_20240426T113151Z",
   "parameters": {
     "data_dir": "/pacta-data/2022Q4",
-    "portfolio_path": "input_dir/default_portfolio.csv",
+    "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
     "output_dir": "output_dir",
     "start_year": 2022,
     "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
