@@ -82,7 +82,7 @@ jobs:
           WORKSPACE: ${{ github.workspace }}
           PARAMETERS: ${{ steps.prepare.outputs.parameters }}
         run: |
-          chmod -R 777 "${WORKSPACE}/${OUTPUTS_DIR}"
+          chmod -R 777 "${WORKSPACE}/${OUTPUT_DIR}"
           docker run \
           --network none \
           --env LOG_LEVEL=DEBUG \
