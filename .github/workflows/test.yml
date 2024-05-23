@@ -86,7 +86,7 @@ jobs:
           --network none \
           --env LOG_LEVEL=DEBUG \
           --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/pacta-data \
-          --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/output_dir \
+          --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/home/workflow-pacta/output_dir \
           --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/input_dir \
           $FULL_IMAGE_NAME \
           $PARAMETERS
