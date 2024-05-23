@@ -1,5 +1,5 @@
 {
-  "data_dir": "../pacta-data/2023Q4",
+  "data_dir": "../pacta-data/",
   "portfolio_path": "input_dir/default_portfolio.csv",
   "output_dir": "output_dir",
   "start_year": 2023,

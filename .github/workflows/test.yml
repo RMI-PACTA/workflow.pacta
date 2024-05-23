@@ -60,16 +60,14 @@ jobs:
       - name: Download pacta-data
         uses: azure/CLI@v2
         env:
-          HOLDINGS_DATE: ${{ steps.prepare.outputs.holdings-date }}
           PACTA_DATA_URL: ${{ steps.prepare.outputs.pacta-data-url }}
         with:
           # azcliversion: 2.30.0
           inlineScript: |
-            PACTA_DATA_DATE_DIR="pacta-data/$HOLDINGS_DATE"
             echo "pacta_data_dir: $PACTA_DATA_DATE_DIR"
             az storage copy \
               --source "$PACTA_DATA_URL/*" \
-              --destination "$PACTA_DATA_DATE_DIR" \
+              --destination "pacta-data" \
               --recursive \
               --exclude-pattern "*.sqlite"
 
