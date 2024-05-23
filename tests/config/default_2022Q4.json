@@ -4,7 +4,7 @@
   "parameters": {
     "data_dir": "/pacta-data/2022Q4",
     "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
-    "output_dir": "/output_dir",
+    "output_dir": "/home/workflow-pacta/output_dir",
     "start_year": 2022,
     "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
     "scenario_sources_list": ["GECO2022", "ISF2021", "WEO2022"],
