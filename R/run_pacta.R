@@ -4,6 +4,19 @@ run_pacta <- function(
   output_dir = Sys.getenv("OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
 ) {
+  log_debug("Checking configuration.")
+  if (is.null(pacta_data_dir) || pacta_data_dir == "") {
+    log_error("PACTA_DATA_DIR not set.")
+    stop("PACTA_DATA_DIR not set.")
+  }
+  if (is.null(output_dir) || output_dir == "") {
+    log_error("OUTPUT_DIR not set.")
+    stop("OUTPUT_DIR not set.")
+  }
+  if (is.null(portfolio_dir) || portfolio_dir == "") {
+    log_error("PORTFOLIO_DIR not set.")
+    stop("PORTFOLIO_DIR not set.")
+  }
   log_info("Running PACTA")
 
   # Read Params
@@ -19,7 +32,7 @@ run_pacta <- function(
     )
   )
 
-  workflow.pacta:::run_audit(
+  run_audit(
     portfolio_files = params[["portfolio_files"]],
     pacta_data_dir = pacta_data_dir,
     portfolio_dir = portfolio_dir,
@@ -37,7 +50,7 @@ run_pacta <- function(
 
   log_info("Exporting Manifest")
   pacta.workflow.utils::export_manifest(
-    manifest_path = file.path(params[["output_dir"]], "manifest.json"),
+    manifest_path = file.path(output_dir, "manifest.json"),
     input_files = c(
       file.path(portfolio_dir, params[["portfolio_files"]]),
       list.files(
@@ -47,7 +60,7 @@ run_pacta <- function(
       )
     ),
     output_files = list.files(
-      params[["output_dir"]],
+      output_dir,
       full.names = TRUE,
       recursive = TRUE
     ),
