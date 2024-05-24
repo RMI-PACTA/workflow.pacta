@@ -2,7 +2,7 @@
   "holdingsDate": "2022Q4",
   "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2022Q4_20240426T113151Z",
   "parameters": {
-    "portfolio_path": "/input_dir/default_portfolio.csv",
+    "portfolio_files": "default_portfolio.csv",
     "inherit": "GENERAL_2022Q4"
   }
 }

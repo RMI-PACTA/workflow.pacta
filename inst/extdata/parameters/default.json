@@ -1,7 +1,7 @@
 {
   "data_dir": "/pacta-data/",
-  "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
-  "output_dir": "/home/workflow-pacta/output_dir",
+  "portfolio_dir": "/workflow.pacta/input_dir/",
+  "output_dir": "/home/workflow-pacta/output_dir/",
   "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
   "scenario_geographies_list": ["Global", "GlobalAggregate", "NonOECD", "OECD"],
   "sector_list": ["Power", "Automotive", "Oil&Gas", "Coal", "Steel", "Aviation", "Cement"],

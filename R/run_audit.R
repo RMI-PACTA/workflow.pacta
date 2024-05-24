@@ -1,6 +1,7 @@
 run_audit <- function(
   data_dir,
-  portfolio_path,
+  portfolio_dir,
+  portfolio_files,
   output_dir
 ) {
 
@@ -52,7 +53,7 @@ run_audit <- function(
 
   log_info("Reading portfolio from file: \"{portfolio_path}\".")
   portfolio_raw <- pacta.portfolio.import::read_portfolio_csv(
-    filepaths = portfolio_path
+    filepaths = filepath(portfolio_path, portfolio_files)
   )
 
   log_info("Processing raw portfolio.")

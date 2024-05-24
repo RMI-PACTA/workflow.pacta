@@ -19,6 +19,7 @@ run_pacta <- function(
   run_audit(
     data_dir = params[["data_dir"]],
     portfolio_path = params[["portfolio_path"]],
+    portfolio_files = params[["portfolio_files"]],
     output_dir = params[["output_dir"]]
   )
   run_analysis(
