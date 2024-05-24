@@ -2,9 +2,9 @@
 services:
   workflow.pacta:
     build: .
-    stdin_open: true
-    tty: true
-    entrypoint: ["R", "--args"]
+    # stdin_open: true
+    # tty: true
+    # entrypoint: ["R", "--args"]
     command: '{\"portfolio_files\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
