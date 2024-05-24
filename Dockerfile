@@ -1,30 +1,20 @@
-# using rocker r-vers as a base with R 4.3.1
-# https://hub.docker.com/r/rocker/r-ver
-# https://rocker-project.org/images/versioned/r-ver.html
-
-# set proper base image
-ARG R_VERS="4.3.1"
-FROM rocker/r-ver:$R_VERS AS base
+FROM docker.io/rocker/r-ver:4.3.1 AS base
 
 # set Docker image labels
 LABEL org.opencontainers.image.source=https://github.com/RMI-PACTA/workflow.pacta
-LABEL org.opencontainers.image.description="Docker image to run PACTA"
+LABEL org.opencontainers.image.description="Docker image to run PACTA analysis"
 LABEL org.opencontainers.image.licenses=MIT
-LABEL org.opencontainers.image.title=""
-LABEL org.opencontainers.image.revision=""
-LABEL org.opencontainers.image.version=""
-LABEL org.opencontainers.image.vendor=""
-LABEL org.opencontainers.image.base.name=""
-LABEL org.opencontainers.image.ref.name=""
-LABEL org.opencontainers.image.authors=""
+LABEL org.opencontainers.image.title="workflow.pacta"
+LABEL org.opencontainers.image.vendor="RMI"
+LABEL org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.3.1"
+LABEL org.opencontainers.image.authors="Alex Axthelm, CJ Yetman, Jackson Hoffart"
 
 # set apt-get to noninteractive mode
-ARG DEBIAN_FRONTEND="noninteractive"
-ARG DEBCONF_NOWARNINGS="yes"
 
 # install system dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && DEBIAN_FRONTEND="noninteractive" \
+    apt-get install -y --no-install-recommends \
       git=1:2.34.* \
       libcurl4-openssl-dev=7.81.* \
       libgit2-dev=1.1.* \
@@ -35,47 +25,43 @@ RUN apt-get update \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
 
-# set frozen CRAN repo
-ARG CRAN_REPO="https://packagemanager.posit.co/cran/2023-10-30"
-RUN echo "options(repos = c(CRAN = '$CRAN_REPO'), pkg.sysreqs = FALSE)" >> "${R_HOME}/etc/Rprofile.site" 
+# set frozen CRAN repo and RProfile.site
+# This block makes use of the builtin ARG $TARGETPLATFORM (See:
+# https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/
+# ) to pick the correct CRAN-like repo, which will let us target binaries fo
+# supported platforms
+ARG TARGETPLATFORM
+RUN PACKAGE_PIN_DATE="2023-10-30" && \
+  echo "TARGETPLATFORM: $TARGETPLATFORM" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ] && grep -q -e "Jammy Jellyfish" "/etc/os-release" ; then \
+    CRAN_LIKE_URL="https://packagemanager.posit.co/cran/__linux__/jammy/$PACKAGE_PIN_DATE"; \
+  else \
+    CRAN_LIKE_URL="https://packagemanager.posit.co/cran/$PACKAGE_PIN_DATE"; \
+  fi && \
+  echo "CRAN_LIKE_URL: $CRAN_LIKE_URL" && \
+  printf "options(\n \
+    repos = c(CRAN = '%s'),\n \
+    pak.no_extra_messages = TRUE,\n \
+    pkg.sysreqs = FALSE,\n \
+    pkg.sysreqs_db_update = FALSE,\n \
+    pkg.sysreqs_update = FALSE\n \
+  )\n" \
+  "$CRAN_LIKE_URL" \
+  > "${R_HOME}/etc/Rprofile.site"
 
 # copy in DESCRIPTION from this repo
-COPY DESCRIPTION /DESCRIPTION
+COPY DESCRIPTION /workflow.pacta/DESCRIPTION
 
 # install pak, find dependencises from DESCRIPTION, and install them.
 RUN Rscript -e "\
     install.packages('pak'); \
-    deps <- pak::local_deps(root = '.'); \
+    deps <- pak::local_deps(root = '/workflow.pacta'); \
     pkg_deps <- deps[!deps[['direct']], 'ref']; \
     print(pkg_deps); \
     pak::pak(pkg_deps); \
     "
 
 FROM base AS install-pacta
-
-# PACTA R package tags
-ARG allocate_tag="/tree/main"
-ARG audit_tag="/tree/main"
-ARG import_tag="/tree/main"
-ARG utils_tag="/tree/main"
-
-ARG allocate_url="https://github.com/rmi-pacta/pacta.portfolio.allocate"
-ARG audit_url="https://github.com/rmi-pacta/pacta.portfolio.audit"
-ARG import_url="https://github.com/rmi-pacta/pacta.portfolio.import"
-ARG utils_url="https://github.com/rmi-pacta/pacta.portfolio.utils"
-
-# install R package dependencies
-RUN Rscript -e "\
-  gh_pkgs <- \
-    c( \
-      paste0('$allocate_url', '$allocate_tag'), \
-      paste0('$audit_url', '$audit_tag'), \
-      paste0('$import_url', '$import_tag'), \
-      paste0('$utils_url', '$utils_tag') \
-    ); \
-  print(gh_pkgs); \
-  pak::pak(c(gh_pkgs)); \
-  "
 
 COPY . /workflow.pacta/
 
@@ -84,3 +70,9 @@ RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 # set default run behavior
 ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
 CMD ["/workflow.pacta/input_dir/default_config.json"]
+
+# Create and use non-root user
+RUN useradd -m -s /bin/bash workflow-pacta
+USER workflow-pacta
+WORKDIR /home/workflow-pacta
+

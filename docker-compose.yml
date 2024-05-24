@@ -15,7 +15,7 @@ services:
         read_only: true
       - type: bind
         source: ${output_dir:-./output_dir}
-        target: /output_dir
+        target: /home/workflow-pacta/output_dir
         read_only: false
       - type: bind
         source: ${input_dir:-./input_dir}
