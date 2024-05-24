@@ -5,22 +5,22 @@ services:
     # stdin_open: true
     # tty: true
     # entrypoint: ["R", "--args"]
-    command: '{\"portfolio_files\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
+    command: '{\"portfolio_files\": \"default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
-      PACTA_DATA_DIR: "/pacta-data"
-      OUTPUT_DIR: "/home/workflow-pacta/output_dir"
-      PORTFOLIO_DIR: "/input_dir"
+      PACTA_DATA_DIR: "/mnt/pacta-data"
+      OUTPUT_DIR: "/mnt/output_dir"
+      PORTFOLIO_DIR: "/mnt/portfolios"
     volumes:
       - type: bind
         source: ${data_dir:-./pacta-data}
-        target: /pacta-data
+        target: /mnt/pacta-data
         read_only: true
       - type: bind
         source: ${output_dir:-./output_dir}
-        target: /home/workflow-pacta/output_dir
+        target: /mnt/output_dir
         read_only: false
       - type: bind
-        source: ${input_dir:-./input_dir}
-        target: /input_dir
+        source: ${input_dir:-./portfolios}
+        target: /mnt/portfolios
         read_only: true
