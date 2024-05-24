@@ -84,9 +84,9 @@ jobs:
           docker run \
           --network none \
           --env LOG_LEVEL=DEBUG \
-          --env PACTA_DATA_DIR="/pacta-data"
-          --env OUTPUT_DIR="/home/workflow-pacta/output_dir"
-          --env PORTFOLIO_DIR="/input_dir"
+          --env PACTA_DATA_DIR="/pacta-data" \
+          --env OUTPUT_DIR="/home/workflow-pacta/output_dir" \
+          --env PORTFOLIO_DIR="/input_dir" \
           --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/pacta-data \
           --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/home/workflow-pacta/output_dir \
           --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/input_dir \
