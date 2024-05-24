@@ -70,6 +70,11 @@ RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 # set default run behavior
 ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
 
+# Define default mountpoints
+ENV PACTA_DATA_DIR="/mnt/pacta-data" \
+  OUTPUT_DIR="/mnt/output_dir" \
+  PORTFOLIO_DIR="/mnt/portfolios"
+
 # Create and use non-root user
 RUN useradd -m -s /bin/bash workflow-pacta
 USER workflow-pacta
