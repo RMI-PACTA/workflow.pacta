@@ -5,12 +5,15 @@ run_pacta <- function(
 
   # Read Params
   log_trace("Processing input parameters.")
-  if (length(raw_params) == 0L || raw_params == "") {
-    log_warn("No configuration file specified, using default")
-    raw_params <- file.path("input_dir", "default_config.json")
+  if (length(raw_params) == 0L || all(raw_params == "")) {
+    log_error("No configuration file specified.")
   }
   params <- pacta.workflow.utils:::parse_params(
-    json = raw_params
+    json = raw_params,
+    inheritence_search_paths = system.file(
+      "extdata", "parameters",
+      package = "workflow.pacta"
+    )
   )
 
   run_audit(

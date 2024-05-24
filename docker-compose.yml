@@ -5,7 +5,7 @@ services:
     # stdin_open: true
     # tty: true
     # entrypoint: ["R", "--args"]
-    command: '/input_dir/default_config.json'
+    command: '{\"portfolio_path\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
     volumes:
