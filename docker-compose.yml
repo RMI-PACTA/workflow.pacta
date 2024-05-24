@@ -2,12 +2,15 @@
 services:
   workflow.pacta:
     build: .
-    # stdin_open: true
-    # tty: true
-    # entrypoint: ["R", "--args"]
+    stdin_open: true
+    tty: true
+    entrypoint: ["R", "--args"]
     command: '{\"portfolio_path\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
+      PACTA_DATA_DIR: "/pacta-data"
+      OUTPUT_DIR: "/home/workflow-pacta/output_dir"
+      PORTFOLIO_DIR: "/input_dir"
     volumes:
       - type: bind
         source: ${data_dir:-./pacta-data}
