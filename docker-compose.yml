@@ -5,7 +5,7 @@ services:
     stdin_open: true
     tty: true
     entrypoint: ["R", "--args"]
-    command: '{\"portfolio_path\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
+    command: '{\"portfolio_files\": \"/input_dir/default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
       PACTA_DATA_DIR: "/pacta-data"

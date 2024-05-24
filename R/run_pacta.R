@@ -19,7 +19,7 @@ run_pacta <- function(
     )
   )
 
-  run_audit(
+  workflow.pacta:::run_audit(
     portfolio_files = params[["portfolio_files"]],
     pacta_data_dir = pacta_data_dir,
     portfolio_dir = portfolio_dir,
@@ -39,7 +39,7 @@ run_pacta <- function(
   pacta.workflow.utils::export_manifest(
     manifest_path = file.path(params[["output_dir"]], "manifest.json"),
     input_files = c(
-      params[["portfolio_path"]],
+      file.path(portfolio_dir, params[["portfolio_files"]]),
       list.files(
         pacta_data_dir,
         full.names = TRUE,
