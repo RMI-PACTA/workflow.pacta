@@ -74,7 +74,7 @@ jobs:
       - name: Run Docker Image
         env:
           FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
-          INPUT_DIR: input_dir
+          PORTFOLIO_DIR: portfolios
           OUTPUT_DIR: output_dir
           PACTA_DATA_DIR: pacta-data
           WORKSPACE: ${{ github.workspace }}
@@ -86,7 +86,7 @@ jobs:
           --env LOG_LEVEL=DEBUG \
           --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/mnt/pacta-data \
           --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/mnt/output_dir \
-          --mount type=bind,source=${WORKSPACE}/${INPUT_DIR},target=/mnt/portfolios \
+          --mount type=bind,source=${WORKSPACE}/${PORTFOLIO_DIR},target=/mnt/portfolios \
           $FULL_IMAGE_NAME \
           $PARAMETERS
 
