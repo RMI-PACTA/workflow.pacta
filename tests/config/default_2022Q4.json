@@ -2,15 +2,7 @@
   "holdingsDate": "2022Q4",
   "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2022Q4_20240426T113151Z",
   "parameters": {
-    "data_dir": "/pacta-data/",
-    "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
-    "output_dir": "/home/workflow-pacta/output_dir",
-    "start_year": 2022,
-    "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
-    "scenario_sources_list": ["GECO2022", "ISF2021", "WEO2022"],
-    "scenario_geographies_list": ["Global", "GlobalAggregate", "NonOECD", "OECD"],
-    "sector_list": ["Power", "Automotive", "Oil&Gas", "Coal", "Steel", "Aviation", "Cement"],
-    "has_map": false,
-    "project_code": "GENERAL"
+    "portfolio_path": "/input_dir/default_portfolio.csv",
+    "inherit": "GENERAL_2022Q4"
   }
 }
