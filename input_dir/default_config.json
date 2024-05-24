@@ -1,5 +1,5 @@
 {
-  "data_dir": "../pacta-data/",
+  "data_dir": "/pacta-data/",
   "portfolio_path": "/workflow.pacta/input_dir/default_portfolio.csv",
   "output_dir": "/home/workflow-pacta/output_dir",
   "start_year": 2023,
