@@ -14,45 +14,82 @@
       "type": "array",
       "description": "List of equity markets to be analyzed.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "DevelopedMarket",
+          "EmergingMarket",
+          "GlobalMarket"
+        ]
       }
     },
     "scenario_geographies_list": {
       "type": "array",
       "description": "List of scenario geographies to be analyzed.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "Global",
+          "GlobalAggregate",
+          "NonOECD",
+          "OECD"
+        ]
       }
     },
     "sector_list": {
       "type": "array",
       "description": "List of PACTA sectors to be analyzed.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "Automotive",
+          "Aviation",
+          "Cement",
+          "Coal",
+          "Oil&Gas",
+          "Power",
+          "Steel"
+        ]
       }
     },
     "start_year": {
       "type": "integer",
-      "description": "Start year of the analysis."
+      "description": "Start year of the analysis.",
+      "minimum": 2022
     },
     "holdingsDate": {
       "type": "string",
-      "description": "Date of the holdings data."
+      "description": "Date of the holdings data.",
+      "format": "date",
+      "enum": [
+        "2022-12-31",
+        "2023-12-31"
+      ]
     },
     "scenario_sources_list": {
       "type": "array",
-      "description": "List of scenario sources to be analyzed.",
+      "description": "List of scenario sources to be used.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "GECO2022",
+          "GECO2023",
+          "ISF2021",
+          "ISF2023",
+          "WEO2022",
+          "WEO2023"
+        ]
       }
     },
     "project_code": {
       "type": "string",
-      "description": "Project code."
+      "description": "Project code.",
+      "enum": [
+        "GENERAL"
+      ]
     }
   },
   "required": [
     "equity_market_list"
   ],
-  "additionalProperties": false
+  "additionalProperties": true
 }
