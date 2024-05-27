@@ -6,8 +6,7 @@ calc_weights_and_outputs <- function(
   equity_market_list,
   scenario_sources_list,
   scenario_geographies_list,
-  sector_list,
-  has_map
+  sector_list
 ) {
 
   log_info("Starting {portfolio_type} calculations.")
@@ -85,7 +84,7 @@ calc_weights_and_outputs <- function(
     log_debug("Creating combined {portfolio_type} portfolio outputs.")
     port_all <- dplyr::bind_rows(port_pw, port_own)
 
-    if (has_map && pacta.portfolio.utils::data_check(company_all)) {
+    if (pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Creating {portfolio_type} map outputs.")
       abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(portfolio_type)
       log_debug("Merging geography data into {portfolio_type} map outputs.")
@@ -150,7 +149,7 @@ calc_weights_and_outputs <- function(
       )
     }
 
-    if (has_map && pacta.portfolio.utils::data_check(map)) {
+    if (pacta.portfolio.utils::data_check(map)) {
       log_debug("Saving {portfolio_type} map results.")
       results_map_filename <- file.path(
         output_dir,

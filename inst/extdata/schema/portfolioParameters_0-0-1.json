@@ -35,10 +35,6 @@
       "type": "integer",
       "description": "Start year of the analysis."
     },
-    "has_map": {
-      "type": "boolean",
-      "description": "Should the analysis include map data"
-    },
     "holdingsDate": {
       "type": "string",
       "description": "Date of the holdings data."

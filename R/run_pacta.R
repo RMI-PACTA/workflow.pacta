@@ -48,8 +48,7 @@ run_pacta <- function(
     equity_market_list = params[["equity_market_list"]],
     scenario_sources_list = params[["scenario_sources_list"]],
     scenario_geographies_list = params[["scenario_geographies_list"]],
-    sector_list = params[["sector_list"]],
-    has_map = params[["has_map"]]
+    sector_list = params[["sector_list"]]
   )
 
   log_info("Exporting Manifest")
