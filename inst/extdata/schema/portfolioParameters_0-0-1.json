@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "pacta.rmi.org/schemas/portfolioParameters_full.json",
+  "$id": "https://raw.githubusercontent.com/RMI-PACTA/workflow.pacta/main/inst/extdata/schema/portfolioParameters_0-0-1.json",
   "title": "portfolioParameters",
   "description": "Full Portfolio Parameters required to run workflow.pacta.",
   "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
