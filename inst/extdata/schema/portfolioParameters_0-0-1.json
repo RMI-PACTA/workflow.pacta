@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "pacta.rmi.org/schemas/portfolioParameters_full.json",
+  "title": "portfolioParameters",
+  "description": "Full Portfolio Parameters required to run workflow.pacta.",
+  "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
+  "type": "object",
+  "properties": {
+    "portfolio_files": {
+      "type": "string",
+      "description": "List of portfolio files to be analyzed."
+    },
+    "equity_market_list": {
+      "type": "array",
+      "description": "List of equity markets to be analyzed.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scenario_geographies_list": {
+      "type": "array",
+      "description": "List of scenario geographies to be analyzed.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sector_list": {
+      "type": "array",
+      "description": "List of PACTA sectors to be analyzed.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "start_year": {
+      "type": "integer",
+      "description": "Start year of the analysis."
+    },
+    "has_map": {
+      "type": "boolean",
+      "description": "Should the analysis include map data"
+    },
+    "holdingsDate": {
+      "type": "string",
+      "description": "Date of the holdings data."
+    },
+    "scenario_sources_list": {
+      "type": "array",
+      "description": "List of scenario sources to be analyzed.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "project_code": {
+      "type": "string",
+      "description": "Project code."
+    }
+  },
+  "required": [
+    "equity_market_list"
+  ],
+  "additionalProperties": false
+}

@@ -29,6 +29,10 @@ run_pacta <- function(
     inheritence_search_paths = system.file(
       "extdata", "parameters",
       package = "workflow.pacta"
+    ),
+    schema_file = system.file(
+      "extdata", "schema", "portfolioParameters_0-0-1.json",
+      package = "workflow.pacta"
     )
   )
 
