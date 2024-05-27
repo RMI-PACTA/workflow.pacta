@@ -93,16 +93,27 @@
       ]
     }
   },
-  "required": [
-    "equity_market_list",
-    "holdingsDate",
-    "portfolio_files",
-    "project_code",
-    "scenario_geographies_list",
-    "scenario_sources_list",
-    "sector_list",
-    "start_year",
-    "time_horizon"
+  "allOf": [
+    {
+      "required": [
+        "equity_market_list",
+        "holdingsDate",
+        "portfolio_files",
+        "project_code",
+        "scenario_geographies_list",
+        "scenario_sources_list",
+        "sector_list",
+        "start_year",
+        "time_horizon"
+      ]
+    },
+    {
+      "not": {
+        "required": [
+          "inherit"
+        ]
+      }
+    }
   ],
   "additionalProperties": true
 }
