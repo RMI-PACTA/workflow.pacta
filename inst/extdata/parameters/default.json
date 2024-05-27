@@ -18,5 +18,6 @@
     "Steel",
     "Aviation",
     "Cement"
-  ]
+  ],
+  "time_horizon": 5
 }

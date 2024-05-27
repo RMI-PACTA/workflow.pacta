@@ -4,7 +4,9 @@ run_analysis <- function(
   equity_market_list,
   scenario_sources_list,
   scenario_geographies_list,
-  sector_list
+  sector_list,
+  start_year,
+  time_horizon
 ) {
 
   # defaulting to WARN to maintain current (silent) behavior.
@@ -38,7 +40,9 @@ run_analysis <- function(
     equity_market_list = equity_market_list,
     scenario_sources_list = scenario_sources_list,
     scenario_geographies_list = scenario_geographies_list,
-    sector_list = sector_list
+    sector_list = sector_list,
+    start_year = start_year,
+    time_horizon = time_horizon
   )
 
   calc_weights_and_outputs(
@@ -49,7 +53,9 @@ run_analysis <- function(
     equity_market_list = equity_market_list,
     scenario_sources_list = scenario_sources_list,
     scenario_geographies_list = scenario_geographies_list,
-    sector_list = sector_list
+    sector_list = sector_list,
+    start_year = start_year,
+    time_horizon = time_horizon
   )
 
   log_info("Finished PACTA calculations.")

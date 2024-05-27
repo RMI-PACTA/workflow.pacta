@@ -6,7 +6,9 @@ calc_weights_and_outputs <- function(
   equity_market_list,
   scenario_sources_list,
   scenario_geographies_list,
-  sector_list
+  sector_list,
+  start_year,
+  time_horizon
 ) {
 
   log_info("Starting {portfolio_type} calculations.")
@@ -86,11 +88,18 @@ calc_weights_and_outputs <- function(
 
     if (pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Creating {portfolio_type} map outputs.")
-      abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(portfolio_type)
+      abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(
+        portfolio_type = portfolio_type,
+        data_path = data_dir,
+        start_year = start_year,
+        time_horizon = time_horizon,
+        sector_list = sector_list
+      )
       log_debug("Merging geography data into {portfolio_type} map outputs.")
       map <- pacta.portfolio.allocate::merge_in_geography(
         portfolio = company_all,
-        ald_raw = abcd_raw
+        ald_raw = abcd_raw,
+        sector_list = sector_list
       )
       log_trace("Removing abcd_raw object from memory.")
       rm(abcd_raw)
