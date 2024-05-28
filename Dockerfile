@@ -25,16 +25,6 @@ RUN apt-get update \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
 
-# Create and use non-root user
-# -m creates a home directory,
-# -G adds user to staff group allowing R package installation.
-RUN useradd \
-      -m \
-      -G staff \
-      workflow-pacta
-USER workflow-pacta
-WORKDIR /home/workflow-pacta
-
 # set frozen CRAN repo and RProfile.site
 # This block makes use of the builtin ARG $TARGETPLATFORM (See:
 # https://www.docker.com/blog/faster-multi-platform-builds-dockerfile-cross-compilation-guide/
@@ -58,6 +48,16 @@ RUN PACKAGE_PIN_DATE="2023-10-30" && \
   )\n" \
   "$CRAN_LIKE_URL" \
   > "${R_HOME}/etc/Rprofile.site"
+
+# Create and use non-root user
+# -m creates a home directory,
+# -G adds user to staff group allowing R package installation.
+RUN useradd \
+      -m \
+      -G staff \
+      workflow-pacta
+USER workflow-pacta
+WORKDIR /home/workflow-pacta
 
 # copy in DESCRIPTION from this repo
 COPY DESCRIPTION /workflow.pacta/DESCRIPTION
