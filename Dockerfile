@@ -31,7 +31,7 @@ RUN apt-get update \
 # ) to pick the correct CRAN-like repo, which will let us target binaries fo
 # supported platforms
 ARG TARGETPLATFORM
-RUN PACKAGE_PIN_DATE="2023-10-30" && \
+RUN PACKAGE_PIN_DATE="2024-03-05" && \
   echo "TARGETPLATFORM: $TARGETPLATFORM" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ] && grep -q -e "Jammy Jellyfish" "/etc/os-release" ; then \
     CRAN_LIKE_URL="https://packagemanager.posit.co/cran/__linux__/jammy/$PACKAGE_PIN_DATE"; \
