@@ -29,14 +29,14 @@ Imports:
     dplyr,
     jsonvalidate,
     logger,
-    pacta.portfolio.allocate (>= 0.0.2.9001),
+    pacta.portfolio.allocate,
     pacta.portfolio.audit,
     pacta.portfolio.import,
     pacta.portfolio.utils,
     pacta.workflow.utils,
     readr
 Remotes:
-    RMI-PACTA/pacta.portfolio.allocate@fix/48-remove-globalenv,
+    RMI-PACTA/pacta.portfolio.allocate,
     RMI-PACTA/pacta.portfolio.audit,
     RMI-PACTA/pacta.portfolio.import,
     RMI-PACTA/pacta.portfolio.utils,
