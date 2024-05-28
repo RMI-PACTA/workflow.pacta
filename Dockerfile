@@ -9,9 +9,9 @@ LABEL org.opencontainers.image.vendor="RMI"
 LABEL org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.3.1"
 LABEL org.opencontainers.image.authors="Alex Axthelm, CJ Yetman, Jackson Hoffart"
 
-# set apt-get to noninteractive mode
 
 # install system dependencies
+USER root
 RUN apt-get update \
     && DEBIAN_FRONTEND="noninteractive" \
     apt-get install -y --no-install-recommends \
@@ -24,6 +24,16 @@ RUN apt-get update \
       wget=1.21.* \
     && chmod -R a+rwX /root \
     && rm -rf /var/lib/apt/lists/*
+
+# Create and use non-root user
+# -m creates a home directory,
+# -G adds user to staff group allowing R package installation.
+RUN useradd \
+      -m \
+      -G staff \
+      workflow-pacta
+USER workflow-pacta
+WORKDIR /home/workflow-pacta
 
 # set frozen CRAN repo and RProfile.site
 # This block makes use of the builtin ARG $TARGETPLATFORM (See:
@@ -70,9 +80,3 @@ RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 # set default run behavior
 ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
 CMD ["/workflow.pacta/input_dir/default_config.json"]
-
-# Create and use non-root user
-RUN useradd -m -s /bin/bash workflow-pacta
-USER workflow-pacta
-WORKDIR /home/workflow-pacta
-
