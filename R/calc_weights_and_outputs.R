@@ -90,7 +90,7 @@ calc_weights_and_outputs <- function(
       log_debug("Creating {portfolio_type} map outputs.")
       abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(
         portfolio_type = portfolio_type,
-        data_path = data_dir,
+        analysis_inputs_path = data_dir,
         start_year = start_year,
         time_horizon = time_horizon,
         sector_list = sector_list
