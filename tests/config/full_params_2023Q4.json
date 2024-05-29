@@ -1,0 +1,15 @@
+{
+  "holdingsDate": "2023Q4",
+  "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2023Q4_20240424T120055Z",
+  "parameters": {
+    "equity_market_list": ["GlobalMarket", "DevelopedMarket", "EmergingMarket"],
+    "scenario_geographies_list": ["Global", "GlobalAggregate", "NonOECD", "OECD"],
+    "sector_list": ["Power", "Automotive", "Oil&Gas", "Coal", "Steel", "Aviation", "Cement"],
+    "time_horizon": 5,
+    "start_year": 2023,
+    "holdingsDate": "2023-12-31",
+    "scenario_sources_list": ["GECO2023", "ISF2023", "WEO2023"],
+    "project_code": "GENERAL",
+    "portfolio_files": "default_portfolio.csv"
+  }
+}

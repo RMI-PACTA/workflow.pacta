@@ -1,11 +1,12 @@
 run_analysis <- function(
-  data_dir,
+  pacta_data_dir,
   output_dir,
   equity_market_list,
   scenario_sources_list,
   scenario_geographies_list,
   sector_list,
-  has_map
+  start_year,
+  time_horizon
 ) {
 
   # defaulting to WARN to maintain current (silent) behavior.
@@ -35,24 +36,26 @@ run_analysis <- function(
     total_portfolio = total_portfolio,
     portfolio_type = "Equity",
     output_dir = output_dir,
-    data_dir = data_dir,
+    data_dir = pacta_data_dir,
     equity_market_list = equity_market_list,
     scenario_sources_list = scenario_sources_list,
     scenario_geographies_list = scenario_geographies_list,
     sector_list = sector_list,
-    has_map = has_map
+    start_year = start_year,
+    time_horizon = time_horizon
   )
 
   calc_weights_and_outputs(
     total_portfolio = total_portfolio,
     portfolio_type = "Bonds",
     output_dir = output_dir,
-    data_dir = data_dir,
+    data_dir = pacta_data_dir,
     equity_market_list = equity_market_list,
     scenario_sources_list = scenario_sources_list,
     scenario_geographies_list = scenario_geographies_list,
     sector_list = sector_list,
-    has_map = has_map
+    start_year = start_year,
+    time_horizon = time_horizon
   )
 
   log_info("Finished PACTA calculations.")

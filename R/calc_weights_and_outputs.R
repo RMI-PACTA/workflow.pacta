@@ -7,7 +7,8 @@ calc_weights_and_outputs <- function(
   scenario_sources_list,
   scenario_geographies_list,
   sector_list,
-  has_map
+  start_year,
+  time_horizon
 ) {
 
   log_info("Starting {portfolio_type} calculations.")
@@ -85,13 +86,20 @@ calc_weights_and_outputs <- function(
     log_debug("Creating combined {portfolio_type} portfolio outputs.")
     port_all <- dplyr::bind_rows(port_pw, port_own)
 
-    if (has_map && pacta.portfolio.utils::data_check(company_all)) {
+    if (pacta.portfolio.utils::data_check(company_all)) {
       log_debug("Creating {portfolio_type} map outputs.")
-      abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(portfolio_type)
+      abcd_raw <- pacta.portfolio.allocate::get_abcd_raw(
+        portfolio_type = portfolio_type,
+        analysis_inputs_path = data_dir,
+        start_year = start_year,
+        time_horizon = time_horizon,
+        sector_list = sector_list
+      )
       log_debug("Merging geography data into {portfolio_type} map outputs.")
       map <- pacta.portfolio.allocate::merge_in_geography(
         portfolio = company_all,
-        ald_raw = abcd_raw
+        ald_raw = abcd_raw,
+        sector_list = sector_list
       )
       log_trace("Removing abcd_raw object from memory.")
       rm(abcd_raw)
@@ -150,7 +158,7 @@ calc_weights_and_outputs <- function(
       )
     }
 
-    if (has_map && pacta.portfolio.utils::data_check(map)) {
+    if (pacta.portfolio.utils::data_check(map)) {
       log_debug("Saving {portfolio_type} map results.")
       results_map_filename <- file.path(
         output_dir,
