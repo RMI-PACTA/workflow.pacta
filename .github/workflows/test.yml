@@ -108,12 +108,12 @@ jobs:
           inlineScript: |
             unique_directory="$RESULTS_URL/$GITHUB_REF_NAME/$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT/$CONFIG_NAME"
             az storage copy \
-              --source "$outputs_dir" \
+              --source "$OUTPUTS_DIR" \
               --destination "$unique_directory" \
               --recursive
 
             latest_directory="$RESULTS_URL/$GITHUB_REF_NAME/latest/$CONFIG_NAME"
             az storage copy \
-              --source "$outputs_dir" \
+              --source "$OUTPUTS_DIR" \
               --destination "$latest_directory" \
               --recursive
