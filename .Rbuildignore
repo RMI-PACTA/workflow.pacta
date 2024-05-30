@@ -1,10 +1,11 @@
 ^.dockerignore$
-^.lintr$
 ^.github/
+^.lintr$
 ^Dockerfile$
 ^LICENSE\.md$
 ^docker-compose.yml$
 ^input_dir/
 ^output_dir/
+^portfolios/
 ^run-pacta.sh$
 ^workflow.pacta.Rproj$

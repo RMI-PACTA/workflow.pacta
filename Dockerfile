@@ -19,6 +19,7 @@ RUN apt-get update \
       libcurl4-openssl-dev=7.81.* \
       libgit2-dev=1.1.* \
       libicu-dev=70.* \
+      libnode-dev=12.22.* \
       libssl-dev=3.0.* \
       openssh-client=1:8.* \
       wget=1.21.* \
@@ -31,7 +32,7 @@ RUN apt-get update \
 # ) to pick the correct CRAN-like repo, which will let us target binaries fo
 # supported platforms
 ARG TARGETPLATFORM
-RUN PACKAGE_PIN_DATE="2023-10-30" && \
+RUN PACKAGE_PIN_DATE="2024-03-05" && \
   echo "TARGETPLATFORM: $TARGETPLATFORM" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ] && grep -q -e "Jammy Jellyfish" "/etc/os-release" ; then \
     CRAN_LIKE_URL="https://packagemanager.posit.co/cran/__linux__/jammy/$PACKAGE_PIN_DATE"; \
@@ -69,7 +70,11 @@ RUN Rscript -e "pak::local_install(root = '/workflow.pacta')"
 
 # set default run behavior
 ENTRYPOINT ["Rscript", "--vanilla", "/workflow.pacta/inst/extdata/scripts/run_pacta.R"]
-CMD ["/workflow.pacta/input_dir/default_config.json"]
+
+# Define default mountpoints
+ENV PACTA_DATA_DIR="/mnt/pacta-data" \
+  OUTPUT_DIR="/mnt/output_dir" \
+  PORTFOLIO_DIR="/mnt/portfolios"
 
 # Create and use non-root user
 RUN useradd -m -s /bin/bash workflow-pacta
