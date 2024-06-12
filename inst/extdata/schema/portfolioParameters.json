@@ -33,71 +33,85 @@
         "holdingsDate"
       ]
     },
-    "equity_market_list": {
-      "type": "array",
-      "description": "List of equity markets to be analyzed.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "DevelopedMarket",
-          "EmergingMarket",
-          "GlobalMarket"
-        ]
-      }
-    },
-    "scenario_geographies_list": {
-      "type": "array",
-      "description": "List of scenario geographies to be analyzed.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "Global",
-          "GlobalAggregate",
-          "NonOECD",
-          "OECD"
-        ]
-      }
-    },
-    "scenario_sources_list": {
-      "type": "array",
-      "description": "List of scenario sources to be used.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "GECO2022",
-          "GECO2023",
-          "ISF2021",
-          "ISF2023",
-          "WEO2022",
-          "WEO2023"
-        ]
-      }
-    },
-    "sector_list": {
-      "type": "array",
-      "description": "List of PACTA sectors to be analyzed.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "Automotive",
-          "Aviation",
-          "Cement",
-          "Coal",
-          "Oil&Gas",
-          "Power",
-          "Steel"
-        ]
-      }
-    },
-    "start_year": {
-      "type": "integer",
-      "description": "Start year of the analysis.",
-      "minimum": 2022
-    },
-    "time_horizon": {
-      "type": "integer",
-      "description": "Time horizon of the analysis.",
-      "minimum": 1
+    "analysis": {
+      "type": "object",
+      "description": "Analysis parameters.",
+      "properties": {
+        "equity_market_list": {
+          "type": "array",
+          "description": "List of equity markets to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "DevelopedMarket",
+              "EmergingMarket",
+              "GlobalMarket"
+            ]
+          }
+        },
+        "scenario_geographies_list": {
+          "type": "array",
+          "description": "List of scenario geographies to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Global",
+              "GlobalAggregate",
+              "NonOECD",
+              "OECD"
+            ]
+          }
+        },
+        "scenario_sources_list": {
+          "type": "array",
+          "description": "List of scenario sources to be used.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "GECO2022",
+              "GECO2023",
+              "ISF2021",
+              "ISF2023",
+              "WEO2022",
+              "WEO2023"
+            ]
+          }
+        },
+        "sector_list": {
+          "type": "array",
+          "description": "List of PACTA sectors to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Automotive",
+              "Aviation",
+              "Cement",
+              "Coal",
+              "Oil&Gas",
+              "Power",
+              "Steel"
+            ]
+          }
+        },
+        "start_year": {
+          "type": "integer",
+          "description": "Start year of the analysis.",
+          "minimum": 2022
+        },
+        "time_horizon": {
+          "type": "integer",
+          "description": "Time horizon of the analysis.",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "equity_market_list",
+        "scenario_geographies_list",
+        "scenario_sources_list",
+        "sector_list",
+        "start_year",
+        "time_horizon"
+      ]
     }
   },
   "allOf": [
