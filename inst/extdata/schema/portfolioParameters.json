@@ -2,13 +2,22 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "https://raw.githubusercontent.com/RMI-PACTA/workflow.pacta/main/inst/extdata/schema/portfolioParameters_0-0-1.json",
   "title": "portfolioParameters",
-  "description": "Full Portfolio Parameters required to run workflow.pacta.",
+  "description": "Full Parameters required to run workflow.pacta.",
   "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
   "type": "object",
   "properties": {
-    "portfolio_files": {
+    "files": {
       "type": "string",
       "description": "List of portfolio files to be analyzed."
+    },
+    "holdingsDate": {
+      "type": "string",
+      "description": "Date of the holdings data.",
+      "format": "date",
+      "enum": [
+        "2022-12-31",
+        "2023-12-31"
+      ]
     },
     "equity_market_list": {
       "type": "array",
@@ -32,6 +41,21 @@
           "GlobalAggregate",
           "NonOECD",
           "OECD"
+        ]
+      }
+    },
+    "scenario_sources_list": {
+      "type": "array",
+      "description": "List of scenario sources to be used.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "GECO2022",
+          "GECO2023",
+          "ISF2021",
+          "ISF2023",
+          "WEO2022",
+          "WEO2023"
         ]
       }
     },
@@ -60,46 +84,14 @@
       "type": "integer",
       "description": "Time horizon of the analysis.",
       "minimum": 1
-    },
-    "holdingsDate": {
-      "type": "string",
-      "description": "Date of the holdings data.",
-      "format": "date",
-      "enum": [
-        "2022-12-31",
-        "2023-12-31"
-      ]
-    },
-    "scenario_sources_list": {
-      "type": "array",
-      "description": "List of scenario sources to be used.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "GECO2022",
-          "GECO2023",
-          "ISF2021",
-          "ISF2023",
-          "WEO2022",
-          "WEO2023"
-        ]
-      }
-    },
-    "project_code": {
-      "type": "string",
-      "description": "Project code.",
-      "enum": [
-        "GENERAL"
-      ]
     }
   },
   "allOf": [
     {
       "required": [
-        "equity_market_list",
-        "holdingsDate",
         "portfolio_files",
-        "project_code",
+        "holdingsDate",
+        "equity_market_list",
         "scenario_geographies_list",
         "scenario_sources_list",
         "sector_list",
