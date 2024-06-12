@@ -26,37 +26,39 @@ run_pacta <- function(
     log_error("No parameters specified.")
   }
 
-  log_trace("Validating raw input parameters.")
-  raw_input_validation_results <- jsonvalidate::json_validate(
-    json = raw_params,
-    schema = system.file(
-      "extdata", "schema", "rawParameters.json",
-      package = "workflow.pacta"
-    ),
-    verbose = TRUE,
-    greedy = FALSE,
-    engine = "ajv"
-  )
-  if (raw_input_validation_results) {
-    log_trace("Raw input parameters are valid.")
-  } else {
-    log_error(
-      "Invalid raw input parameters. ",
-      "Must include \"inherit\" key, or match full schema."
-    )
-    stop("Invalid raw input parameters.")
-  }
+  # log_trace("Validating raw input parameters.")
+  # raw_input_validation_results <- jsonvalidate::json_validate(
+  #   json = raw_params,
+  #   schema = system.file(
+  #     "extdata", "schema", "rawParameters.json",
+  #     package = "workflow.pacta"
+  #   ),
+  #   verbose = TRUE,
+  #   greedy = FALSE,
+  #   engine = "ajv"
+  # )
+  # if (raw_input_validation_results) {
+  #   log_trace("Raw input parameters are valid.")
+  # } else {
+  #   log_error(
+  #     "Invalid raw input parameters. ",
+  #     "Must include \"inherit\" key, or match full schema."
+  #   )
+  #   stop("Invalid raw input parameters.")
+  # }
 
   params <- pacta.workflow.utils:::parse_params(
     json = raw_params,
-    inheritence_search_paths = system.file(
-      "extdata", "parameters",
-      package = "workflow.pacta"
-    ),
-    schema_file = system.file(
-      "extdata", "schema", "portfolioParameters_0-0-1.json",
-      package = "workflow.pacta"
-    )
+    inheritence_search_paths = NULL,
+    # inheritence_search_paths = system.file(
+    #   "extdata", "parameters",
+    #   package = "workflow.pacta"
+    # ),
+    schema_file = NULL
+    # schema_file = system.file(
+    #   "extdata", "schema", "portfolioParameters_0-0-1.json",
+    #   package = "workflow.pacta"
+    # )
   )
 
   run_audit(
