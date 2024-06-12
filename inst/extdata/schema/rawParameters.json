@@ -54,7 +54,7 @@
     }
   ],
   "required": [
-    "portfolio_files"
+    "portfolio"
   ],
   "additionalProperties": true
 }
