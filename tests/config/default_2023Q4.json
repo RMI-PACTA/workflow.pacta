@@ -3,6 +3,6 @@
   "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2023Q4_20240424T120055Z",
   "parameters": {
     "portfolio_files": "default_portfolio.csv",
-    "inherit": "GENERAL_2023Q4"
+    "inherit": "2023Q4"
   }
 }
