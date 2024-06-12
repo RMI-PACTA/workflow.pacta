@@ -4,27 +4,27 @@
   "parameters": {
     "portfolio": {
       "holdingsDate": "2022-12-31",
-      "portfolio_files": "default_portfolio.csv",
-      "portfolio_name": "Default Portfolio"
+      "files": "default_portfolio.csv",
+      "name": "Default Portfolio"
     },
     "analysis": {
-      "equity_market_list": [
+      "equityMarketList": [
         "GlobalMarket",
         "DevelopedMarket",
         "EmergingMarket"
       ],
-      "scenario_geographies_list": [
+      "scenarioGeographiesList": [
         "Global",
         "GlobalAggregate",
         "NonOECD",
         "OECD"
       ],
-      "scenario_sources_list": [
+      "scenarioSourcesList": [
         "GECO2022",
         "ISF2021",
         "WEO2022"
       ],
-      "sector_list": [
+      "sectorList": [
         "Power",
         "Automotive",
         "Coal",
@@ -32,8 +32,8 @@
         "Aviation",
         "Cement"
       ],
-      "start_year": 2022,
-      "time_horizon": 5
+      "startYear": 2022,
+      "timeHorizon": 5
     }
   }
 }
