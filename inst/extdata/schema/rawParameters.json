@@ -29,7 +29,7 @@
       ]
     },
     {
-      "$ref": "portfolioParameters_0-0-1.json"
+      "$ref": "portfolioParameters.json"
     }
   ],
   "required": [
