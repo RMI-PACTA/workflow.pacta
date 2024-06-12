@@ -54,11 +54,10 @@ run_pacta <- function(
     #   "extdata", "parameters",
     #   package = "workflow.pacta"
     # ),
-    schema_file = NULL
-    # schema_file = system.file(
-    #   "extdata", "schema", "portfolioParameters_0-0-1.json",
-    #   package = "workflow.pacta"
-    # )
+    schema_file = system.file(
+      "extdata", "schema", "portfolioParameters_0-0-1.json",
+      package = "workflow.pacta"
+    )
   )
 
   run_audit(
