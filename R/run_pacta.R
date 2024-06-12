@@ -49,11 +49,10 @@ run_pacta <- function(
 
   params <- pacta.workflow.utils:::parse_params(
     json = raw_params,
-    inheritence_search_paths = NULL,
-    # inheritence_search_paths = system.file(
-    #   "extdata", "parameters",
-    #   package = "workflow.pacta"
-    # ),
+    inheritence_search_paths = system.file(
+      "extdata", "parameters",
+      package = "workflow.pacta"
+    ),
     schema_file = system.file(
       "extdata", "schema", "portfolioParameters.json",
       package = "workflow.pacta"
