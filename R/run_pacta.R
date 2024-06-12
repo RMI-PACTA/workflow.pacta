@@ -55,7 +55,7 @@ run_pacta <- function(
     #   package = "workflow.pacta"
     # ),
     schema_file = system.file(
-      "extdata", "schema", "portfolioParameters_0-0-1.json",
+      "extdata", "schema", "portfolioParameters.json",
       package = "workflow.pacta"
     )
   )
