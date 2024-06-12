@@ -1,9 +1,9 @@
 {
   "inherit": "default",
   "analysis": {
-    "start_year": 2023,
+    "startYear": 2023,
     "holdingsDate": "2023-12-31",
-    "scenario_sources_list": [
+    "scenarioSourcesList": [
       "GECO2023",
       "ISF2023",
       "WEO2023"

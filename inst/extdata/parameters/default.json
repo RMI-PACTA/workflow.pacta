@@ -1,17 +1,17 @@
 {
   "analysis": {
-    "equity_market_list": [
+    "equityMarketList": [
       "GlobalMarket",
       "DevelopedMarket",
       "EmergingMarket"
     ],
-    "scenario_geographies_list": [
+    "scenarioGeographiesList": [
       "Global",
       "GlobalAggregate",
       "NonOECD",
       "OECD"
     ],
-    "sector_list": [
+    "sectorList": [
       "Power",
       "Automotive",
       "Oil&Gas",
@@ -20,6 +20,6 @@
       "Aviation",
       "Cement"
     ],
-    "time_horizon": 5
+    "timeHorizon": 5
   }
 }
