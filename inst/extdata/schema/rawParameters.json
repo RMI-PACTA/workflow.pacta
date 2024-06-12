@@ -6,9 +6,32 @@
   "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
   "type": "object",
   "properties": {
-    "portfolio_files": {
-      "type": "string",
-      "description": "List of portfolio files to be analyzed."
+    "portfolio": {
+      "type": "object",
+      "description": "Portfolio to be analyzed.",
+      "properties": {
+        "files": {
+          "type": "string",
+          "description": "List of portfolio files to be analyzed."
+        },
+        "holdingsDate": {
+          "type": "string",
+          "description": "Date of the holdings data.",
+          "format": "date",
+          "enum": [
+            "2022-12-31",
+            "2023-12-31"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the portfolio."
+        }
+      },
+      "required": [
+        "files",
+        "holdingsDate"
+      ]
     },
     "inherit": {
       "type": "string",
