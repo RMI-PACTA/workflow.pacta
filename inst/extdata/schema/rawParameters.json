@@ -7,32 +7,9 @@
   "type": "object",
   "properties": {
     "portfolio": {
-      "type": "object",
-      "description": "Portfolio to be analyzed.",
-      "properties": {
-        "files": {
-          "type": "string",
-          "description": "List of portfolio files to be analyzed."
-        },
-        "holdingsDate": {
-          "type": "string",
-          "description": "Date of the holdings data.",
-          "format": "date",
-          "enum": [
-            "2022-12-31",
-            "2023-12-31"
-          ]
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the portfolio."
-        }
-      },
-      "required": [
-        "files",
-        "holdingsDate"
-      ]
-    },
+      "$ref": "portfolio.json"
+    }
+,
     "inherit": {
       "type": "string",
       "description": "Path to a file with inheritance information.",
