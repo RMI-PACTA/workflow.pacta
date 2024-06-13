@@ -70,7 +70,8 @@ run_pacta <- function(
     output_dir = output_dir,
     equity_market_list = params[["analysis"]][["equityMarketList"]],
     scenario_sources_list = params[["analysis"]][["scenarioSourcesList"]],
-    scenario_geographies_list = params[["analysis"]][["scenarioGeographiesList"]],
+    scenario_geographies_list =
+      params[["analysis"]][["scenarioGeographiesList"]],
     sector_list = params[["analysis"]][["sectorList"]],
     start_year = params[["analysis"]][["startYear"]],
     time_horizon = params[["analysis"]][["timeHorizon"]]
