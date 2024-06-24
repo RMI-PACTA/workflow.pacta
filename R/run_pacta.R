@@ -1,7 +1,7 @@
 run_pacta <- function(
   raw_params = commandArgs(trailingOnly = TRUE),
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
-  output_dir = Sys.getenv("OUTPUT_DIR"),
+  output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
 ) {
 
@@ -11,8 +11,8 @@ run_pacta <- function(
     stop("PACTA_DATA_DIR not set.")
   }
   if (is.null(output_dir) || output_dir == "") {
-    log_error("OUTPUT_DIR not set.")
-    stop("OUTPUT_DIR not set.")
+    log_error("ANALYSIS_OUTPUT_DIR not set.")
+    stop("ANALYSIS_OUTPUT_DIR not set.")
   }
   if (is.null(portfolio_dir) || portfolio_dir == "") {
     log_error("PORTFOLIO_DIR not set.")
