@@ -1,23 +1,25 @@
 {
-  "equity_market_list": [
-    "GlobalMarket",
-    "DevelopedMarket",
-    "EmergingMarket"
-  ],
-  "scenario_geographies_list": [
-    "Global",
-    "GlobalAggregate",
-    "NonOECD",
-    "OECD"
-  ],
-  "sector_list": [
-    "Power",
-    "Automotive",
-    "Oil&Gas",
-    "Coal",
-    "Steel",
-    "Aviation",
-    "Cement"
-  ],
-  "time_horizon": 5
+  "analysis": {
+    "equityMarketList": [
+      "GlobalMarket",
+      "DevelopedMarket",
+      "EmergingMarket"
+    ],
+    "scenarioGeographiesList": [
+      "Global",
+      "GlobalAggregate",
+      "NonOECD",
+      "OECD"
+    ],
+    "sectorList": [
+      "Power",
+      "Automotive",
+      "Oil&Gas",
+      "Coal",
+      "Steel",
+      "Aviation",
+      "Cement"
+    ],
+    "timeHorizon": 5
+  }
 }

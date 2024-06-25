@@ -1,9 +1,9 @@
 {
-  "holdingsDate": "2023Q4",
-  "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2023Q4_20240424T120055Z",
+  "holdingsDate": "2022Q4",
+  "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2022Q4_20240426T113151Z",
   "parameters": {
     "portfolio": {
-      "holdingsDate": "2023-12-31",
+      "holdingsDate": "2022-12-31",
       "files": "default_portfolio.csv",
       "name": "Default Portfolio"
     },
@@ -20,9 +20,9 @@
         "OECD"
       ],
       "scenarioSourcesList": [
-        "GECO2023",
-        "ISF2023",
-        "WEO2023"
+        "GECO2022",
+        "ISF2021",
+        "WEO2022"
       ],
       "sectorList": [
         "Power",

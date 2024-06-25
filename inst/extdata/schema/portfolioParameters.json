@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/RMI-PACTA/workflow.pacta/main/inst/extdata/schema/portfolioParameters.json",
+  "title": "portfolioParameters",
+  "description": "Full Parameters required to run workflow.pacta.",
+  "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
+  "type": "object",
+  "properties": {
+    "portfolio": {
+      "$ref": "portfolio.json"
+    },
+    "analysis": {
+      "type": "object",
+      "description": "Analysis parameters.",
+      "properties": {
+        "equityMarketList": {
+          "type": "array",
+          "description": "List of equity markets to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "DevelopedMarket",
+              "EmergingMarket",
+              "GlobalMarket"
+            ]
+          }
+        },
+        "scenarioGeographiesList": {
+          "type": "array",
+          "description": "List of scenario geographies to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Global",
+              "GlobalAggregate",
+              "NonOECD",
+              "OECD"
+            ]
+          }
+        },
+        "scenarioSourcesList": {
+          "type": "array",
+          "description": "List of scenario sources to be used.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "GECO2022",
+              "GECO2023",
+              "ISF2021",
+              "ISF2023",
+              "WEO2022",
+              "WEO2023"
+            ]
+          }
+        },
+        "sectorList": {
+          "type": "array",
+          "description": "List of PACTA sectors to be analyzed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Automotive",
+              "Aviation",
+              "Cement",
+              "Coal",
+              "Oil&Gas",
+              "Power",
+              "Steel"
+            ]
+          }
+        },
+        "startYear": {
+          "type": "integer",
+          "description": "Start year of the analysis.",
+          "minimum": 2022
+        },
+        "timeHorizon": {
+          "type": "integer",
+          "description": "Time horizon of the analysis.",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "equityMarketList",
+        "scenarioGeographiesList",
+        "scenarioSourcesList",
+        "sectorList",
+        "startYear",
+        "timeHorizon"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "required": [
+        "portfolio",
+        "analysis"
+      ]
+    },
+    {
+      "not": {
+        "required": [
+          "inherit"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

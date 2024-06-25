@@ -53,7 +53,7 @@ The Environment Variables that control the application are:
 
 * `PACTA_DATA_DIR`: (default `/mnt/pacta-data`) Path where PACTA-data is located.
   Can be set to an output directory from `workflow.data.preparation`.
-* `OUTPUT_DIR`: (default `/mnt/output_dir`) Path where output files from the workflow will be written.
+* `ANALYSIS_OUTPUT_DIR`: (default `/mnt/analysis_output_dir`) Path where output files from the workflow will be written.
 * `PORTFOLIO_DIR`: (default `/mnt/portfolios`) Path where Portfolio CSV files are stored.
 * `LOG_LEVEL`: (default `INFO`) Controls verbosity of logging. Accepts standard `log4j` levels (UPPERCASE).
 
@@ -68,7 +68,7 @@ tag_name=main
 image_name=ghcr.io/rmi-pacta/workflow.pacta:$tag_name
 data_dir=~/github/pactaverse/pacta-data
 input_dir=./input_dir
-output_dir=./output_dir
+analysis_output_dir=./analysis_output_dir
 
 docker run -it --rm \
   --network none \
@@ -76,7 +76,7 @@ docker run -it --rm \
   --platform linux/amd64 \
   --env LOG_LEVEL=DEBUG \
   --mount type=bind,readonly,source=${data_dir},target=/pacta-data \
-  --mount type=bind,source=${output_dir},target=/output_dir \
+  --mount type=bind,source=${analysis_output_dir},target=/analysis_output_dir \
   --mount type=bind,source=${input_dir},target=/input_dir \
   $image_name
 

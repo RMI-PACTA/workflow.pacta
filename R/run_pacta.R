@@ -1,7 +1,7 @@
 run_pacta <- function(
   raw_params = commandArgs(trailingOnly = TRUE),
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
-  output_dir = Sys.getenv("OUTPUT_DIR"),
+  output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
 ) {
 
@@ -11,8 +11,8 @@ run_pacta <- function(
     stop("PACTA_DATA_DIR not set.")
   }
   if (is.null(output_dir) || output_dir == "") {
-    log_error("OUTPUT_DIR not set.")
-    stop("OUTPUT_DIR not set.")
+    log_error("ANALYSIS_OUTPUT_DIR not set.")
+    stop("ANALYSIS_OUTPUT_DIR not set.")
   }
   if (is.null(portfolio_dir) || portfolio_dir == "") {
     log_error("PORTFOLIO_DIR not set.")
@@ -54,13 +54,13 @@ run_pacta <- function(
       package = "workflow.pacta"
     ),
     schema_file = system.file(
-      "extdata", "schema", "portfolioParameters_0-0-1.json",
+      "extdata", "schema", "portfolioParameters.json",
       package = "workflow.pacta"
     )
   )
 
   run_audit(
-    portfolio_files = params[["portfolio_files"]],
+    portfolio_files = params[["portfolio"]][["files"]],
     pacta_data_dir = pacta_data_dir,
     portfolio_dir = portfolio_dir,
     output_dir = output_dir
@@ -68,19 +68,20 @@ run_pacta <- function(
   run_analysis(
     pacta_data_dir = pacta_data_dir,
     output_dir = output_dir,
-    equity_market_list = params[["equity_market_list"]],
-    scenario_sources_list = params[["scenario_sources_list"]],
-    scenario_geographies_list = params[["scenario_geographies_list"]],
-    sector_list = params[["sector_list"]],
-    start_year = params[["start_year"]],
-    time_horizon = params[["time_horizon"]]
+    equity_market_list = params[["analysis"]][["equityMarketList"]],
+    scenario_sources_list = params[["analysis"]][["scenarioSourcesList"]],
+    scenario_geographies_list =
+      params[["analysis"]][["scenarioGeographiesList"]],
+    sector_list = params[["analysis"]][["sectorList"]],
+    start_year = params[["analysis"]][["startYear"]],
+    time_horizon = params[["analysis"]][["timeHorizon"]]
   )
 
   log_info("Exporting Manifest")
   pacta.workflow.utils::export_manifest(
     manifest_path = file.path(output_dir, "manifest.json"),
     input_files = c(
-      file.path(portfolio_dir, params[["portfolio_files"]]),
+      file.path(portfolio_dir, params[["portfolio"]][["files"]]),
       list.files(
         pacta_data_dir,
         full.names = TRUE,

@@ -75,24 +75,28 @@ jobs:
         env:
           FULL_IMAGE_NAME: ${{ inputs.full-image-name }}
           PORTFOLIO_DIR: portfolios
-          OUTPUT_DIR: output_dir
+          ANALYSIS_OUTPUT_DIR: analysis_output_dir
           PACTA_DATA_DIR: pacta-data
           WORKSPACE: ${{ github.workspace }}
           PARAMETERS: ${{ steps.prepare.outputs.parameters }}
         run: |
-          chmod -R 777 "${WORKSPACE}/${OUTPUT_DIR}"
+          mkdir -p "${WORKSPACE}/${ANALYSIS_OUTPUT_DIR}"
+          chmod -R 777 "${WORKSPACE}/${ANALYSIS_OUTPUT_DIR}"
           docker run \
           --network none \
           --env LOG_LEVEL=DEBUG \
+          --env ANALYSIS_OUTPUT_DIR="/mnt/analysis_output_dir" \
+          --env PACTA_DATA_DIR="/mnt/pacta-data" \
+          --env PORTFOLIO_DIR="/mnt/portfolios" \
           --mount type=bind,readonly,source=${WORKSPACE}/${PACTA_DATA_DIR},target=/mnt/pacta-data \
-          --mount type=bind,source=${WORKSPACE}/${OUTPUT_DIR},target=/mnt/output_dir \
+          --mount type=bind,source=${WORKSPACE}/${ANALYSIS_OUTPUT_DIR},target=/mnt/analysis_output_dir \
           --mount type=bind,source=${WORKSPACE}/${PORTFOLIO_DIR},target=/mnt/portfolios \
           $FULL_IMAGE_NAME \
-          $PARAMETERS
+          "$PARAMETERS"
 
       - name: List outputs
         run: |
-          ls -lR output_dir
+          ls -lR analysis_output_dir
 
       # https://github.com/marketplace/actions/azure-cli-action#workflow-to-execute-an-azure-cli-script-of-a-specific-cli-version
       - name: Upload results to blob store
@@ -102,18 +106,18 @@ jobs:
           GITHUB_REF_NAME: ${{ github.ref_name}}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
-          OUTPUTS_DIR: "output_dir"
+          ANALYSIS_OUTPUT_DIR: "analysis_output_dir"
           RESULTS_URL: ${{ inputs.results-url }}
         with:
           inlineScript: |
             unique_directory="$RESULTS_URL/$GITHUB_REF_NAME/$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT/$CONFIG_NAME"
             az storage copy \
-              --source "$OUTPUTS_DIR" \
+              --source "$ANALYSIS_OUTPUT_DIR" \
               --destination "$unique_directory" \
               --recursive
 
             latest_directory="$RESULTS_URL/$GITHUB_REF_NAME/latest/$CONFIG_NAME"
             az storage copy \
-              --source "$OUTPUTS_DIR" \
+              --source "$ANALYSIS_OUTPUT_DIR" \
               --destination "$latest_directory" \
               --recursive

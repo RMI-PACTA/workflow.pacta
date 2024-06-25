@@ -25,6 +25,7 @@ jobs:
         config-name:
           - default_2022Q4
           - default_2023Q4
+          - full_params_2022Q4
           - full_params_2023Q4
     with:
       full-image-name: ${{ needs.docker.outputs.full-image-name }}

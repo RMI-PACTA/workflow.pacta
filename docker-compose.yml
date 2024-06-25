@@ -5,11 +5,11 @@ services:
     # stdin_open: true
     # tty: true
     # entrypoint: ["R", "--args"]
-    command: '{\"portfolio_files\": \"default_portfolio.csv\", \"inherit\": \"GENERAL_2023Q4\"}'
+    command: '{\"portfolio\": {\"files\": \"default_portfolio.csv\", \"holdingsDate\": \"2023-12-31\"}, \"inherit\": \"2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
       PACTA_DATA_DIR: "/mnt/pacta-data"
-      OUTPUT_DIR: "/mnt/output_dir"
+      ANALYSIS_OUTPUT_DIR: "/mnt/analysis_output_dir"
       PORTFOLIO_DIR: "/mnt/portfolios"
     volumes:
       - type: bind
@@ -17,8 +17,8 @@ services:
         target: /mnt/pacta-data
         read_only: true
       - type: bind
-        source: ${output_dir:-./output_dir}
-        target: /mnt/output_dir
+        source: ${analysis_output_dir:-./analysis_output_dir}
+        target: /mnt/analysis_output_dir
         read_only: false
       - type: bind
         source: ${input_dir:-./portfolios}
