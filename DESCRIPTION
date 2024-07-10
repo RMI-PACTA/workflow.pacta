@@ -1,6 +1,6 @@
 Package: workflow.pacta
 Title: Run PACTA
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: 
     c(person(given = "CJ",
              family = "Yetman",
@@ -24,7 +24,7 @@ Description: Run the PACTA Analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: 
     dplyr,
     jsonvalidate,
