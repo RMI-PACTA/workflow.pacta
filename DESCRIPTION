@@ -27,7 +27,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     dplyr,
-    jsonvalidate,
     logger,
     pacta.portfolio.allocate,
     pacta.portfolio.audit,
