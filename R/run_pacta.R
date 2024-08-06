@@ -38,25 +38,23 @@ run_pacta <- function(
     time_horizon = params[["analysis"]][["timeHorizon"]]
   )
 
-  log_info("Exporting Manifest")
-  pacta.workflow.utils::export_manifest(
-    manifest_path = file.path(output_dir, "manifest.json"),
-    input_files = c(
-      file.path(portfolio_dir, params[["portfolio"]][["files"]]),
-      list.files(
-        pacta_data_dir,
+  log_info("PACTA run complete.")
+  return(
+    list(
+      input_files = c(
+        file.path(portfolio_dir, params[["portfolio"]][["files"]]),
+        list.files(
+          pacta_data_dir,
+          full.names = TRUE,
+          recursive = TRUE
+        )
+      ),
+      output_files = list.files(
+        output_dir,
         full.names = TRUE,
         recursive = TRUE
-      )
-    ),
-    output_files = list.files(
-      output_dir,
-      full.names = TRUE,
-      recursive = TRUE
-    ),
-    params = params,
-    raw_params = raw_params
+      ),
+      params = params
+    )
   )
-
-  log_info("PACTA run complete.")
 }
