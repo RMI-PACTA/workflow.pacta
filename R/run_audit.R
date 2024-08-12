@@ -153,7 +153,7 @@ audit_prechecks <- function(
   portfolio_dir,
   portfolio_files,
   output_dir
-){
+) {
   input_files <- c(
     file.path(pacta_data_dir, "currencies.rds"),
     file.path(pacta_data_dir, "fund_data.rds"),
@@ -166,7 +166,14 @@ audit_prechecks <- function(
     file.path(pacta_data_dir, "iss_average_sector_emission_intensities.rds"),
     file.path(portfolio_dir, portfolio_files)
   )
-  stopifnot(file.exists(input_files))
-
-  stopifnot(pacta.workflow.utils::check_dir_writable(output_dir))
+  pacta.workflow.utils:::check_io(
+    input_files = input_files,
+    output_dir = output_dir
+  )
+  return(
+    list(
+      input_files = input_files,
+      output_dir = output_dir
+    )
+  )
 }
