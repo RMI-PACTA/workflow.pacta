@@ -166,7 +166,7 @@ audit_prechecks <- function(
     file.path(pacta_data_dir, "iss_average_sector_emission_intensities.rds"),
     file.path(portfolio_dir, portfolio_files)
   )
-  pacta.workflow.utils:::check_io(
+  pacta.workflow.utils::check_io(
     input_files = input_files,
     output_dir = output_dir
   )
