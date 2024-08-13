@@ -192,7 +192,9 @@ calc_weights_prechecks <- function(
   output_dir,
   data_dir
 ) {
-  if (nrow(total_portfolio) == 0L) {
+  if (is.null(total_portfolio)) {
+    log_warn("Portfolio is NULL.")
+  } else if (nrow(total_portfolio) == 0L) {
     log_error("Portfolio has no rows.")
     stop("Portfolio has no rows.")
   }

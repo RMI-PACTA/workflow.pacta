@@ -66,11 +66,15 @@ analysis_prechecks <- function(
     input_files = total_portfolio_path,
     output_dir = output_dir
   )
-  total_portfolio <- readRDS(total_portfolio_path)
-  log_trace(
-    "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
-  )
-  pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
+  if (is.null(total_portfolio_path)) {
+    total_portfolio <- NULL
+  } else {
+    total_portfolio <- readRDS(total_portfolio_path)
+    log_trace(
+      "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
+    )
+    pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
+  }
   calc_weights_prechecks(
     total_portfolio = total_portfolio,
     portfolio_type = "Equity",
