@@ -71,6 +71,7 @@ test_that("audit_prechecks works when all files are present", {
 })
 
 test_that("audit_prechecks fails when output_dir not writable", {
+  skip_on_os("windows")
   pacta_data_dir <- withr::local_tempdir()
   filenames <- c(
     "currencies.rds",
@@ -122,8 +123,8 @@ test_that("audit_prechecks fails when missing pacta-data files", {
     "abcd_flags_bonds.rds",
     "iss_entity_emission_intensities.rds",
     "iss_average_sector_emission_intensities.rds"
-  ) |>
-    sample(size = 8L, replace = FALSE)
+  )
+  filenames <- sample(x = filenames, size = 8L, replace = FALSE)
   for (filename in filenames) {
     saveRDS(
       1L,
