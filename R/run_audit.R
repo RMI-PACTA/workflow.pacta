@@ -5,7 +5,7 @@ run_audit <- function(
   output_dir
 ) {
   # Prechecks ----------------------------------------------------------------
-  audit_prechecks(
+  audit_io_files <- audit_prechecks(
     pacta_data_dir = pacta_data_dir,
     portfolio_dir = portfolio_dir,
     portfolio_files = portfolio_files,
@@ -146,6 +146,7 @@ run_audit <- function(
   saveRDS(emissions_totals, file.path(output_dir, "emissions.rds"))
 
   log_info("Portfolio audit finished.")
+  return(audit_io_files)
 }
 
 audit_prechecks <- function(
