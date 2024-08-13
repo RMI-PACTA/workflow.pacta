@@ -107,7 +107,8 @@ test_that("audit_prechecks fails when output_dir not writable", {
       portfolio_dir = portfolio_dir,
       portfolio_files = portfolio_files,
       output_dir = output_dir
-    )
+    ),
+    regexp = "^IO checks failed.$"
   )
 })
 
@@ -150,7 +151,8 @@ test_that("audit_prechecks fails when missing pacta-data files", {
         portfolio_files = portfolio_files,
         output_dir = output_dir
       )
-    )
+    ),
+    regexp = "^IO checks failed.$"
   )
 })
 
@@ -192,6 +194,7 @@ test_that("audit_prechecks fails when missing portfolio files", {
         portfolio_files = portfolio_files,
         output_dir = output_dir
       )
-    )
+    ),
+    regexp = "^IO checks failed.$"
   )
 })
