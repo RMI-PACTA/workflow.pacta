@@ -10,6 +10,13 @@ calc_weights_and_outputs <- function(
   start_year,
   time_horizon
 ) {
+  log_debug("Checking IO for calc_weights_and_outputs.")
+  io_files <- calc_weights_prechecks(
+    total_portfolio = total_portfolio,
+    portfolio_type = portfolio_type,
+    output_dir = output_dir,
+    data_dir = data_dir
+  )
 
   log_info("Starting {portfolio_type} calculations.")
 
@@ -177,4 +184,43 @@ calc_weights_and_outputs <- function(
     )
   }
 
+}
+
+calc_weights_prechecks <- function(
+  total_portfolio,
+  portfolio_type,
+  output_dir,
+  data_dir
+) {
+  if (nrow(total_portfolio) == 0L) {
+    log_error("Portfolio has no rows.")
+    stop("Portfolio has no rows.")
+  }
+  if (portfolio_type == "Equity") {
+    input_files <- c(
+      # merge_abcd_from_db
+      file.path(data_dir, "equity_abcd_scenario.rds"),
+      # get_abcd_raw
+      file.path(data_dir, "masterdata_ownership_datastore.rds")
+    )
+  } else if (portfolio_type == "Bonds") {
+    input_files <- c(
+      # merge_abcd_from_db
+      file.path(data_dir, "bonds_abcd_scenario.rds"),
+      # get_abcd_raw
+      file.path(data_dir, "masterdata_debt_datastore.rds")
+    )
+  } else {
+    stop("Invalid portfolio type.")
+  }
+  pacta.workflow.utils::check_io(
+    input_files = input_files,
+    output_dir = output_dir
+  )
+  return(
+    list(
+      input_files = input_files,
+      output_dir = output_dir
+    )
+  )
 }
