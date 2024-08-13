@@ -1,3 +1,22 @@
+#' @title run_analysis
+#'
+#' @description This function runs the PACTA analysis for a portfolio.
+#'
+#' @param pacta_data_dir filepath: Directory with "pacta-data"
+#' @param output_dir filepath: Directory to save outputs.
+#' @param equity_market_list character vector: List of equity markets to
+#' include in analysis.
+#' @param scenario_sources_list character vector: List of scenario sources to
+#' include in analysis. Note sources must be available in the "pacta-data".
+#' @param scenario_geographies_list character vector: List of scenario-defined
+#' geographies to include in analysis. Note these geographies must be available
+#' in the scenario data.
+#' @param sector_list character vector: List of sectors to include in analysis.
+#' @param start_year integer: Start year for analysis.
+#' @param time_horizon integer: Time horizon after start for analysis (usually
+#' 5 years).
+#' @return No return value. Saves outputs to output_dir.
+#' @export
 run_analysis <- function(
   pacta_data_dir,
   output_dir,
