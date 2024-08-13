@@ -61,7 +61,7 @@ analysis_prechecks <- function(
   total_portfolio_path,
   pacta_data_dir,
   output_dir
-  ) {
+) {
   pacta.workflow.utils::check_io(
     input_files = total_portfolio_path,
     output_dir = output_dir

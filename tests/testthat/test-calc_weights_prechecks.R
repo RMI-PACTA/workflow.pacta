@@ -44,7 +44,7 @@ test_that("audit_prechecks works when all files are present", {
       input_files = c(
         file.path(data_dir, "equity_abcd_scenario.rds"),
         file.path(data_dir, "masterdata_ownership_datastore.rds")
-        ),
+      ),
       output_dir = output_dir
     )
   )
@@ -60,7 +60,7 @@ test_that("audit_prechecks works when all files are present", {
       input_files = c(
         file.path(data_dir, "bonds_abcd_scenario.rds"),
         file.path(data_dir, "masterdata_debt_datastore.rds")
-        ),
+      ),
       output_dir = output_dir
     )
   )
@@ -95,7 +95,7 @@ test_that("audit_prechecks works for EQ when EQ files are present", {
       input_files = c(
         file.path(data_dir, "equity_abcd_scenario.rds"),
         file.path(data_dir, "masterdata_ownership_datastore.rds")
-        ),
+      ),
       output_dir = output_dir
     )
   )
@@ -130,7 +130,7 @@ test_that("audit_prechecks works for CB when CB files are present", {
       input_files = c(
         file.path(data_dir, "bonds_abcd_scenario.rds"),
         file.path(data_dir, "masterdata_debt_datastore.rds")
-        ),
+      ),
       output_dir = output_dir
     )
   )
@@ -168,7 +168,6 @@ test_that("audit_prechecks throws error when output_dir not writable", {
       regexp = "^IO checks failed.$"
     )
   }
-  
 })
 
 test_that("audit_prechecks throws error when data files missing", {

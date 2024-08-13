@@ -180,7 +180,7 @@ test_that("audit_prechecks fails when missing portfolio files", {
   portfolio_files <- c("portfolio1.csv", "portfolio2.csv")
   write.csv(
     data.frame(a = 1L, b = 2L),
-    file.path(portfolio_dir, portfolio_files[[1]])
+    file.path(portfolio_dir, portfolio_files[[1L]])
   )
 
   output_dir <- withr::local_tempdir()

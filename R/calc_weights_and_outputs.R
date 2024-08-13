@@ -11,7 +11,7 @@ calc_weights_and_outputs <- function(
   time_horizon
 ) {
   log_debug("Checking IO for calc_weights_and_outputs.")
-  io_files <- calc_weights_prechecks(
+  calc_weights_prechecks(
     total_portfolio = total_portfolio,
     portfolio_type = portfolio_type,
     output_dir = output_dir,
