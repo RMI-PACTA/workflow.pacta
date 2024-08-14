@@ -75,6 +75,7 @@ analysis_prechecks <- function(
     pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
   } else {
     log_trace("Skipping portfolio check.")
+    total_portfolio <- data.frame()
   }
   calc_weights_prechecks(
     total_portfolio = total_portfolio,
