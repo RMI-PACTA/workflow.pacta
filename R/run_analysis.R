@@ -60,7 +60,8 @@ run_analysis <- function(
 analysis_prechecks <- function(
   total_portfolio_path,
   pacta_data_dir,
-  output_dir
+  output_dir,
+  check_portfolio = TRUE
 ) {
   pacta.workflow.utils::check_io(
     input_files = total_portfolio_path,
@@ -79,12 +80,14 @@ analysis_prechecks <- function(
     total_portfolio = total_portfolio,
     portfolio_type = "Equity",
     output_dir = output_dir,
-    data_dir = pacta_data_dir
+    data_dir = pacta_data_dir,
+    check_portfolio = check_portfolio
   )
   calc_weights_prechecks(
     total_portfolio = total_portfolio,
     portfolio_type = "Bonds",
     output_dir = output_dir,
-    data_dir = pacta_data_dir
+    data_dir = pacta_data_dir,
+    check_portfolio = check_portfolio
   )
 }

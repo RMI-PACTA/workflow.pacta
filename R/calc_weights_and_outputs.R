@@ -194,7 +194,11 @@ calc_weights_prechecks <- function(
   check_portfolio = TRUE
 ) {
   if (check_portfolio) {
-    if (nrow(total_portfolio) == 0L) {
+    if (
+      missing(total_portfolio) ||
+        is.null(total_portfolio) ||
+        nrow(total_portfolio) == 0L
+    ) {
       log_error("Portfolio has no rows.")
       stop("Portfolio has no rows.")
     } else {
