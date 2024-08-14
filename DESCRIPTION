@@ -1,6 +1,6 @@
 Package: workflow.pacta
 Title: Run PACTA
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 Authors@R: 
     c(person(given = "CJ",
              family = "Yetman",
@@ -40,7 +40,7 @@ Remotes:
     RMI-PACTA/pacta.portfolio.audit,
     RMI-PACTA/pacta.portfolio.import,
     RMI-PACTA/pacta.portfolio.utils,
-    RMI-PACTA/pacta.workflow.utils@develop
+    RMI-PACTA/pacta.workflow.utils
 Suggests: 
     testthat (>= 3.0.0),
     withr
