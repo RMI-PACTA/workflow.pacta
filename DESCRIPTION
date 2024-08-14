@@ -40,7 +40,7 @@ Remotes:
     RMI-PACTA/pacta.portfolio.audit,
     RMI-PACTA/pacta.portfolio.import,
     RMI-PACTA/pacta.portfolio.utils,
-    RMI-PACTA/pacta.workflow.utils@develop
+    RMI-PACTA/pacta.workflow.utils
 Suggests: 
     testthat (>= 3.0.0),
     withr
