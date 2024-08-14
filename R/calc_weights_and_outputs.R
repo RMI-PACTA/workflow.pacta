@@ -190,13 +190,18 @@ calc_weights_prechecks <- function(
   total_portfolio,
   portfolio_type,
   output_dir,
-  data_dir
+  data_dir,
+  check_portfolio = TRUE
 ) {
-  if (is.null(total_portfolio)) {
-    log_warn("Portfolio is NULL.")
-  } else if (nrow(total_portfolio) == 0L) {
-    log_error("Portfolio has no rows.")
-    stop("Portfolio has no rows.")
+  if (check_portfolio) {
+    if (nrow(total_portfolio) == 0L) {
+      log_error("Portfolio has no rows.")
+      stop("Portfolio has no rows.")
+    } else {
+      log_trace("Portfolio has rows.")
+    }
+  } else {
+    log_trace("Skipping portfolio check.")
   }
   if (portfolio_type == "Equity") {
     input_files <- c(
