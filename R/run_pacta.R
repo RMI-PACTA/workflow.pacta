@@ -20,6 +20,18 @@ run_pacta <- function(
   }
   log_info("Running PACTA")
 
+  audit_prechecks(
+    portfolio_files = params[["portfolio"]][["files"]],
+    pacta_data_dir = pacta_data_dir,
+    portfolio_dir = portfolio_dir,
+    output_dir = output_dir
+  )
+  analysis_prechecks(
+    total_portfolio_path = NULL,
+    pacta_data_dir = pacta_data_dir,
+    output_dir = output_dir
+  )
+
   run_audit(
     portfolio_files = params[["portfolio"]][["files"]],
     pacta_data_dir = pacta_data_dir,

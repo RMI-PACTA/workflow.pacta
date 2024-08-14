@@ -4,6 +4,13 @@ run_audit <- function(
   portfolio_files,
   output_dir
 ) {
+  # Prechecks ----------------------------------------------------------------
+  audit_io_files <- audit_prechecks(
+    pacta_data_dir = pacta_data_dir,
+    portfolio_dir = portfolio_dir,
+    portfolio_files = portfolio_files,
+    output_dir = output_dir
+  )
 
   log_info("Starting portfolio audit")
 
@@ -139,4 +146,35 @@ run_audit <- function(
   saveRDS(emissions_totals, file.path(output_dir, "emissions.rds"))
 
   log_info("Portfolio audit finished.")
+  return(audit_io_files)
+}
+
+audit_prechecks <- function(
+  pacta_data_dir,
+  portfolio_dir,
+  portfolio_files,
+  output_dir
+) {
+  input_files <- c(
+    file.path(pacta_data_dir, "currencies.rds"),
+    file.path(pacta_data_dir, "fund_data.rds"),
+    file.path(pacta_data_dir, "total_fund_list.rds"),
+    file.path(pacta_data_dir, "isin_to_fund_table.rds"),
+    file.path(pacta_data_dir, "financial_data.rds"),
+    file.path(pacta_data_dir, "abcd_flags_equity.rds"),
+    file.path(pacta_data_dir, "abcd_flags_bonds.rds"),
+    file.path(pacta_data_dir, "iss_entity_emission_intensities.rds"),
+    file.path(pacta_data_dir, "iss_average_sector_emission_intensities.rds"),
+    file.path(portfolio_dir, portfolio_files)
+  )
+  pacta.workflow.utils::check_io(
+    input_files = input_files,
+    output_dir = output_dir
+  )
+  return(
+    list(
+      input_files = input_files,
+      output_dir = output_dir
+    )
+  )
 }

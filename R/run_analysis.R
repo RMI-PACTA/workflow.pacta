@@ -20,16 +20,12 @@ run_analysis <- function(
   # quit if there's no relevant PACTA assets --------------------------------
 
   total_portfolio_path <- file.path(output_dir, "total_portfolio.rds")
-  if (file.exists(total_portfolio_path)) {
-    total_portfolio <- readRDS(total_portfolio_path)
-    log_trace(
-      "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
-    )
-    pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
-  } else {
-    log_warn("file \"{total_portfolio_path}\" does not exist.")
-    warning("File \"total_portfolio.rds\" file does not exist.")
-  }
+  analysis_prechecks(
+    total_portfolio_path = total_portfolio_path,
+    pacta_data_dir = pacta_data_dir,
+    output_dir = output_dir
+  )
+  total_portfolio <- readRDS(total_portfolio_path)
 
 
   calc_weights_and_outputs(
@@ -59,4 +55,36 @@ run_analysis <- function(
   )
 
   log_info("Finished PACTA calculations.")
+}
+
+analysis_prechecks <- function(
+  total_portfolio_path,
+  pacta_data_dir,
+  output_dir
+) {
+  pacta.workflow.utils::check_io(
+    input_files = total_portfolio_path,
+    output_dir = output_dir
+  )
+  if (is.null(total_portfolio_path)) {
+    total_portfolio <- NULL
+  } else {
+    total_portfolio <- readRDS(total_portfolio_path)
+    log_trace(
+      "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
+    )
+    pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
+  }
+  calc_weights_prechecks(
+    total_portfolio = total_portfolio,
+    portfolio_type = "Equity",
+    output_dir = output_dir,
+    data_dir = pacta_data_dir
+  )
+  calc_weights_prechecks(
+    total_portfolio = total_portfolio,
+    portfolio_type = "Bonds",
+    output_dir = output_dir,
+    data_dir = pacta_data_dir
+  )
 }

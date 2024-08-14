@@ -6,6 +6,7 @@
 ^docker-compose.yml$
 ^input_dir/
 ^analysis_output_dir/
+^pacta-data/
 ^portfolios/
 ^run-pacta.sh$
 ^workflow.pacta.Rproj$
