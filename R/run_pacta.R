@@ -57,7 +57,7 @@ run_pacta <- function(
     stop("Invalid raw input parameters.")
   }
 
-  params <- pacta.workflow.utils:::parse_params(
+  params <- pacta.workflow.utils:::parse_params( #nolint
     json = raw_params,
     inheritence_search_paths = system.file(
       "extdata", "parameters",
@@ -67,6 +67,18 @@ run_pacta <- function(
       "extdata", "schema", "portfolioParameters.json",
       package = "workflow.pacta"
     )
+  )
+
+  audit_prechecks(
+    portfolio_files = params[["portfolio"]][["files"]],
+    pacta_data_dir = pacta_data_dir,
+    portfolio_dir = portfolio_dir,
+    output_dir = output_dir
+  )
+  analysis_prechecks(
+    total_portfolio_path = NULL,
+    pacta_data_dir = pacta_data_dir,
+    output_dir = output_dir
   )
 
   run_audit(
