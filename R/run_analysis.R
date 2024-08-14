@@ -67,14 +67,14 @@ analysis_prechecks <- function(
     input_files = total_portfolio_path,
     output_dir = output_dir
   )
-  if (is.null(total_portfolio_path)) {
-    total_portfolio <- NULL
-  } else {
+  if (check_portfolio) {
     total_portfolio <- readRDS(total_portfolio_path)
     log_trace(
       "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
     )
     pacta.portfolio.utils::quit_if_no_pacta_relevant_data(total_portfolio)
+  } else {
+    log_trace("Skipping portfolio check.")
   }
   calc_weights_prechecks(
     total_portfolio = total_portfolio,
