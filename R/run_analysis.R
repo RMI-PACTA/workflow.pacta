@@ -63,11 +63,11 @@ analysis_prechecks <- function(
   output_dir,
   check_portfolio = TRUE
 ) {
-  pacta.workflow.utils::check_io(
-    input_files = total_portfolio_path,
-    output_dir = output_dir
-  )
   if (check_portfolio) {
+    pacta.workflow.utils::check_io(
+      input_files = total_portfolio_path,
+      output_dir = output_dir
+    )
     total_portfolio <- readRDS(total_portfolio_path)
     log_trace(
       "Checking for PACTA relevant data in file: \"{total_portfolio_path}\"."
