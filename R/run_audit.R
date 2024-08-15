@@ -1,3 +1,13 @@
+#' @title run_audit
+#'
+#' @description This function runs the PACTA audit for a portfolio.
+#'
+#' @param pacta_data_dir filepath: Directory with "pacta-data"
+#' @param portfolio_dir filepath: Directory with portfolio files
+#' @param portfolio_files character vector: List of portfolio files to process.
+#' @param output_dir filepath: Directory to save outputs.
+#' @return No return value. Saves outputs to output_dir.
+#' @export
 run_audit <- function(
   pacta_data_dir,
   portfolio_dir,

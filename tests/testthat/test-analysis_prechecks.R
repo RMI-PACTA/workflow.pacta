@@ -84,7 +84,7 @@ test_that("audit_prechecks fails when total_portfolio.rds missing", {
     regexp = "^IO checks failed.$"
   )
 })
-test_that("analysis_prechecks passes when port missing, but path is NULL", {
+test_that("analysis_prechecks passes port missing, check_portfolio is FALSE", {
   pacta_data_dir <- withr::local_tempdir()
   filenames <- c(
     "bonds_abcd_scenario.rds",
@@ -100,17 +100,12 @@ test_that("analysis_prechecks passes when port missing, but path is NULL", {
   }
 
   output_dir <- withr::local_tempdir()
-  portfolio <- data.frame(
-    asset_type = "Equity",
-    has_asset_level_data = TRUE,
-    stringsAsFactors = FALSE
-  )
-  total_portfolio_path <- file.path(output_dir, "total_portfolio.rds")
 
   results <- analysis_prechecks(
     total_portfolio_path = NULL,
     pacta_data_dir = pacta_data_dir,
-    output_dir = output_dir
+    output_dir = output_dir,
+    check_portfolio = FALSE
   )
   expect_identical(
     object = results,

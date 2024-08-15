@@ -1,3 +1,13 @@
+#' @title Run PACTA
+#'
+#' @description This function runs the PACTA audit and analysis for a portfolio.
+#'
+#' @param raw_params character or filepath: JSON string or file with parameters.
+#' @param pacta_data_dir filepath: Directory with "pacta-data"
+#' @param output_dir filepath: Directory to save outputs.
+#' @param portfolio_dir filepath: Directory with portfolio files
+#' @return No return value. Saves outputs to output_dir.
+#' @export
 run_pacta <- function(
   params,
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
@@ -27,9 +37,9 @@ run_pacta <- function(
     output_dir = output_dir
   )
   analysis_prechecks(
-    total_portfolio_path = NULL,
     pacta_data_dir = pacta_data_dir,
-    output_dir = output_dir
+    output_dir = output_dir,
+    check_portfolio = FALSE
   )
 
   run_audit(
