@@ -1,6 +1,5 @@
 linters: all_linters()
 exclusions: list(
-    "tests/testthat.R",
-    "inst/extdata/scripts/run_pacta.R"
+    "tests/testthat.R"
   )
 
