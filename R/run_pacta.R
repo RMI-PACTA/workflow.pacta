@@ -76,9 +76,9 @@ run_pacta <- function(
     output_dir = output_dir
   )
   analysis_prechecks(
-    total_portfolio_path = NULL,
     pacta_data_dir = pacta_data_dir,
-    output_dir = output_dir
+    output_dir = output_dir,
+    check_portfolio = FALSE
   )
 
   run_audit(
