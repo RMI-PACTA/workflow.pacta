@@ -2,7 +2,21 @@
 #'
 #' @description This function runs the PACTA audit and analysis for a portfolio.
 #'
-#' @param raw_params character or filepath: JSON string or file with parameters.
+#' @param params List: parameters for analysis. Output of
+#' `pacta.workflow.utils::parse_params`. Must contain:
+#' \itemize{
+#' \item portfolio: List with files key containing the name of the portfolio
+#' file.
+#' \item analysis: List with keys:
+#' \itemize{
+#' \item equityMarketList: List of equity markets to analyze.
+#' \item scenarioGeographiesList: List of scenario geographies to analyze.
+#' \item scenarioSourcesList: List of scenario sources to analyze.
+#' \item sectorList: List of sectors to analyze.
+#' \item startYear: Start year for analysis.
+#' \item timeHorizon: Time horizon for analysis.
+#' }
+#' }
 #' @param pacta_data_dir filepath: Directory with "pacta-data"
 #' @param output_dir filepath: Directory to save outputs.
 #' @param portfolio_dir filepath: Directory with portfolio files
