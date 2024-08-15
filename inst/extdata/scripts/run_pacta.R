@@ -17,9 +17,9 @@ params <- pacta.workflow.utils::parse_raw_params(
   )
 )
 
-manifest_info <- workflow.pacta:::run_pacta(params)
+manifest_info <- workflow.pacta::run_pacta(params)
 
-log_info("Exporting Manifest")
+workflow.pacta::log_info("Exporting Manifest")
 pacta.workflow.utils::export_manifest(
   input_files = manifest_info[["input_files"]],
   output_files = manifest_info[["output_files"]],
