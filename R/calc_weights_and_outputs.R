@@ -1,3 +1,26 @@
+#' calc_weights_and_outputs
+#'
+#' @description This function calculates the weights and outputs for the
+#' portfolio. This is the core of running the "PACTA analysis" for a portfolio.
+#'
+#' @param total_portfolio `data.frame`: PACTA formatted portfolio.
+#' @param portfolio_type `character`: Portfolio type. Accepts "Equity" or
+#' "Bonds".
+#' @param output_dir filepath: Directory to save outputs.
+#' @param data_dir filepath: Directory with "pacta-data"
+#' @param equity_market_list character vector: List of equity markets to
+#' include in analysis.
+#' @param scenario_sources_list character vector: List of scenario sources to
+#' include in analysis. Note sources must be available in the "pacta-data".
+#' @param scenario_geographies_list character vector: List of scenario-defined
+#' geographies to include in analysis. Note these geographies must be available
+#' in the scenario data.
+#' @param sector_list character vector: List of sectors to include in analysis.
+#' @param start_year integer: Start year for analysis.
+#' @param time_horizon integer: Time horizon after start for analysis (usually
+#' 5 years).
+#' @return No return value. Saves outputs to output_dir.
+#' @export
 calc_weights_and_outputs <- function(
   total_portfolio,
   portfolio_type,

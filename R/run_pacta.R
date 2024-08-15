@@ -1,3 +1,13 @@
+#' @title Run PACTA
+#'
+#' @description This function runs the PACTA audit and analysis for a portfolio.
+#'
+#' @param raw_params character or filepath: JSON string or file with parameters.
+#' @param pacta_data_dir filepath: Directory with "pacta-data"
+#' @param output_dir filepath: Directory to save outputs.
+#' @param portfolio_dir filepath: Directory with portfolio files
+#' @return No return value. Saves outputs to output_dir.
+#' @export
 run_pacta <- function(
   raw_params = commandArgs(trailingOnly = TRUE),
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
