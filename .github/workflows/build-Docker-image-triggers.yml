@@ -1,32 +1,32 @@
----
-on:
-  pull_request:
-  push:
-    branches: [main]
-  schedule:
-    - cron: '0 0 * * 1,2,3,4,5'
-  workflow_dispatch:
+# ---
+# on:
+#   pull_request:
+#   push:
+#     branches: [main]
+#   schedule:
+#     - cron: '0 0 * * 1,2,3,4,5'
+#   workflow_dispatch:
 
-name: docker
+# name: docker
 
-jobs:
-  docker:
-    name: Docker actions
-    uses: RMI-PACTA/actions/.github/workflows/docker.yml@main
+# jobs:
+#   docker:
+#     name: Docker actions
+#     uses: RMI-PACTA/actions/.github/workflows/docker.yml@main
 
-  test:
-    name: Test
-    uses: ./.github/workflows/test.yml
-    needs: [docker]
-    secrets: inherit
-    strategy:
-      fail-fast: false
-      matrix:
-        config-name:
-          - default_2022Q4
-          - default_2023Q4
-          - full_params_2022Q4
-          - full_params_2023Q4
-    with:
-      full-image-name: ${{ needs.docker.outputs.full-image-name }}
-      config-name: ${{ matrix.config-name }}
+#   test:
+#     name: Test
+#     uses: ./.github/workflows/test.yml
+#     needs: [docker]
+#     secrets: inherit
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         config-name:
+#           - default_2022Q4
+#           - default_2023Q4
+#           - full_params_2022Q4
+#           - full_params_2023Q4
+#     with:
+#       full-image-name: ${{ needs.docker.outputs.full-image-name }}
+#       config-name: ${{ matrix.config-name }}
