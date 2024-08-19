@@ -1,6 +1,6 @@
 Package: workflow.pacta
 Title: Run PACTA
-Version: 0.0.0.9009
+Version: 0.0.0.9010
 Authors@R: 
     c(person(given = "CJ",
              family = "Yetman",
@@ -27,7 +27,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     dplyr,
-    jsonvalidate,
     logger,
     pacta.portfolio.allocate,
     pacta.portfolio.audit,
