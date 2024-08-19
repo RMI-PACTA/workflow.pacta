@@ -5,14 +5,28 @@
 \title{Run PACTA}
 \usage{
 run_pacta(
-  raw_params = commandArgs(trailingOnly = TRUE),
+  params,
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
   output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
 )
 }
 \arguments{
-\item{raw_params}{character or filepath: JSON string or file with parameters.}
+\item{params}{List: parameters for analysis. Output of
+\code{pacta.workflow.utils::parse_params}. Must contain:
+\itemize{
+\item portfolio: List with files key containing the name of the portfolio
+file.
+\item analysis: List with keys:
+\itemize{
+\item equityMarketList: List of equity markets to analyze.
+\item scenarioGeographiesList: List of scenario geographies to analyze.
+\item scenarioSourcesList: List of scenario sources to analyze.
+\item sectorList: List of sectors to analyze.
+\item startYear: Start year for analysis.
+\item timeHorizon: Time horizon for analysis.
+}
+}}
 
 \item{pacta_data_dir}{filepath: Directory with "pacta-data"}
 

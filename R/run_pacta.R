@@ -2,14 +2,28 @@
 #'
 #' @description This function runs the PACTA audit and analysis for a portfolio.
 #'
-#' @param raw_params character or filepath: JSON string or file with parameters.
+#' @param params List: parameters for analysis. Output of
+#' `pacta.workflow.utils::parse_params`. Must contain:
+#' \itemize{
+#' \item portfolio: List with files key containing the name of the portfolio
+#' file.
+#' \item analysis: List with keys:
+#' \itemize{
+#' \item equityMarketList: List of equity markets to analyze.
+#' \item scenarioGeographiesList: List of scenario geographies to analyze.
+#' \item scenarioSourcesList: List of scenario sources to analyze.
+#' \item sectorList: List of sectors to analyze.
+#' \item startYear: Start year for analysis.
+#' \item timeHorizon: Time horizon for analysis.
+#' }
+#' }
 #' @param pacta_data_dir filepath: Directory with "pacta-data"
 #' @param output_dir filepath: Directory to save outputs.
 #' @param portfolio_dir filepath: Directory with portfolio files
 #' @return No return value. Saves outputs to output_dir.
 #' @export
 run_pacta <- function(
-  raw_params = commandArgs(trailingOnly = TRUE),
+  params,
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
   output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
@@ -29,45 +43,6 @@ run_pacta <- function(
     stop("PORTFOLIO_DIR not set.")
   }
   log_info("Running PACTA")
-
-  # Read Params
-  log_trace("Processing input parameters.")
-  if (length(raw_params) == 0L || all(raw_params == "")) {
-    log_error("No parameters specified.")
-  }
-
-  log_trace("Validating raw input parameters.")
-  raw_input_validation_results <- jsonvalidate::json_validate(
-    json = raw_params,
-    schema = system.file(
-      "extdata", "schema", "rawParameters.json",
-      package = "workflow.pacta"
-    ),
-    verbose = TRUE,
-    greedy = FALSE,
-    engine = "ajv"
-  )
-  if (raw_input_validation_results) {
-    log_trace("Raw input parameters are valid.")
-  } else {
-    log_error(
-      "Invalid raw input parameters. ",
-      "Must include \"inherit\" key, or match full schema."
-    )
-    stop("Invalid raw input parameters.")
-  }
-
-  params <- pacta.workflow.utils::parse_params( #nolint
-    json = raw_params,
-    inheritence_search_paths = system.file(
-      "extdata", "parameters",
-      package = "workflow.pacta"
-    ),
-    schema_file = system.file(
-      "extdata", "schema", "portfolioParameters.json",
-      package = "workflow.pacta"
-    )
-  )
 
   audit_prechecks(
     portfolio_files = params[["portfolio"]][["files"]],
@@ -99,25 +74,23 @@ run_pacta <- function(
     time_horizon = params[["analysis"]][["timeHorizon"]]
   )
 
-  log_info("Exporting Manifest")
-  pacta.workflow.utils::export_manifest(
-    manifest_path = file.path(output_dir, "manifest.json"),
-    input_files = c(
-      file.path(portfolio_dir, params[["portfolio"]][["files"]]),
-      list.files(
-        pacta_data_dir,
+  log_info("PACTA run complete.")
+  return(
+    list(
+      input_files = c(
+        file.path(portfolio_dir, params[["portfolio"]][["files"]]),
+        list.files(
+          pacta_data_dir,
+          full.names = TRUE,
+          recursive = TRUE
+        )
+      ),
+      output_files = list.files(
+        output_dir,
         full.names = TRUE,
         recursive = TRUE
-      )
-    ),
-    output_files = list.files(
-      output_dir,
-      full.names = TRUE,
-      recursive = TRUE
-    ),
-    params = params,
-    raw_params = raw_params
+      ),
+      params = params
+    )
   )
-
-  log_info("PACTA run complete.")
 }
