@@ -1,0 +1,17 @@
+---
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: Render JSON Schema Docs
+    steps:
+      - id: render-json-schema
+        uses: RMI-PACTA/actions/actions/json-schema/update-docs@json-schema
+        with:
+          input-files: 'inst/extdata/schema'
+          outputs: 'inst/extdata/schema'
+          output-format: html
