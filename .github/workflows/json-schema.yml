@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     name: JSON Schema Check
     steps:
-      name: check-docs
       uses: RMI-PACTA/actions/actions/json-schema/render-docs/action.yml@json-schema
       with:
         input-files: 'inst/extdata/schema'
