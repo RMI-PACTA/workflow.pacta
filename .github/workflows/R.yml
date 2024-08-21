@@ -14,10 +14,13 @@ on:
     - cron: '0 0 * * 1,2,3,4,5'
   workflow_dispatch:
 
-name: R
+name: Check JSON Schema
 
 jobs:
-  R-package:
-    name: R Package Checks
-    uses: RMI-PACTA/actions/.github/workflows/R.yml@main
-    secrets: inherit
+  json-schema:
+    name: JSON Schema Check
+    uses: RMI-PACTA/actions/actions/json-schema/render-docs/action.yml@json-schema
+    with:
+      input-files: 'inst/extdata/schema'
+      outputs: 'inst/extdata/schema'
+      output-format: html
