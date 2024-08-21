@@ -22,7 +22,7 @@ jobs:
     name: JSON Schema Check
     steps:
       - name: check-docs
-        uses: RMI-PACTA/actions/actions/json-schema/check-docs/action.yml@json-schema
+        uses: RMI-PACTA/actions/actions/json-schema/check-docs@json-schema
         with:
           input-files: 'inst/extdata/schema'
           outputs: 'inst/extdata/schema'
