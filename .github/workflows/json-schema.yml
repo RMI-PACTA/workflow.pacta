@@ -27,3 +27,4 @@ jobs:
           input-files: 'inst/extdata/schema'
           outputs: 'inst/extdata/schema'
           output-format: html
+          config-file: 'inst/extdata/schema-config/config.json'
