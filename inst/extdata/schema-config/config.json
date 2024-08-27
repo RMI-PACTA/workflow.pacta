@@ -1,0 +1,14 @@
+{
+  "expand_buttons": false,
+  "footer_show_time": false,
+  "minify": true,
+  "show_breadcrumbs": false,
+  "show_toc": false,
+  "template_name": "js_offline",
+  "with_footer": true,
+  "template_md_options": {
+    "badge_as_image": false,
+    "show_heading_numbers": false,
+    "show_array_restrictions": false
+  }
+}
