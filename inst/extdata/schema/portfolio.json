@@ -7,8 +7,12 @@
   "type": "object",
   "properties": {
     "files": {
-      "type": "string",
-      "description": "List of portfolio files to be analyzed."
+      "type": "array",
+      "description": "List of portfolio files to be analyzed.",
+      "items": {
+        "type": "string",
+        "description": "Path to the file."
+      }
     },
     "holdingsDate": {
       "type": "string",
