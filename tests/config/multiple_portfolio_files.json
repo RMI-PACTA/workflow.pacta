@@ -1,0 +1,14 @@
+{
+  "holdingsDate": "2023Q4",
+  "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2023Q4_20240424T120055Z",
+  "parameters": {
+    "portfolio": {
+      "files": [
+        "section_1.csv",
+        "section_2.csv"
+      ],
+      "holdingsDate": "2023-12-31"
+    },
+    "inherit": "2023Q4"
+  }
+}

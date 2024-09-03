@@ -27,6 +27,7 @@ jobs:
           - default_2023Q4
           - full_params_2022Q4
           - full_params_2023Q4
+          - multiple_portfolio_files
     with:
       full-image-name: ${{ needs.docker.outputs.full-image-name }}
       config-name: ${{ matrix.config-name }}
