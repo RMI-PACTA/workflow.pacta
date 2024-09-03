@@ -1,11 +1,13 @@
 ---
 services:
   workflow.pacta:
-    build: .
+    # build: .
+    image: ghcr.io/rmi-pacta/workflow.pacta:pr-96
     # stdin_open: true
     # tty: true
     # entrypoint: ["R", "--args"]
-    command: '{\"portfolio\": {\"files\": [\"default_portfolio.csv\"], \"holdingsDate\": \"2023-12-31\"}, \"inherit\": \"2023Q4\"}'
+    command: '/test_params.json'
+    # command: '{\"portfolio\": {\"files\": [\"default_portfolio.csv\"], \"holdingsDate\": \"2023-12-31\"}, \"inherit\": \"2023Q4\"}'
     environment:
       LOG_LEVEL: TRACE
       PACTA_DATA_DIR: "/mnt/pacta-data"
@@ -23,4 +25,8 @@ services:
       - type: bind
         source: ${input_dir:-./portfolios}
         target: /mnt/portfolios
+        read_only: true
+      - type: bind
+        source: ./portfolios/default_params.json
+        target: /test_params.json
         read_only: true
