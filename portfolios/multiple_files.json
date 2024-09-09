@@ -1,0 +1,39 @@
+{
+  "portfolio": {
+    "holdingsDate": "2023-12-31",
+    "files": 
+    [
+      "section_1.csv",
+      "section_2.csv"
+    ],
+    "name": "Default Portfolio"
+  },
+  "analysis": {
+    "equityMarketList": [
+      "GlobalMarket",
+      "DevelopedMarket",
+      "EmergingMarket"
+    ],
+    "scenarioGeographiesList": [
+      "Global",
+      "GlobalAggregate",
+      "NonOECD",
+      "OECD"
+    ],
+    "scenarioSourcesList": [
+      "GECO2023",
+      "ISF2023",
+      "WEO2023"
+    ],
+    "sectorList": [
+      "Power",
+      "Automotive",
+      "Coal",
+      "Steel",
+      "Aviation",
+      "Cement"
+    ],
+    "startYear": 2022,
+    "timeHorizon": 5
+  }
+}

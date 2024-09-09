@@ -4,7 +4,9 @@
   "parameters": {
     "portfolio": {
       "holdingsDate": "2023-12-31",
-      "files": "default_portfolio.csv",
+      "files": [
+        "default_portfolio.csv"
+      ],
       "name": "Default Portfolio"
     },
     "analysis": {
