@@ -84,7 +84,7 @@ jobs:
           chmod -R 777 "${WORKSPACE}/${ANALYSIS_OUTPUT_DIR}"
           docker run \
           --network none \
-          --env LOG_LEVEL=DEBUG \
+          --env LOG_LEVEL=TRACE \
           --env ANALYSIS_OUTPUT_DIR="/mnt/analysis_output_dir" \
           --env PACTA_DATA_DIR="/mnt/pacta-data" \
           --env PORTFOLIO_DIR="/mnt/portfolios" \
