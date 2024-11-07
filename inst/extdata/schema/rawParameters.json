@@ -12,14 +12,7 @@
 ,
     "inherit": {
       "type": "string",
-      "description": "Path to a file with inheritance information.",
-      "enum": [
-        "2022Q4",
-        "2023Q4",
-        "GENERAL_2022Q4",
-        "GENERAL_2023Q4",
-        "default"
-      ]
+      "description": "Path to a file with inheritance information."
     }
   },
   "anyOf": [
