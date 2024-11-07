@@ -1,5 +1,5 @@
 {
-  "inherit": "default",
+  "inherit": "analysis_default",
   "analysis": {
     "startYear": 2022,
     "holdingsDate": "2022-12-31",
