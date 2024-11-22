@@ -2,7 +2,7 @@
 services:
   workflow.pacta:
     # build: .
-    image: ghcr.io/rmi-pacta/workflow.pacta:pr-96
+    image: ghcr.io/rmi-pacta/workflow.pacta
     # stdin_open: true
     # tty: true
     # entrypoint: ["R", "--args"]
