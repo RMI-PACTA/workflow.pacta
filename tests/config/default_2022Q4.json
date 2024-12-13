@@ -6,7 +6,7 @@
       "files": [
         "default_portfolio.csv"
       ],
-      "holdingsDate": "2023-12-31"
+      "holdingsDate": "2022-12-31"
     },
     "inherit": "analysis_2022Q4"
   }
