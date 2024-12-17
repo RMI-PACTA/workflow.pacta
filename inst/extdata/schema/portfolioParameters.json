@@ -6,6 +6,16 @@
   "$comment": "Created by Alex Axthelm, aaxthelm@rmi.org",
   "type": "object",
   "properties": {
+    "commands": {
+      "audit": {
+        "type": "boolean",
+        "description": "Whether to run the audit."
+      },
+      "analysis": {
+        "type": "boolean",
+        "description": "Whether to run the analysis."
+      }
+    },
     "portfolio": {
       "$ref": "portfolio.json"
     },
