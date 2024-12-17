@@ -7,14 +7,22 @@
   "type": "object",
   "properties": {
     "commands": {
-      "audit": {
-        "type": "boolean",
-        "description": "Whether to run the audit."
+      "type": "object",
+      "description": "Commands to run.",
+      "properties": {
+        "audit": {
+          "type": "boolean",
+          "description": "Whether to run the audit."
+        },
+        "analysis": {
+          "type": "boolean",
+          "description": "Whether to run the analysis."
+        }
       },
-      "analysis": {
-        "type": "boolean",
-        "description": "Whether to run the analysis."
-      }
+      "required": [
+        "audit",
+        "analysis"
+      ]
     },
     "portfolio": {
       "$ref": "portfolio.json"
@@ -103,6 +111,7 @@
   "allOf": [
     {
       "required": [
+        "commands",
         "portfolio",
         "analysis"
       ]
