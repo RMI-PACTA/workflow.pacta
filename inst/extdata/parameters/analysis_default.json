@@ -1,4 +1,8 @@
 {
+  "commands": {
+    "audit": true,
+    "analysis": true
+  },
   "analysis": {
     "equityMarketList": [
       "GlobalMarket",

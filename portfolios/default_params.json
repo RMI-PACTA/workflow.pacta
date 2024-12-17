@@ -1,4 +1,8 @@
 {
+  "commands": {
+    "audit": true,
+    "analysis": true
+  },
   "portfolio": {
     "holdingsDate": "2023-12-31",
     "files": 
