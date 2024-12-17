@@ -2,6 +2,10 @@
   "holdingsDate": "2022Q4",
   "pactaDataURL": "https://pactadatadev.file.core.windows.net/workflow-data-preparation-outputs/2022Q4_20240426T113151Z",
   "parameters": {
+    "commands": {
+      "audit": true,
+      "analysis": false
+    },
     "portfolio": {
       "holdingsDate": "2022-12-31",
       "files": [

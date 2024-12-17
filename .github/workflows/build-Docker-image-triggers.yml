@@ -23,7 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         config-name:
+          - audit_2022Q4
           - audit_2023Q4
+          - audit_multiple_portfolio_files
           - default_2022Q4
           - default_2023Q4
           - full_params_2022Q4
