@@ -24,6 +24,8 @@
 #' @export
 run_pacta <- function(
   params,
+  run_audit = TRUE,
+  run_analysis = TRUE,
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
   output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
@@ -44,35 +46,54 @@ run_pacta <- function(
   }
   log_info("Running PACTA")
 
-  audit_prechecks(
-    portfolio_files = params[["portfolio"]][["files"]],
-    pacta_data_dir = pacta_data_dir,
-    portfolio_dir = portfolio_dir,
-    output_dir = output_dir
-  )
-  analysis_prechecks(
-    pacta_data_dir = pacta_data_dir,
-    output_dir = output_dir,
-    check_portfolio = FALSE
-  )
+  audit_file_path <- file.path(output_dir, "audit_file.rds")
 
-  run_audit(
-    portfolio_files = params[["portfolio"]][["files"]],
-    pacta_data_dir = pacta_data_dir,
-    portfolio_dir = portfolio_dir,
-    output_dir = output_dir
-  )
-  run_analysis(
-    pacta_data_dir = pacta_data_dir,
-    output_dir = output_dir,
-    equity_market_list = params[["analysis"]][["equityMarketList"]],
-    scenario_sources_list = params[["analysis"]][["scenarioSourcesList"]],
-    scenario_geographies_list =
-      params[["analysis"]][["scenarioGeographiesList"]],
-    sector_list = params[["analysis"]][["sectorList"]],
-    start_year = params[["analysis"]][["startYear"]],
-    time_horizon = params[["analysis"]][["timeHorizon"]]
-  )
+  if (!file.exists(audit_file_path)) {
+    log_warn("Audit file not found. Running audit.")
+    run_audit <- TRUE
+  }
+
+  if (run_audit) {
+    audit_prechecks(
+      portfolio_files = params[["portfolio"]][["files"]],
+      pacta_data_dir = pacta_data_dir,
+      portfolio_dir = portfolio_dir,
+      output_dir = output_dir
+    )
+  }
+
+  if (run_analysis) {
+    analysis_prechecks(
+      pacta_data_dir = pacta_data_dir,
+      output_dir = output_dir,
+      check_portfolio = FALSE
+    )
+  }
+
+
+  if (run_audit) {
+    run_audit(
+      portfolio_files = params[["portfolio"]][["files"]],
+      pacta_data_dir = pacta_data_dir,
+      portfolio_dir = portfolio_dir,
+      output_dir = output_dir
+    )
+  }
+
+
+  if (run_analysis) {
+    run_analysis(
+      pacta_data_dir = pacta_data_dir,
+      output_dir = output_dir,
+      equity_market_list = params[["analysis"]][["equityMarketList"]],
+      scenario_sources_list = params[["analysis"]][["scenarioSourcesList"]],
+      scenario_geographies_list =
+        params[["analysis"]][["scenarioGeographiesList"]],
+      sector_list = params[["analysis"]][["sectorList"]],
+      start_year = params[["analysis"]][["startYear"]],
+      time_horizon = params[["analysis"]][["timeHorizon"]]
+    )
+  }
 
   log_info("PACTA run complete.")
   return(
