@@ -4,7 +4,7 @@
   "parameters": {
     "commands": {
       "audit": true,
-      "analysis": false
+      "analysis": true
     },
     "portfolio": {
       "holdingsDate": "2022-12-31",
