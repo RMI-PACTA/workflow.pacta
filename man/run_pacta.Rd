@@ -6,6 +6,8 @@
 \usage{
 run_pacta(
   params,
+  run_audit = TRUE,
+  run_analysis = TRUE,
   pacta_data_dir = Sys.getenv("PACTA_DATA_DIR"),
   output_dir = Sys.getenv("ANALYSIS_OUTPUT_DIR"),
   portfolio_dir = Sys.getenv("PORTFOLIO_DIR")
@@ -27,6 +29,10 @@ file.
 \item timeHorizon: Time horizon for analysis.
 }
 }}
+
+\item{run_audit}{logical: Run the audit process}
+
+\item{run_analysis}{logical: Run the analysis process}
 
 \item{pacta_data_dir}{filepath: Directory with "pacta-data"}
 

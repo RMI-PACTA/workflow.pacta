@@ -17,6 +17,8 @@
 #' \item timeHorizon: Time horizon for analysis.
 #' }
 #' }
+#' @param run_audit logical: Run the audit process
+#' @param run_analysis logical: Run the analysis process
 #' @param pacta_data_dir filepath: Directory with "pacta-data"
 #' @param output_dir filepath: Directory to save outputs.
 #' @param portfolio_dir filepath: Directory with portfolio files
