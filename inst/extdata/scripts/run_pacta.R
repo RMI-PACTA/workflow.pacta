@@ -26,7 +26,11 @@ params <- pacta.workflow.utils::parse_raw_params(
   force_array = c("portfolio", "files")
 )
 
-manifest_info <- workflow.pacta::run_pacta(params)
+manifest_info <- workflow.pacta::run_pacta(
+  params = params,
+  run_audit = params[["commands"]][["audit"]],
+  run_analysis = params[["commands"]][["analysis"]]
+)
 
 pacta.workflow.utils::export_manifest(
   input_files = manifest_info[["input_files"]],
