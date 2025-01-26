@@ -128,7 +128,7 @@ run_audit <- function(
     )
 
   log_debug("Filtering invalid holdings.")
-  portfolio_total <- dplyr::filter(portfolio_w_flags, .data[["valid_input"]] == TRUE)
+  portfolio_total <- dplyr::filter(portfolio_w_flags, .data[["valid_input"]])
 
 
   # Saving -------------------------------------------------------------------
