@@ -101,30 +101,34 @@ run_audit <- function(
   )
 
   log_debug("Adding portfolio flags to portfolio.")
-  portfolio_total <- pacta.portfolio.audit::add_portfolio_flags(
+  portfolio_w_flags <- pacta.portfolio.audit::add_portfolio_flags(
     portfolio = portfolio,
     currencies = currencies
   )
 
   log_debug("Summarizing portfolio.")
   portfolio_overview <- pacta.portfolio.audit::portfolio_summary(
-    portfolio_total = portfolio_total
+    portfolio_total = portfolio_w_flags
   )
 
   log_debug("Creating audit file.")
   audit_file <- pacta.portfolio.audit::create_audit_file(
-    portfolio_total = portfolio_total,
+    portfolio_total = portfolio_w_flags,
     has_revenue = FALSE
   )
 
   log_debug("Calculating financed emissions.")
   emissions_totals <-
     pacta.portfolio.audit::calculate_portfolio_financed_emissions(
-      portfolio_total,
+      portfolio_w_flags,
       entity_info,
       entity_emission_intensities,
       avg_sector_eis
     )
+
+  log_debug("Filtering invalid holdings.")
+  portfolio_total <- dplyr::filter(portfolio_w_flags, valid_input == TRUE)
+  
 
   # Saving -------------------------------------------------------------------
 
