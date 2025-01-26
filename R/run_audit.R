@@ -8,6 +8,7 @@
 #' @param output_dir filepath: Directory to save outputs.
 #' @return No return value. Saves outputs to output_dir.
 #' @export
+#' @importFrom dplyr .data
 run_audit <- function(
   pacta_data_dir,
   portfolio_dir,
@@ -128,7 +129,7 @@ run_audit <- function(
 
   log_debug("Filtering invalid holdings.")
   portfolio_total <- dplyr::filter(portfolio_w_flags, .data[["valid_input"]] == TRUE)
-  
+
 
   # Saving -------------------------------------------------------------------
 
