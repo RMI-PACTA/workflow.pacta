@@ -64,6 +64,7 @@ jobs:
         with:
           # azcliversion: 2.30.0
           inlineScript: |
+            tdnf install -y azcopy;
             echo "pacta_data_dir: $PACTA_DATA_DATE_DIR"
             az storage copy \
               --source "$PACTA_DATA_URL/*" \
@@ -110,6 +111,7 @@ jobs:
           RESULTS_URL: ${{ inputs.results-url }}
         with:
           inlineScript: |
+            tdnf install -y azcopy;
             unique_directory="$RESULTS_URL/$GITHUB_REF_NAME/$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT/$CONFIG_NAME"
             az storage copy \
               --source "$ANALYSIS_OUTPUT_DIR" \
