@@ -223,7 +223,7 @@ calc_weights_prechecks <- function(
         nrow(total_portfolio) == 0L
     ) {
       log_error("Portfolio has no rows.")
-      stop("Portfolio has no rows.")
+      stop("Portfolio has no rows.", call. = FALSE)
     } else {
       log_trace("Portfolio has rows.")
     }
@@ -245,7 +245,7 @@ calc_weights_prechecks <- function(
       file.path(data_dir, "masterdata_debt_datastore.rds")
     )
   } else {
-    stop("Invalid portfolio type.")
+    stop("Invalid portfolio type.", call. = FALSE)
   }
   pacta.workflow.utils::check_io(
     input_files = input_files,

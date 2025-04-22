@@ -36,15 +36,15 @@ run_pacta <- function(
   log_debug("Checking configuration.")
   if (is.null(pacta_data_dir) || pacta_data_dir == "") {
     log_error("PACTA_DATA_DIR not set.")
-    stop("PACTA_DATA_DIR not set.")
+    stop("PACTA_DATA_DIR not set.", call. = FALSE)
   }
   if (is.null(output_dir) || output_dir == "") {
     log_error("ANALYSIS_OUTPUT_DIR not set.")
-    stop("ANALYSIS_OUTPUT_DIR not set.")
+    stop("ANALYSIS_OUTPUT_DIR not set.", call. = FALSE)
   }
   if (is.null(portfolio_dir) || portfolio_dir == "") {
     log_error("PORTFOLIO_DIR not set.")
-    stop("PORTFOLIO_DIR not set.")
+    stop("PORTFOLIO_DIR not set.", call. = FALSE)
   }
   log_info("Running PACTA")
 
