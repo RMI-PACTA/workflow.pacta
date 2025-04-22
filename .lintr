@@ -1,4 +1,6 @@
-linters: all_linters()
+linters: all_linters(
+    unnecessary_nesting_linter = NULL
+  )
 exclusions: list(
     "tests/testthat.R"
   )
