@@ -13,6 +13,11 @@ jobs:
   docker:
     name: Docker actions
     uses: RMI-PACTA/actions/.github/workflows/docker.yml@main
+    with:
+      build-platform: |
+        [
+          "linux/amd64"
+        ]
 
   test:
     name: Test
