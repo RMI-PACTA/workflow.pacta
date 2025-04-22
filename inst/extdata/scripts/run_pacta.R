@@ -5,7 +5,7 @@ if (
     Sys.getenv("ANALYSIS_OUTPUT_DIR") == ""
 ) {
   log_error("ANALYSIS_OUTPUT_DIR not set.")
-  stop("ANALYSIS_OUTPUT_DIR not set.")
+  stop("ANALYSIS_OUTPUT_DIR not set.", call. = FALSE)
 }
 
 raw_params <- commandArgs(trailingOnly = TRUE)
