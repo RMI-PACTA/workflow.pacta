@@ -19,7 +19,6 @@ jobs:
           "linux/amd64"
         ]
 
-
   test:
     name: Test
     uses: ./.github/workflows/test.yml
