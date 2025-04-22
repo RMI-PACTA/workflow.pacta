@@ -19,7 +19,7 @@
 #' @param start_year integer: Start year for analysis.
 #' @param time_horizon integer: Time horizon after start for analysis (usually
 #' 5 years).
-#' @return No return value. Saves outputs to output_dir.
+#' @return No return value (NULL). Saves outputs to output_dir.
 #' @export
 calc_weights_and_outputs <- function(
   total_portfolio,
@@ -198,6 +198,11 @@ calc_weights_and_outputs <- function(
         map,
         results_map_filename
       )
+    } else {
+      log_debug(
+        "No {portfolio_type} map data to save. ",
+        "Skipping {portfolio_type} map results."
+      )
     }
 
   } else {
@@ -207,6 +212,7 @@ calc_weights_and_outputs <- function(
     )
   }
 
+  return(NULL)
 }
 
 calc_weights_prechecks <- function(
@@ -223,7 +229,7 @@ calc_weights_prechecks <- function(
         nrow(total_portfolio) == 0L
     ) {
       log_error("Portfolio has no rows.")
-      stop("Portfolio has no rows.")
+      stop("Portfolio has no rows.", call. = FALSE)
     } else {
       log_trace("Portfolio has rows.")
     }
@@ -245,7 +251,7 @@ calc_weights_prechecks <- function(
       file.path(data_dir, "masterdata_debt_datastore.rds")
     )
   } else {
-    stop("Invalid portfolio type.")
+    stop("Invalid portfolio type.", call. = FALSE)
   }
   pacta.workflow.utils::check_io(
     input_files = input_files,

@@ -45,7 +45,7 @@ in the scenario data.}
 5 years).}
 }
 \value{
-No return value. Saves outputs to output_dir.
+No return value (NULL). Saves outputs to output_dir.
 }
 \description{
 This function calculates the weights and outputs for the
