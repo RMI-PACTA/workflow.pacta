@@ -97,19 +97,33 @@ analysis_prechecks <- function(
     log_trace("Skipping portfolio check.")
     total_portfolio <- data.frame()
   }
-  calc_weights_prechecks(
+  equity_prechecks <- calc_weights_prechecks(
     total_portfolio = total_portfolio,
     portfolio_type = "Equity",
     output_dir = output_dir,
     data_dir = pacta_data_dir,
     check_portfolio = check_portfolio
   )
-  calc_weights_prechecks(
+  bonds_prechecks <- calc_weights_prechecks(
     total_portfolio = total_portfolio,
     portfolio_type = "Bonds",
     output_dir = output_dir,
     data_dir = pacta_data_dir,
     check_portfolio = check_portfolio
   )
-  return(NULL)
+  prechecks <- list(
+    input_files = unique(
+      c(
+        equity_prechecks$input_files,
+        bonds_prechecks$input_files
+      )
+    ),
+    output_dir = unique(
+      c(
+        equity_prechecks$output_dir,
+        bonds_prechecks$output_dir
+      )
+    )
+  )
+  return(prechecks)
 }
