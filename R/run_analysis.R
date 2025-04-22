@@ -15,7 +15,7 @@
 #' @param start_year integer: Start year for analysis.
 #' @param time_horizon integer: Time horizon after start for analysis (usually
 #' 5 years).
-#' @return No return value. Saves outputs to output_dir.
+#' @return No return value (NULL). Saves outputs to output_dir.
 #' @export
 run_analysis <- function(
   pacta_data_dir,
@@ -74,6 +74,7 @@ run_analysis <- function(
   )
 
   log_info("Finished PACTA calculations.")
+  return(NULL)
 }
 
 analysis_prechecks <- function(
@@ -110,4 +111,5 @@ analysis_prechecks <- function(
     data_dir = pacta_data_dir,
     check_portfolio = check_portfolio
   )
+  return(NULL)
 }

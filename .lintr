@@ -1,4 +1,8 @@
 linters: all_linters(
+    return_linter = lintr::return_linter(
+      return_style = "explicit",
+      allow_implicit_else = FALSE
+    ),
     unnecessary_nesting_linter = NULL
   )
 exclusions: list(
